@@ -1,5 +1,5 @@
-import { useState, useMemo } from 'react';
-import { Link } from 'react-router-dom';
+import { useState, useMemo, useEffect } from 'react';
+import { Link, useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   ArrowLeft, Search, ChevronDown, 
@@ -35,6 +35,8 @@ export interface UnifiedQuestion {
 type SortOption = 'default' | 'easy-to-hard' | 'hard-to-easy';
 
 export default function CodingPracticePage() {
+  const [searchParams] = useSearchParams();
+
   // Track Filter: All | Core Java | DSA & Coding | SQL Queries
   const [selectedTrack, setSelectedTrack] = useState<string>('All');
   const [selectedTopic, setSelectedTopic] = useState<string>('All');
@@ -44,6 +46,18 @@ export default function CodingPracticePage() {
 
   // Expanded Accordion Questions
   const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set(['cj-arr-1']));
+
+  // Synchronize URL parameters from search bar (?search= / ?id=)
+  useEffect(() => {
+    const q = searchParams.get('search') || searchParams.get('q');
+    if (q) {
+      setSearchQuery(q);
+    }
+    const qId = searchParams.get('id');
+    if (qId) {
+      setExpandedIds(prev => new Set([...prev, qId]));
+    }
+  }, [searchParams]);
 
   const toggleExpand = (id: string) => {
     setExpandedIds(prev => {

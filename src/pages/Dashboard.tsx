@@ -1,5 +1,5 @@
-import { useState, useMemo } from 'react';
-import { Link } from 'react-router-dom';
+import { useState, useMemo, useEffect } from 'react';
+import { Link, useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Code, Search, ChevronDown, ChevronRight, ChevronUp, 
@@ -122,6 +122,7 @@ function CleanCodeViewer({ code }: { code: string; title?: string }) {
 }
 
 export default function Dashboard() {
+  const [searchParams] = useSearchParams();
   const [activeFilter, setActiveFilter] = useState<FilterCategory>('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [copiedIntro, setCopiedIntro] = useState(false);
@@ -129,6 +130,18 @@ export default function Dashboard() {
   
   // Track expanded concepts
   const [expandedConceptIds, setExpandedConceptIds] = useState<Set<string>>(new Set());
+
+  // Synchronize URL query parameters (?search= / ?q= / ?concept=)
+  useEffect(() => {
+    const q = searchParams.get('search') || searchParams.get('q');
+    if (q) {
+      setSearchQuery(q);
+    }
+    const cId = searchParams.get('concept');
+    if (cId) {
+      setExpandedConceptIds(prev => new Set([...prev, cId]));
+    }
+  }, [searchParams]);
 
   // Track expanded question IDs (tap arrow to open answer)
   const [expandedQuestionIds, setExpandedQuestionIds] = useState<Set<string>>(new Set());

@@ -1,9 +1,21 @@
 import { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Search, X, BookOpen, Layers, HelpCircle, ArrowRight } from 'lucide-react';
+import { Search, X, BookOpen, Code2, Database, HelpCircle, ArrowRight, Sparkles } from 'lucide-react';
 import { allTopics } from '../data';
-import { allCodingQuestions } from '../data/codingQuestions';
-import type { SearchResult } from '../types';
+import { coreJavaTopics } from '../data/codingPrep/coreJavaPrep';
+import { dsaProblems } from '../data/codingPrep/dsaPrep';
+import { sqlPrepCategories } from '../data/codingPrep/sqlPrep';
+
+export interface SearchDialogItem {
+  id: string;
+  targetPage: 'concepts' | 'coding';
+  pageLabel: 'Concepts' | 'Coding Prep';
+  type: 'topic' | 'concept' | 'question' | 'coding-java' | 'coding-dsa' | 'sql-query';
+  title: string;
+  description: string;
+  breadcrumb: string;
+  conceptId?: string;
+}
 
 interface SearchDialogProps {
   isOpen: boolean;
@@ -43,13 +55,16 @@ export default function SearchDialog({ isOpen, onClose }: SearchDialogProps) {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isOpen, handleClose]);
 
-  // Index search items
-  const results = useMemo<SearchResult[]>(() => {
+  // Index search items ONLY across the two dedicated pages (Concepts & Coding)
+  const results = useMemo<SearchDialogItem[]>(() => {
     const cleanQuery = query.trim().toLowerCase();
     if (!cleanQuery || cleanQuery.length < 2) return [];
 
-    const matches: SearchResult[] = [];
+    const matches: SearchDialogItem[] = [];
 
+    // ========================================================
+    // 1. PAGE 1: CONCEPTS (Topics, Subtopics, Concepts, Q&As)
+    // ========================================================
     for (const topic of allTopics) {
       // Check topic
       if (
@@ -57,27 +72,18 @@ export default function SearchDialog({ isOpen, onClose }: SearchDialogProps) {
         topic.description.toLowerCase().includes(cleanQuery)
       ) {
         matches.push({
+          id: topic.id,
+          targetPage: 'concepts',
+          pageLabel: 'Concepts',
           type: 'topic',
-          topicId: topic.id,
           title: topic.title,
           description: topic.description,
-          breadcrumb: `Topic #${topic.number}`,
+          breadcrumb: `Concepts > ${topic.title}`,
         });
       }
 
       // Check subtopics & concepts
       for (const subtopic of topic.subtopics) {
-        if (subtopic.title.toLowerCase().includes(cleanQuery)) {
-          matches.push({
-            type: 'subtopic',
-            topicId: topic.id,
-            subtopicId: subtopic.id,
-            title: subtopic.title,
-            description: subtopic.description,
-            breadcrumb: `${topic.title} > ${subtopic.title}`,
-          });
-        }
-
         for (const concept of subtopic.concepts) {
           const matchedConcept =
             concept.title.toLowerCase().includes(cleanQuery) ||
@@ -86,31 +92,32 @@ export default function SearchDialog({ isOpen, onClose }: SearchDialogProps) {
 
           if (matchedConcept) {
             matches.push({
+              id: concept.id,
+              targetPage: 'concepts',
+              pageLabel: 'Concepts',
               type: 'concept',
-              topicId: topic.id,
-              subtopicId: subtopic.id,
               conceptId: concept.id,
               title: concept.title,
-              description: concept.description || concept.definition.slice(0, 100),
-              breadcrumb: `${topic.title} > ${subtopic.title}`,
+              description: concept.description || concept.definition.slice(0, 110),
+              breadcrumb: `Concepts > ${topic.title} > ${concept.title}`,
             });
           }
 
-          // Check questions
+          // Check interview theory questions
           for (const q of concept.questions) {
             if (
               q.question.toLowerCase().includes(cleanQuery) ||
               q.answer.toLowerCase().includes(cleanQuery)
             ) {
               matches.push({
+                id: q.id,
+                targetPage: 'concepts',
+                pageLabel: 'Concepts',
                 type: 'question',
-                topicId: topic.id,
-                subtopicId: subtopic.id,
                 conceptId: concept.id,
-                questionId: q.id,
                 title: q.question,
                 description: q.answer.slice(0, 110) + '...',
-                breadcrumb: `${topic.title} > ${concept.title}`,
+                breadcrumb: `Concepts > ${concept.title} Q&A`,
               });
             }
           }
@@ -118,72 +125,116 @@ export default function SearchDialog({ isOpen, onClose }: SearchDialogProps) {
       }
     }
 
-    // Check 62 Java coding interview questions
-    for (const cq of allCodingQuestions) {
+    // ========================================================
+    // 2. PAGE 2: CODING PREP (Core Java 65 Qs, DSA 30 Qs, SQL 40 Qs)
+    // ========================================================
+    // A. Core Java (65 questions)
+    for (const topic of coreJavaTopics) {
+      for (const q of topic.questions) {
+        if (
+          q.title.toLowerCase().includes(cleanQuery) ||
+          q.question.toLowerCase().includes(cleanQuery) ||
+          (q.code && q.code.toLowerCase().includes(cleanQuery))
+        ) {
+          matches.push({
+            id: q.id,
+            targetPage: 'coding',
+            pageLabel: 'Coding Prep',
+            type: 'coding-java',
+            title: q.title,
+            description: q.question.slice(0, 110) + '...',
+            breadcrumb: `Core Java > ${topic.title}`,
+          });
+        }
+      }
+    }
+
+    // B. DSA Problems (30 problems)
+    for (const p of dsaProblems) {
       if (
-        cq.title.toLowerCase().includes(cleanQuery) ||
-        cq.problem.toLowerCase().includes(cleanQuery) ||
-        cq.category.toLowerCase().includes(cleanQuery) ||
-        `q${cq.number}`.includes(cleanQuery)
+        p.title.toLowerCase().includes(cleanQuery) ||
+        p.category.toLowerCase().includes(cleanQuery) ||
+        p.problemStatement.toLowerCase().includes(cleanQuery) ||
+        (p.code && p.code.toLowerCase().includes(cleanQuery))
       ) {
         matches.push({
-          type: 'question',
-          topicId: 'coding',
-          title: `Q${cq.number < 10 ? '0' + cq.number : cq.number}: ${cq.title}`,
-          description: cq.problem.slice(0, 110) + '...',
-          breadcrumb: `DSA Coding > ${cq.category}`,
+          id: p.id,
+          targetPage: 'coding',
+          pageLabel: 'Coding Prep',
+          type: 'coding-dsa',
+          title: p.title,
+          description: p.problemStatement.slice(0, 110) + '...',
+          breadcrumb: `DSA Coding > ${p.category}`,
         });
       }
     }
 
-    return matches.slice(0, 30); // Limit top 30
+    // C. SQL Queries (40 queries across 4 levels)
+    for (const cat of sqlPrepCategories) {
+      for (const q of cat.questions) {
+        if (
+          q.title.toLowerCase().includes(cleanQuery) ||
+          q.question.toLowerCase().includes(cleanQuery) ||
+          (q.query && q.query.toLowerCase().includes(cleanQuery))
+        ) {
+          matches.push({
+            id: q.id,
+            targetPage: 'coding',
+            pageLabel: 'Coding Prep',
+            type: 'sql-query',
+            title: q.title,
+            description: q.question.slice(0, 110) + '...',
+            breadcrumb: `SQL Queries > ${cat.name}`,
+          });
+        }
+      }
+    }
+
+    return matches.slice(0, 35); // Top 35 matches
   }, [query]);
 
   if (!isOpen) return null;
 
-  const handleSelect = (item: SearchResult) => {
+  // STRICT RULE: Only navigate to either "/" (Concepts) or "/coding" (Coding Prep)!
+  // Never navigate to any other sub-page.
+  const handleSelect = (item: SearchDialogItem) => {
     handleClose();
-    if (item.topicId === 'coding') {
-      navigate('/coding');
-    } else if (item.type === 'topic') {
-      navigate(`/topic/${item.topicId}`);
-    } else if (item.conceptId) {
-      navigate(`/topic/${item.topicId}/concept/${item.conceptId}${item.questionId ? `?q=${item.questionId}` : ''}`);
+    if (item.targetPage === 'coding') {
+      navigate(`/coding?search=${encodeURIComponent(item.title)}&id=${encodeURIComponent(item.id)}`);
     } else {
-      navigate(`/topic/${item.topicId}`);
+      navigate(`/?search=${encodeURIComponent(item.title)}${item.conceptId ? `&concept=${encodeURIComponent(item.conceptId)}` : ''}`);
     }
   };
 
-  const getIcon = (type: SearchResult['type']) => {
+  const getIcon = (type: SearchDialogItem['type']) => {
     switch (type) {
       case 'topic':
-        return <BookOpen className="w-4 h-4 text-blue-500" />;
-      case 'subtopic':
-        return <Layers className="w-4 h-4 text-indigo-500" />;
       case 'concept':
-        return <BookOpen className="w-4 h-4 text-emerald-500" />;
+        return <BookOpen className="w-4 h-4 text-primary" />;
       case 'question':
         return <HelpCircle className="w-4 h-4 text-amber-500" />;
+      case 'coding-java':
+      case 'coding-dsa':
+        return <Code2 className="w-4 h-4 text-blue-600" />;
+      case 'sql-query':
+        return <Database className="w-4 h-4 text-emerald-600" />;
     }
   };
 
-  const getBadgeColor = (type: SearchResult['type']) => {
-    switch (type) {
-      case 'topic':
-        return 'bg-blue-50 text-blue-700 border-blue-200';
-      case 'subtopic':
-        return 'bg-indigo-50 text-indigo-700 border-indigo-200';
-      case 'concept':
-        return 'bg-emerald-50 text-emerald-700 border-emerald-200';
-      case 'question':
-        return 'bg-amber-50 text-amber-700 border-amber-200';
+  const getPageBadge = (page: SearchDialogItem['targetPage']) => {
+    if (page === 'concepts') {
+      return 'bg-blue-50 text-primary border-blue-200';
     }
+    return 'bg-emerald-50 text-emerald-700 border-emerald-200';
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-start justify-center pt-16 sm:pt-24 px-4 bg-slate-900/40 backdrop-blur-sm animate-fade-in">
+    <div 
+      className="fixed inset-0 z-50 flex items-start justify-center pt-16 sm:pt-24 px-4 bg-slate-900/40 backdrop-blur-sm animate-fade-in"
+      onClick={handleClose}
+    >
       <div 
-        className="w-full max-w-2xl bg-white rounded-2xl shadow-2xl border border-slate-200/80 overflow-hidden flex flex-col max-h-[75vh]"
+        className="w-full max-w-2xl bg-white rounded-2xl shadow-2xl border border-slate-200/90 overflow-hidden flex flex-col max-h-[75vh]"
         onClick={e => e.stopPropagation()}
       >
         {/* Search Input Bar */}
@@ -194,20 +245,20 @@ export default function SearchDialog({ isOpen, onClose }: SearchDialogProps) {
             type="text"
             value={query}
             onChange={e => setQuery(e.target.value)}
-            placeholder="Search topics, concepts, interview questions, coding..."
-            className="flex-1 bg-transparent text-sm sm:text-base outline-none text-slate-800 placeholder-slate-400"
+            placeholder="Search across Concepts or Coding Prep..."
+            className="flex-1 bg-transparent text-sm sm:text-base outline-none text-slate-800 placeholder-slate-400 font-medium"
           />
           {query && (
             <button
               onClick={() => setQuery('')}
-              className="p-1 rounded hover:bg-slate-100 text-slate-400 hover:text-slate-600"
+              className="p-1 rounded-lg hover:bg-slate-100 text-slate-400 hover:text-slate-600 transition-colors cursor-pointer"
             >
               <X className="w-4 h-4" />
             </button>
           )}
           <button
             onClick={handleClose}
-            className="text-xs px-2 py-1 rounded bg-slate-100 hover:bg-slate-200 text-slate-600"
+            className="text-xs px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 font-medium cursor-pointer"
           >
             Esc
           </button>
@@ -216,40 +267,46 @@ export default function SearchDialog({ isOpen, onClose }: SearchDialogProps) {
         {/* Results List */}
         <div className="flex-1 overflow-y-auto p-2 divide-y divide-slate-100">
           {query.trim().length < 2 ? (
-            <div className="p-8 text-center text-slate-400 text-sm">
-              Type at least 2 characters to search across all 15 topics, concepts, and questions.
+            <div className="p-8 text-center text-slate-400 text-xs sm:text-sm">
+              <Sparkles className="w-6 h-6 text-slate-300 mx-auto mb-2" />
+              <p className="font-semibold text-slate-600 mb-0.5">Instant Search Across 2 Main Pages</p>
+              <p>Type at least 2 characters to search Concepts (Theory & HR) or Coding Prep (Java, DSA & SQL).</p>
             </div>
           ) : results.length === 0 ? (
-            <div className="p-8 text-center text-slate-500 text-sm">
+            <div className="p-8 text-center text-slate-500 text-xs sm:text-sm">
               No matching results found for "{query}".
             </div>
           ) : (
             results.map((item, idx) => (
               <div
-                key={`${item.type}-${item.topicId}-${item.conceptId || ''}-${item.questionId || ''}-${idx}`}
+                key={`${item.targetPage}-${item.id}-${idx}`}
                 onClick={() => handleSelect(item)}
                 className="flex items-start gap-3 p-3 rounded-xl hover:bg-blue-50/60 cursor-pointer transition-colors group"
               >
-                <div className="p-2 rounded-lg bg-slate-100 group-hover:bg-white transition-colors shrink-0 mt-0.5">
+                <div className="p-2 rounded-lg bg-slate-100 group-hover:bg-white transition-colors shrink-0 mt-0.5 border border-slate-200/50">
                   {getIcon(item.type)}
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-1">
-                    <span className={`text-[10px] font-semibold uppercase px-1.5 py-0.5 rounded border ${getBadgeColor(item.type)}`}>
-                      {item.type}
+                    {/* Page Destination Badge: Concepts or Coding Prep */}
+                    <span className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded-md border ${getPageBadge(item.targetPage)}`}>
+                      {item.pageLabel}
                     </span>
                     <span className="text-xs text-slate-400 truncate">
                       {item.breadcrumb}
                     </span>
                   </div>
-                  <h4 className="text-sm font-semibold text-slate-800 group-hover:text-primary transition-colors truncate">
+                  <h4 className="text-sm font-semibold text-slate-900 group-hover:text-primary transition-colors truncate">
                     {item.title}
                   </h4>
-                  <p className="text-xs text-slate-500 line-clamp-1 mt-0.5">
+                  <p className="text-xs text-slate-500 line-clamp-1 mt-0.5 font-normal">
                     {item.description}
                   </p>
                 </div>
-                <ArrowRight className="w-4 h-4 text-slate-300 group-hover:text-primary group-hover:translate-x-0.5 transition-all shrink-0 mt-3" />
+                <div className="flex items-center gap-1 text-[11px] font-semibold text-slate-400 group-hover:text-primary transition-all shrink-0 mt-3">
+                  <span>Open</span>
+                  <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+                </div>
               </div>
             ))
           )}
@@ -257,8 +314,8 @@ export default function SearchDialog({ isOpen, onClose }: SearchDialogProps) {
 
         {/* Footer info */}
         <div className="px-4 py-2.5 bg-slate-50 border-t border-slate-200 flex items-center justify-between text-[11px] text-slate-400">
-          <span>{results.length} result{results.length === 1 ? '' : 's'}</span>
-          <span>Press <kbd className="font-semibold text-slate-500">Esc</kbd> to exit</span>
+          <span>{results.length} result{results.length === 1 ? '' : 's'} (opens directly on {results.length > 0 ? (results[0].targetPage === 'coding' ? 'Coding page' : 'Concepts page') : 'page'})</span>
+          <span>Press <kbd className="font-semibold text-slate-500 bg-white px-1.5 py-0.5 rounded border border-slate-200">Esc</kbd> to exit</span>
         </div>
       </div>
     </div>

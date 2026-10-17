@@ -2,8 +2,6 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { ProgressProvider } from './store/progressStore';
 import AppLayout from './components/AppLayout';
 import Dashboard from './pages/Dashboard';
-import TopicViewPage from './pages/TopicViewPage';
-import ConceptViewPage from './pages/ConceptViewPage';
 import CodingPracticePage from './pages/CodingPracticePage';
 
 export default function App() {
@@ -14,10 +12,10 @@ export default function App() {
           <Route element={<AppLayout />}>
             <Route path="/" element={<Dashboard />} />
             <Route path="/coding" element={<CodingPracticePage />} />
-            <Route path="/topic/:topicId" element={<TopicViewPage />} />
-            <Route path="/topic/:topicId/concept/:conceptId" element={<ConceptViewPage />} />
 
-            {/* Redirect any old legacy links cleanly */}
+            {/* Redirect any other sub-pages cleanly to / so user stays strictly on the 2 pages */}
+            <Route path="/topic/:topicId" element={<Navigate to="/" replace />} />
+            <Route path="/topic/:topicId/concept/:conceptId" element={<Navigate to="/" replace />} />
             <Route path="/topics" element={<Navigate to="/" replace />} />
             <Route path="/settings" element={<Navigate to="/" replace />} />
 
