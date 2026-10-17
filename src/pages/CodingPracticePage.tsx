@@ -99,7 +99,7 @@ export default function CodingPracticePage() {
       });
     });
 
-    // 3. SQL Queries (43 queries/questions)
+    // 3. SQL Queries (40 queries across 4 levels)
     sqlPrepCategories.forEach(cat => {
       cat.questions.forEach(q => {
         list.push({
@@ -109,7 +109,7 @@ export default function CodingPracticePage() {
           number: q.number,
           globalNumber: gNum++,
           title: q.title,
-          difficulty: 'Medium',
+          difficulty: q.difficulty || 'Medium',
           isCoding: q.isQuery,
           question: q.question,
           answer: q.answer,
@@ -123,25 +123,14 @@ export default function CodingPracticePage() {
     return list;
   }, []);
 
-  // Compute available Sub-Topics based on Selected Track
+  // Compute available Sub-Topics dynamically based on Selected Track
   const availableTopics = useMemo(() => {
-    if (selectedTrack === 'Core Java') {
-      return ['All', 'Arrays', 'Strings', 'Collections Framework', 'Exception Handling', 'Multithreading'];
-    }
-    if (selectedTrack === 'DSA & Coding') {
-      return [
-        'All', 'Arrays', 'Strings', 'Hashing', 'Two Pointers', 'Sliding Window',
-        'Searching & Sorting', 'Linked List', 'Stack & Queue', 'Recursion'
-      ];
-    }
-    if (selectedTrack === 'SQL Queries') {
-      return [
-        'All', 'SQL Basics', 'Keys & Constraints', 'SQL Joins', 'Subqueries',
-        'GROUP BY & Aggregates', 'Common Interview Queries', 'Normalization & Design', 'Indexes & Performance'
-      ];
-    }
-    return ['All'];
-  }, [selectedTrack]);
+    if (selectedTrack === 'All') return ['All'];
+    const topics = Array.from(
+      new Set(allQuestions.filter(q => q.track === selectedTrack).map(q => q.topic))
+    );
+    return ['All', ...topics];
+  }, [selectedTrack, allQuestions]);
 
   // Filter & Sort Questions
   const filteredQuestions = useMemo(() => {

@@ -97,14 +97,14 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
               </span>
             </div>
             <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-slate-800 text-blue-300 border border-slate-700">
-              138 Qs
+              135 Qs
             </span>
           </div>
           <p className="text-xs font-semibold text-white mb-0.5">
             Core Java, DSA & SQL
           </p>
           <p className="text-[11px] text-slate-400 leading-relaxed">
-            65 Core Java • 30 DSA • 43 SQL Queries with solutions.
+            65 Core Java • 30 DSA • 40 SQL Queries with solutions.
           </p>
         </motion.div>
       </aside>
@@ -195,14 +195,14 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                   </span>
                 </div>
                 <span className="text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-full bg-slate-800 text-blue-300 border border-slate-700">
-                  138 Qs
+                  135 Qs
                 </span>
               </div>
               <p className="text-xs font-semibold text-white mb-0.5">
                 Core Java, DSA & SQL
               </p>
               <p className="text-[11px] text-slate-400 leading-relaxed">
-                65 Core Java • 30 DSA • 43 SQL Queries with solutions.
+                65 Core Java • 30 DSA • 40 SQL Queries with solutions.
               </p>
             </motion.div>
           </motion.aside>

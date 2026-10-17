@@ -1,22 +1,19 @@
 // ========================================================
 // SQL INTERVIEW PREPARATION DATA
-// 8 Categories | 43 Real-World Questions & SQL Queries
+// 4 Categories | Exactly 40 Essential Interview Queries
 // ========================================================
 
 export interface SqlQuestion {
   id: string;
-  category: 
-    | 'SQL Basics'
-    | 'Keys & Constraints'
-    | 'SQL Joins'
-    | 'Subqueries'
-    | 'GROUP BY & Aggregates'
-    | 'Common Interview Queries'
-    | 'Normalization & Design'
-    | 'Indexes & Performance';
+  category:
+    | 'Basic Queries'
+    | 'Aggregate Functions & GROUP BY'
+    | 'Important Interview Queries'
+    | 'Subqueries, Joins & Advanced SQL';
   number: number;
   title: string;
   isQuery: boolean;
+  difficulty: 'Easy' | 'Medium' | 'Hard';
   question: string;
   answer?: string;
   sampleTable?: string;
@@ -33,579 +30,551 @@ export interface SqlCategory {
 }
 
 export const sqlPrepCategories: SqlCategory[] = [
-  // ----------------------------------------------------
-  // 1. SQL BASICS (5 Questions)
-  // ----------------------------------------------------
   {
-    name: 'SQL Basics',
-    questionCount: 5,
-    description: 'Core SQL language commands, database vs management system, and filtering syntax.',
+    name: "Basic Queries",
+    questionCount: 10,
+    description: "Essential SQL SELECT syntax, projection, filtering with WHERE, BETWEEN, LIKE, IN, and sorting with ORDER BY.",
     questions: [
       {
-        id: 'sql-1',
-        category: 'SQL Basics',
+        id: "sql-1",
+        category: "Basic Queries",
         number: 1,
-        title: 'What is SQL?',
-        isQuery: false,
-        question: 'What is SQL and what is it used for?',
-        answer: 'SQL (Structured Query Language) is the standard programming language used to store, manipulate, retrieve, and manage data in relational database management systems (RDBMS) like MySQL, Oracle, and PostgreSQL.'
+        title: "Display All Employees",
+        isQuery: true,
+        difficulty: "Easy",
+        question: "Write a query to display all employees.",
+        sampleTable: "EMPLOYEE Table:\n+--------+----------+--------+---------+------------+------------+\n| emp_id | emp_name | salary | dept_id | manager_id | hire_date  |\n+--------+----------+--------+---------+------------+------------+\n| 101    | Rahul    | 55000  | 1       | NULL       | 2026-09-20 |\n| 102    | Priya    | 80000  | 1       | 101        | 2026-09-25 |\n| 103    | Amit     | 45000  | 2       | 101        | 2026-08-10 |\n| 104    | Sneha    | 60000  | 2       | 103        | 2026-10-01 |\n| 105    | Rohit    | 80000  | 3       | 101        | 2026-10-10 |\n| 106    | Pooja    | 50000  | 3       | 105        | 2026-07-15 |\n| 107    | Kiran    | 95000  | 1       | 101        | 2026-10-12 |\n+--------+----------+--------+---------+------------+------------+",
+        query: "SELECT * FROM EMPLOYEE;",
+        expectedOutput: "+--------+----------+--------+---------+------------+------------+\n| emp_id | emp_name | salary | dept_id | manager_id | hire_date  |\n+--------+----------+--------+---------+------------+------------+\n| 101    | Rahul    | 55000  | 1       | NULL       | 2026-09-20 |\n| 102    | Priya    | 80000  | 1       | 101        | 2026-09-25 |\n| 103    | Amit     | 45000  | 2       | 101        | 2026-08-10 |\n| 104    | Sneha    | 60000  | 2       | 103        | 2026-10-01 |\n| 105    | Rohit    | 80000  | 3       | 101        | 2026-10-10 |\n| 106    | Pooja    | 50000  | 3       | 105        | 2026-07-15 |\n| 107    | Kiran    | 95000  | 1       | 101        | 2026-10-12 |\n+--------+----------+--------+---------+------------+------------+",
+        explanation: "The asterisk (*) wildcard selects all columns for every row from the EMPLOYEE table without any row filtering.",
       },
       {
-        id: 'sql-2',
-        category: 'SQL Basics',
+        id: "sql-2",
+        category: "Basic Queries",
         number: 2,
-        title: 'Difference between SQL and MySQL',
-        isQuery: false,
-        question: 'What is the difference between SQL and MySQL?',
-        answer: '• SQL is a query language used to manage and query relational databases.\n• MySQL is a Relational Database Management System (RDBMS) software product developed by Oracle that uses SQL to execute database operations.'
+        title: "Display Only Employee Names and Salaries",
+        isQuery: true,
+        difficulty: "Easy",
+        question: "Write a query to display only employee names and salaries.",
+        sampleTable: "EMPLOYEE Table:\n+--------+----------+--------+---------+------------+------------+\n| emp_id | emp_name | salary | dept_id | manager_id | hire_date  |\n+--------+----------+--------+---------+------------+------------+\n| 101    | Rahul    | 55000  | 1       | NULL       | 2026-09-20 |\n| 102    | Priya    | 80000  | 1       | 101        | 2026-09-25 |\n| 103    | Amit     | 45000  | 2       | 101        | 2026-08-10 |\n| 104    | Sneha    | 60000  | 2       | 103        | 2026-10-01 |\n| 105    | Rohit    | 80000  | 3       | 101        | 2026-10-10 |\n| 106    | Pooja    | 50000  | 3       | 105        | 2026-07-15 |\n| 107    | Kiran    | 95000  | 1       | 101        | 2026-10-12 |\n+--------+----------+--------+---------+------------+------------+",
+        query: "SELECT emp_name, salary FROM EMPLOYEE;",
+        expectedOutput: "+----------+--------+\n| emp_name | salary |\n+----------+--------+\n| Rahul    | 55000  |\n| Priya    | 80000  |\n| Amit     | 45000  |\n| Sneha    | 60000  |\n| Rohit    | 80000  |\n| Pooja    | 50000  |\n| Kiran    | 95000  |\n+----------+--------+",
+        explanation: "Column projection: specify only the required column names emp_name and salary separated by a comma in the SELECT clause.",
       },
       {
-        id: 'sql-3',
-        category: 'SQL Basics',
+        id: "sql-3",
+        category: "Basic Queries",
         number: 3,
-        title: 'What are DDL, DML, DQL, DCL, and TCL?',
-        isQuery: false,
-        question: 'Explain the main categories of SQL commands: DDL, DML, DQL, DCL, and TCL.',
-        answer: '• DDL (Data Definition): CREATE, ALTER, DROP, TRUNCATE (defines database structure).\n• DML (Data Manipulation): INSERT, UPDATE, DELETE (modifies data rows).\n• DQL (Data Query): SELECT (retrieves data).\n• DCL (Data Control): GRANT, REVOKE (controls user permissions).\n• TCL (Transaction Control): COMMIT, ROLLBACK, SAVEPOINT (manages transactions).'
+        title: "Employees with Salary Greater Than 50,000",
+        isQuery: true,
+        difficulty: "Easy",
+        question: "Write a query to find employees whose salary is greater than 50,000.",
+        sampleTable: "EMPLOYEE Table:\n+--------+----------+--------+---------+------------+------------+\n| emp_id | emp_name | salary | dept_id | manager_id | hire_date  |\n+--------+----------+--------+---------+------------+------------+\n| 101    | Rahul    | 55000  | 1       | NULL       | 2026-09-20 |\n| 102    | Priya    | 80000  | 1       | 101        | 2026-09-25 |\n| 103    | Amit     | 45000  | 2       | 101        | 2026-08-10 |\n| 104    | Sneha    | 60000  | 2       | 103        | 2026-10-01 |\n| 105    | Rohit    | 80000  | 3       | 101        | 2026-10-10 |\n| 106    | Pooja    | 50000  | 3       | 105        | 2026-07-15 |\n| 107    | Kiran    | 95000  | 1       | 101        | 2026-10-12 |\n+--------+----------+--------+---------+------------+------------+",
+        query: "SELECT * FROM EMPLOYEE\nWHERE salary > 50000;",
+        expectedOutput: "+--------+----------+--------+---------+------------+------------+\n| emp_id | emp_name | salary | dept_id | manager_id | hire_date  |\n+--------+----------+--------+---------+------------+------------+\n| 101    | Rahul    | 55000  | 1       | NULL       | 2026-09-20 |\n| 102    | Priya    | 80000  | 1       | 101        | 2026-09-25 |\n| 104    | Sneha    | 60000  | 2       | 103        | 2026-10-01 |\n| 105    | Rohit    | 80000  | 3       | 101        | 2026-10-10 |\n| 107    | Kiran    | 95000  | 1       | 101        | 2026-10-12 |\n+--------+----------+--------+---------+------------+------------+",
+        explanation: "The WHERE clause filters rows where the numeric value in the salary column strictly exceeds 50000.",
       },
       {
-        id: 'sql-4',
-        category: 'SQL Basics',
+        id: "sql-4",
+        category: "Basic Queries",
         number: 4,
-        title: 'Difference between DELETE, TRUNCATE, and DROP',
-        isQuery: false,
-        question: 'What is the difference between DELETE, TRUNCATE, and DROP?',
-        answer: '• DELETE: DML command. Deletes specific rows based on WHERE clause. Can be rolled back. Fires triggers.\n• TRUNCATE: DDL command. Removes all rows quickly by deallocating pages. Table structure remains. Faster than DELETE. Cannot be rolled back in MySQL.\n• DROP: DDL command. Completely removes table structure, indexes, and data from the database.'
+        title: "Employees with Salary Between 50,000 and 80,000",
+        isQuery: true,
+        difficulty: "Easy",
+        question: "Write a query to find employees whose salary is between 50,000 and 80,000.",
+        sampleTable: "EMPLOYEE Table:\n+--------+----------+--------+---------+------------+------------+\n| emp_id | emp_name | salary | dept_id | manager_id | hire_date  |\n+--------+----------+--------+---------+------------+------------+\n| 101    | Rahul    | 55000  | 1       | NULL       | 2026-09-20 |\n| 102    | Priya    | 80000  | 1       | 101        | 2026-09-25 |\n| 103    | Amit     | 45000  | 2       | 101        | 2026-08-10 |\n| 104    | Sneha    | 60000  | 2       | 103        | 2026-10-01 |\n| 105    | Rohit    | 80000  | 3       | 101        | 2026-10-10 |\n| 106    | Pooja    | 50000  | 3       | 105        | 2026-07-15 |\n| 107    | Kiran    | 95000  | 1       | 101        | 2026-10-12 |\n+--------+----------+--------+---------+------------+------------+",
+        query: "SELECT * FROM EMPLOYEE\nWHERE salary BETWEEN 50000 AND 80000;",
+        expectedOutput: "+--------+----------+--------+---------+------------+------------+\n| emp_id | emp_name | salary | dept_id | manager_id | hire_date  |\n+--------+----------+--------+---------+------------+------------+\n| 101    | Rahul    | 55000  | 1       | NULL       | 2026-09-20 |\n| 102    | Priya    | 80000  | 1       | 101        | 2026-09-25 |\n| 104    | Sneha    | 60000  | 2       | 103        | 2026-10-01 |\n| 105    | Rohit    | 80000  | 3       | 101        | 2026-10-10 |\n| 106    | Pooja    | 50000  | 3       | 105        | 2026-07-15 |\n+--------+----------+--------+---------+------------+------------+",
+        explanation: "BETWEEN is inclusive, matching all values where salary >= 50000 AND salary <= 80000.",
       },
       {
-        id: 'sql-5',
-        category: 'SQL Basics',
+        id: "sql-5",
+        category: "Basic Queries",
         number: 5,
-        title: 'Difference between WHERE and ORDER BY',
-        isQuery: false,
-        question: 'What is the difference between WHERE and ORDER BY clauses?',
-        answer: '• WHERE: Filters rows before any grouping or sorting occurs based on a Boolean condition (e.g., WHERE salary > 50000).\n• ORDER BY: Sorts the final output rows in ascending (ASC, default) or descending (DESC) order (e.g., ORDER BY salary DESC).'
-      }
-    ]
-  },
-
-  // ----------------------------------------------------
-  // 2. KEYS AND CONSTRAINTS (5 Questions)
-  // ----------------------------------------------------
-  {
-    name: 'Keys & Constraints',
-    questionCount: 5,
-    description: 'Primary, Foreign, Unique, and Composite keys that enforce relational integrity.',
-    questions: [
+        title: "Employees Who Work in the IT Department",
+        isQuery: true,
+        difficulty: "Easy",
+        question: "Write a query to find employees who work in the IT department.",
+        sampleTable: "DEPARTMENT Table:\n+---------+-----------------+\n| dept_id | department_name |\n+---------+-----------------+\n| 1       | IT              |\n| 2       | HR              |\n| 3       | Finance         |\n| 4       | Sales           |\n+---------+-----------------+\n\nEMPLOYEE Table:\n+--------+----------+--------+---------+------------+------------+\n| emp_id | emp_name | salary | dept_id | manager_id | hire_date  |\n+--------+----------+--------+---------+------------+------------+\n| 101    | Rahul    | 55000  | 1       | NULL       | 2026-09-20 |\n| 102    | Priya    | 80000  | 1       | 101        | 2026-09-25 |\n| 103    | Amit     | 45000  | 2       | 101        | 2026-08-10 |\n| 104    | Sneha    | 60000  | 2       | 103        | 2026-10-01 |\n| 105    | Rohit    | 80000  | 3       | 101        | 2026-10-10 |\n| 106    | Pooja    | 50000  | NULL    | 105        | 2026-07-15 |\n| 107    | Kiran    | 95000  | 1       | 101        | 2026-10-12 |\n+--------+----------+--------+---------+------------+------------+",
+        query: "SELECT e.* \nFROM EMPLOYEE e\nJOIN DEPARTMENT d ON e.dept_id = d.dept_id\nWHERE d.department_name = 'IT';",
+        expectedOutput: "+--------+----------+--------+---------+------------+------------+\n| emp_id | emp_name | salary | dept_id | manager_id | hire_date  |\n+--------+----------+--------+---------+------------+------------+\n| 101    | Rahul    | 55000  | 1       | NULL       | 2026-09-20 |\n| 102    | Priya    | 80000  | 1       | 101        | 2026-09-25 |\n| 107    | Kiran    | 95000  | 1       | 101        | 2026-10-12 |\n+--------+----------+--------+---------+------------+------------+",
+        explanation: "Joins the EMPLOYEE table with DEPARTMENT on dept_id and filters where department_name equals 'IT' (or WHERE e.dept_id = 1).",
+      },
       {
-        id: 'sql-6',
-        category: 'Keys & Constraints',
+        id: "sql-6",
+        category: "Basic Queries",
         number: 6,
-        title: 'What is a Primary Key?',
-        isQuery: false,
-        question: 'What is a Primary Key in SQL?',
-        answer: 'A Primary Key is a column or combination of columns that uniquely identifies each row in a table. It strictly enforces uniqueness and cannot contain NULL values. A table can have only one primary key.'
+        title: "Employees Whose Names Start With 'R'",
+        isQuery: true,
+        difficulty: "Easy",
+        question: "Write a query to display employees whose names start with R.",
+        sampleTable: "EMPLOYEE Table:\n+--------+----------+--------+---------+------------+------------+\n| emp_id | emp_name | salary | dept_id | manager_id | hire_date  |\n+--------+----------+--------+---------+------------+------------+\n| 101    | Rahul    | 55000  | 1       | NULL       | 2026-09-20 |\n| 102    | Priya    | 80000  | 1       | 101        | 2026-09-25 |\n| 103    | Amit     | 45000  | 2       | 101        | 2026-08-10 |\n| 104    | Sneha    | 60000  | 2       | 103        | 2026-10-01 |\n| 105    | Rohit    | 80000  | 3       | 101        | 2026-10-10 |\n| 106    | Pooja    | 50000  | 3       | 105        | 2026-07-15 |\n| 107    | Kiran    | 95000  | 1       | 101        | 2026-10-12 |\n+--------+----------+--------+---------+------------+------------+",
+        query: "SELECT * FROM EMPLOYEE\nWHERE emp_name LIKE 'R%';",
+        expectedOutput: "+--------+----------+--------+---------+------------+------------+\n| emp_id | emp_name | salary | dept_id | manager_id | hire_date  |\n+--------+----------+--------+---------+------------+------------+\n| 101    | Rahul    | 55000  | 1       | NULL       | 2026-09-20 |\n| 105    | Rohit    | 80000  | 3       | 101        | 2026-10-10 |\n+--------+----------+--------+---------+------------+------------+",
+        explanation: "The LIKE operator with 'R%' wildcard matches any string beginning with uppercase or lowercase 'R' followed by zero or more characters.",
       },
       {
-        id: 'sql-7',
-        category: 'Keys & Constraints',
+        id: "sql-7",
+        category: "Basic Queries",
         number: 7,
-        title: 'What is a Foreign Key?',
-        isQuery: false,
-        question: 'What is a Foreign Key and why is it important?',
-        answer: 'A Foreign Key is a field in one table that points to the Primary Key of another table. It establishes a parent-child relationship between tables and enforces referential integrity to prevent orphan records.'
+        title: "Employees Whose Names End With 'a'",
+        isQuery: true,
+        difficulty: "Easy",
+        question: "Write a query to display employees whose names end with a.",
+        sampleTable: "EMPLOYEE Table:\n+--------+----------+--------+---------+------------+------------+\n| emp_id | emp_name | salary | dept_id | manager_id | hire_date  |\n+--------+----------+--------+---------+------------+------------+\n| 101    | Rahul    | 55000  | 1       | NULL       | 2026-09-20 |\n| 102    | Priya    | 80000  | 1       | 101        | 2026-09-25 |\n| 103    | Amit     | 45000  | 2       | 101        | 2026-08-10 |\n| 104    | Sneha    | 60000  | 2       | 103        | 2026-10-01 |\n| 105    | Rohit    | 80000  | 3       | 101        | 2026-10-10 |\n| 106    | Pooja    | 50000  | 3       | 105        | 2026-07-15 |\n| 107    | Kiran    | 95000  | 1       | 101        | 2026-10-12 |\n+--------+----------+--------+---------+------------+------------+",
+        query: "SELECT * FROM EMPLOYEE\nWHERE emp_name LIKE '%a';",
+        expectedOutput: "+--------+----------+--------+---------+------------+------------+\n| emp_id | emp_name | salary | dept_id | manager_id | hire_date  |\n+--------+----------+--------+---------+------------+------------+\n| 102    | Priya    | 80000  | 1       | 101        | 2026-09-25 |\n| 104    | Sneha    | 60000  | 2       | 103        | 2026-10-01 |\n| 106    | Pooja    | 50000  | 3       | 105        | 2026-07-15 |\n+--------+----------+--------+---------+------------+------------+",
+        explanation: "The pattern '%a' matches any string ending with the character 'a' preceded by zero or more characters.",
       },
       {
-        id: 'sql-8',
-        category: 'Keys & Constraints',
+        id: "sql-8",
+        category: "Basic Queries",
         number: 8,
-        title: 'Difference between Primary Key and Unique Key',
-        isQuery: false,
-        question: 'What is the difference between a Primary Key and a Unique Key?',
-        answer: '• Primary Key: Only ONE per table. Cannot accept NULL values. Automatically creates a clustered index by default.\n• Unique Key: Multiple unique keys allowed per table. Can accept one (or more in some RDBMS) NULL value. Creates a non-clustered index.'
+        title: "Display Employees in Descending Order of Salary",
+        isQuery: true,
+        difficulty: "Easy",
+        question: "Write a query to display employees in descending order of salary.",
+        sampleTable: "EMPLOYEE Table:\n+--------+----------+--------+---------+------------+------------+\n| emp_id | emp_name | salary | dept_id | manager_id | hire_date  |\n+--------+----------+--------+---------+------------+------------+\n| 101    | Rahul    | 55000  | 1       | NULL       | 2026-09-20 |\n| 102    | Priya    | 80000  | 1       | 101        | 2026-09-25 |\n| 103    | Amit     | 45000  | 2       | 101        | 2026-08-10 |\n| 104    | Sneha    | 60000  | 2       | 103        | 2026-10-01 |\n| 105    | Rohit    | 80000  | 3       | 101        | 2026-10-10 |\n| 106    | Pooja    | 50000  | 3       | 105        | 2026-07-15 |\n| 107    | Kiran    | 95000  | 1       | 101        | 2026-10-12 |\n+--------+----------+--------+---------+------------+------------+",
+        query: "SELECT emp_id, emp_name, salary FROM EMPLOYEE\nORDER BY salary DESC;",
+        expectedOutput: "+--------+----------+--------+\n| emp_id | emp_name | salary |\n+--------+----------+--------+\n| 107    | Kiran    | 95000  |\n| 102    | Priya    | 80000  |\n| 105    | Rohit    | 80000  |\n| 104    | Sneha    | 60000  |\n| 101    | Rahul    | 55000  |\n| 106    | Pooja    | 50000  |\n| 103    | Amit     | 45000  |\n+--------+----------+--------+",
+        explanation: "ORDER BY salary DESC sorts rows from highest to lowest salary. For ties (e.g. 80,000), original table order is preserved unless a secondary sort key is specified.",
       },
       {
-        id: 'sql-9',
-        category: 'Keys & Constraints',
+        id: "sql-9",
+        category: "Basic Queries",
         number: 9,
-        title: 'What is a Composite Key?',
-        isQuery: false,
-        question: 'What is a Composite Key?',
-        answer: 'A Composite Key is a primary key that consists of two or more columns combined together to uniquely identify a record in a table. For example, in an OrderDetails table, (order_id, product_id) together form a composite primary key.'
+        title: "Employees with Salary Either 50,000 or 80,000",
+        isQuery: true,
+        difficulty: "Easy",
+        question: "Write a query to find employees whose salary is either 50,000 or 80,000.",
+        sampleTable: "EMPLOYEE Table:\n+--------+----------+--------+---------+------------+------------+\n| emp_id | emp_name | salary | dept_id | manager_id | hire_date  |\n+--------+----------+--------+---------+------------+------------+\n| 101    | Rahul    | 55000  | 1       | NULL       | 2026-09-20 |\n| 102    | Priya    | 80000  | 1       | 101        | 2026-09-25 |\n| 103    | Amit     | 45000  | 2       | 101        | 2026-08-10 |\n| 104    | Sneha    | 60000  | 2       | 103        | 2026-10-01 |\n| 105    | Rohit    | 80000  | 3       | 101        | 2026-10-10 |\n| 106    | Pooja    | 50000  | 3       | 105        | 2026-07-15 |\n| 107    | Kiran    | 95000  | 1       | 101        | 2026-10-12 |\n+--------+----------+--------+---------+------------+------------+",
+        query: "SELECT emp_id, emp_name, salary FROM EMPLOYEE\nWHERE salary IN (50000, 80000);",
+        expectedOutput: "+--------+----------+--------+\n| emp_id | emp_name | salary |\n+--------+----------+--------+\n| 102    | Priya    | 80000  |\n| 105    | Rohit    | 80000  |\n| 106    | Pooja    | 50000  |\n+--------+----------+--------+",
+        explanation: "The IN operator tests whether a column value matches any item in a discrete list of literals, equivalent to (salary = 50000 OR salary = 80000).",
       },
       {
-        id: 'sql-10',
-        category: 'Keys & Constraints',
+        id: "sql-10",
+        category: "Basic Queries",
         number: 10,
-        title: 'What are SQL Constraints?',
-        isQuery: false,
-        question: 'What are SQL Constraints? Name the standard constraints.',
-        answer: 'Constraints are rules applied to table columns to maintain data accuracy and integrity. Standard constraints:\n1. NOT NULL: Prevents null values.\n2. UNIQUE: Ensures all values in column are distinct.\n3. PRIMARY KEY: NOT NULL + UNIQUE.\n4. FOREIGN KEY: Enforces referential integrity.\n5. CHECK: Validates condition (e.g., CHECK (age >= 18)).\n6. DEFAULT: Provides default value when none is supplied.'
+        title: "Employees Whose Department is Not IT",
+        isQuery: true,
+        difficulty: "Easy",
+        question: "Write a query to display employees whose department is not IT.",
+        sampleTable: "DEPARTMENT Table:\n+---------+-----------------+\n| dept_id | department_name |\n+---------+-----------------+\n| 1       | IT              |\n| 2       | HR              |\n| 3       | Finance         |\n| 4       | Sales           |\n+---------+-----------------+\n\nEMPLOYEE Table:\n+--------+----------+--------+---------+------------+------------+\n| emp_id | emp_name | salary | dept_id | manager_id | hire_date  |\n+--------+----------+--------+---------+------------+------------+\n| 101    | Rahul    | 55000  | 1       | NULL       | 2026-09-20 |\n| 102    | Priya    | 80000  | 1       | 101        | 2026-09-25 |\n| 103    | Amit     | 45000  | 2       | 101        | 2026-08-10 |\n| 104    | Sneha    | 60000  | 2       | 103        | 2026-10-01 |\n| 105    | Rohit    | 80000  | 3       | 101        | 2026-10-10 |\n| 106    | Pooja    | 50000  | NULL    | 105        | 2026-07-15 |\n| 107    | Kiran    | 95000  | 1       | 101        | 2026-10-12 |\n+--------+----------+--------+---------+------------+------------+",
+        query: "SELECT e.* \nFROM EMPLOYEE e\nJOIN DEPARTMENT d ON e.dept_id = d.dept_id\nWHERE d.department_name <> 'IT';",
+        expectedOutput: "+--------+----------+--------+---------+------------+------------+\n| emp_id | emp_name | salary | dept_id | manager_id | hire_date  |\n+--------+----------+--------+---------+------------+------------+\n| 103    | Amit     | 45000  | 2       | 101        | 2026-08-10 |\n| 104    | Sneha    | 60000  | 2       | 103        | 2026-10-01 |\n| 105    | Rohit    | 80000  | 3       | 101        | 2026-10-10 |\n| 106    | Pooja    | 50000  | 3       | 105        | 2026-07-15 |\n+--------+----------+--------+---------+------------+------------+",
+        explanation: "The <> or != inequality operator excludes rows belonging to the 'IT' department.",
       }
     ]
   },
-
-  // ----------------------------------------------------
-  // 3. SQL JOINS (6 Questions)
-  // ----------------------------------------------------
   {
-    name: 'SQL Joins',
-    questionCount: 6,
-    description: 'Combining records from multiple tables: INNER, LEFT, RIGHT, FULL, and SELF JOIN.',
+    name: "Aggregate Functions & GROUP BY",
+    questionCount: 8,
+    description: "Aggregation with MIN, MAX, AVG, SUM, COUNT, department groupings, and filtering with HAVING.",
     questions: [
       {
-        id: 'sql-11',
-        category: 'SQL Joins',
+        id: "sql-11",
+        category: "Aggregate Functions & GROUP BY",
         number: 11,
-        title: 'What is a JOIN?',
-        isQuery: false,
-        question: 'What is a JOIN clause in SQL?',
-        answer: 'A JOIN clause is used to combine rows from two or more tables based on a related column between them (typically Primary Key and Foreign Key).'
+        title: "Find the Highest Salary",
+        isQuery: true,
+        difficulty: "Easy",
+        question: "Write a query to find the highest salary.",
+        sampleTable: "EMPLOYEE Table:\n+--------+----------+--------+---------+------------+------------+\n| emp_id | emp_name | salary | dept_id | manager_id | hire_date  |\n+--------+----------+--------+---------+------------+------------+\n| 101    | Rahul    | 55000  | 1       | NULL       | 2026-09-20 |\n| 102    | Priya    | 80000  | 1       | 101        | 2026-09-25 |\n| 103    | Amit     | 45000  | 2       | 101        | 2026-08-10 |\n| 104    | Sneha    | 60000  | 2       | 103        | 2026-10-01 |\n| 105    | Rohit    | 80000  | 3       | 101        | 2026-10-10 |\n| 106    | Pooja    | 50000  | 3       | 105        | 2026-07-15 |\n| 107    | Kiran    | 95000  | 1       | 101        | 2026-10-12 |\n+--------+----------+--------+---------+------------+------------+",
+        query: "SELECT MAX(salary) AS highest_salary\nFROM EMPLOYEE;",
+        expectedOutput: "+----------------+\n| highest_salary |\n+----------------+\n| 95000          |\n+----------------+",
+        explanation: "MAX() is an aggregate function that scans the salary column and returns the maximum value.",
       },
       {
-        id: 'sql-12',
-        category: 'SQL Joins',
+        id: "sql-12",
+        category: "Aggregate Functions & GROUP BY",
         number: 12,
-        title: 'Difference between INNER JOIN and LEFT JOIN',
-        isQuery: false,
-        question: 'What is the difference between an INNER JOIN and a LEFT JOIN?',
-        answer: '• INNER JOIN: Returns only rows where there is a match in both tables.\n• LEFT JOIN (or LEFT OUTER JOIN): Returns all rows from the left table, along with matching rows from the right table. If no match exists, NULL values appear for right table columns.'
+        title: "Find the Second-Highest Salary",
+        isQuery: true,
+        difficulty: "Medium",
+        question: "Write a query to find the second-highest salary.",
+        sampleTable: "EMPLOYEE Table:\n+--------+----------+--------+---------+------------+------------+\n| emp_id | emp_name | salary | dept_id | manager_id | hire_date  |\n+--------+----------+--------+---------+------------+------------+\n| 101    | Rahul    | 55000  | 1       | NULL       | 2026-09-20 |\n| 102    | Priya    | 80000  | 1       | 101        | 2026-09-25 |\n| 103    | Amit     | 45000  | 2       | 101        | 2026-08-10 |\n| 104    | Sneha    | 60000  | 2       | 103        | 2026-10-01 |\n| 105    | Rohit    | 80000  | 3       | 101        | 2026-10-10 |\n| 106    | Pooja    | 50000  | 3       | 105        | 2026-07-15 |\n| 107    | Kiran    | 95000  | 1       | 101        | 2026-10-12 |\n+--------+----------+--------+---------+------------+------------+",
+        query: "SELECT MAX(salary) AS second_highest_salary\nFROM EMPLOYEE\nWHERE salary < (SELECT MAX(salary) FROM EMPLOYEE);",
+        expectedOutput: "+-----------------------+\n| second_highest_salary |\n+-----------------------+\n| 80000                 |\n+-----------------------+",
+        explanation: "The subquery finds the absolute maximum salary (95,000). The outer query then retrieves the maximum of all remaining salaries strictly less than that maximum.",
       },
       {
-        id: 'sql-13',
-        category: 'SQL Joins',
+        id: "sql-13",
+        category: "Aggregate Functions & GROUP BY",
         number: 13,
-        title: 'Explain RIGHT JOIN and FULL OUTER JOIN',
-        isQuery: false,
-        question: 'Explain RIGHT JOIN and FULL OUTER JOIN.',
-        answer: '• RIGHT JOIN: Returns all rows from right table and matched rows from left table (fills NULL for unmatched left rows).\n• FULL OUTER JOIN: Returns all rows when there is a match in either left or right table. In MySQL, FULL OUTER JOIN is simulated by combining LEFT JOIN and RIGHT JOIN using UNION.'
+        title: "Find the Third-Highest Salary",
+        isQuery: true,
+        difficulty: "Medium",
+        question: "Write a query to find the third-highest salary.",
+        sampleTable: "EMPLOYEE Table:\n+--------+----------+--------+---------+------------+------------+\n| emp_id | emp_name | salary | dept_id | manager_id | hire_date  |\n+--------+----------+--------+---------+------------+------------+\n| 101    | Rahul    | 55000  | 1       | NULL       | 2026-09-20 |\n| 102    | Priya    | 80000  | 1       | 101        | 2026-09-25 |\n| 103    | Amit     | 45000  | 2       | 101        | 2026-08-10 |\n| 104    | Sneha    | 60000  | 2       | 103        | 2026-10-01 |\n| 105    | Rohit    | 80000  | 3       | 101        | 2026-10-10 |\n| 106    | Pooja    | 50000  | 3       | 105        | 2026-07-15 |\n| 107    | Kiran    | 95000  | 1       | 101        | 2026-10-12 |\n+--------+----------+--------+---------+------------+------------+",
+        query: "SELECT DISTINCT salary AS third_highest_salary\nFROM EMPLOYEE\nORDER BY salary DESC\nLIMIT 1 OFFSET 2;",
+        expectedOutput: "+----------------------+\n| third_highest_salary |\n+----------------------+\n| 60000                |\n+----------------------+",
+        explanation: "DISTINCT eliminates duplicate salaries (such as 80,000 appearing twice). ORDER BY salary DESC puts them in descending order, and LIMIT 1 OFFSET 2 skips the top 2 and retrieves the 3rd.",
       },
       {
-        id: 'sql-14',
-        category: 'SQL Joins',
+        id: "sql-14",
+        category: "Aggregate Functions & GROUP BY",
         number: 14,
-        title: 'What is a SELF JOIN?',
-        isQuery: false,
-        question: 'What is a SELF JOIN in SQL?',
-        answer: 'A SELF JOIN is a regular join in which a table is joined with itself using table aliases. It is commonly used to query hierarchical data, such as finding an employee and their manager from the same Employee table (e.g., e1.manager_id = e2.emp_id).'
+        title: "Find the Lowest Salary",
+        isQuery: true,
+        difficulty: "Easy",
+        question: "Write a query to find the lowest salary.",
+        sampleTable: "EMPLOYEE Table:\n+--------+----------+--------+---------+------------+------------+\n| emp_id | emp_name | salary | dept_id | manager_id | hire_date  |\n+--------+----------+--------+---------+------------+------------+\n| 101    | Rahul    | 55000  | 1       | NULL       | 2026-09-20 |\n| 102    | Priya    | 80000  | 1       | 101        | 2026-09-25 |\n| 103    | Amit     | 45000  | 2       | 101        | 2026-08-10 |\n| 104    | Sneha    | 60000  | 2       | 103        | 2026-10-01 |\n| 105    | Rohit    | 80000  | 3       | 101        | 2026-10-10 |\n| 106    | Pooja    | 50000  | 3       | 105        | 2026-07-15 |\n| 107    | Kiran    | 95000  | 1       | 101        | 2026-10-12 |\n+--------+----------+--------+---------+------------+------------+",
+        query: "SELECT MIN(salary) AS lowest_salary\nFROM EMPLOYEE;",
+        expectedOutput: "+---------------+\n| lowest_salary |\n+---------------+\n| 45000         |\n+---------------+",
+        explanation: "MIN() aggregate function evaluates all rows in the salary column and returns the lowest numeric value.",
       },
       {
-        id: 'sql-15',
-        category: 'SQL Joins',
+        id: "sql-15",
+        category: "Aggregate Functions & GROUP BY",
         number: 15,
-        title: 'Query: Display Employees and Department Names',
+        title: "Calculate Average Salary of All Employees",
         isQuery: true,
-        question: 'Write an SQL query to display employee name, job title, and department name using an INNER JOIN.',
-        sampleTable: 'Employees(emp_id, emp_name, dept_id) | Departments(dept_id, dept_name)',
-        query: `SELECT e.emp_name, d.dept_name
-FROM Employees e
-INNER JOIN Departments d ON e.dept_id = d.dept_id;`,
-        expectedOutput: `emp_name  | dept_name
-----------+------------
-Alice     | IT
-Bob       | HR
-Charlie   | IT`,
-        explanation: 'Performs an INNER JOIN matching dept_id between Employees and Departments table.'
+        difficulty: "Easy",
+        question: "Write a query to calculate the average salary of all employees.",
+        sampleTable: "EMPLOYEE Table:\n+--------+----------+--------+---------+------------+------------+\n| emp_id | emp_name | salary | dept_id | manager_id | hire_date  |\n+--------+----------+--------+---------+------------+------------+\n| 101    | Rahul    | 55000  | 1       | NULL       | 2026-09-20 |\n| 102    | Priya    | 80000  | 1       | 101        | 2026-09-25 |\n| 103    | Amit     | 45000  | 2       | 101        | 2026-08-10 |\n| 104    | Sneha    | 60000  | 2       | 103        | 2026-10-01 |\n| 105    | Rohit    | 80000  | 3       | 101        | 2026-10-10 |\n| 106    | Pooja    | 50000  | 3       | 105        | 2026-07-15 |\n| 107    | Kiran    | 95000  | 1       | 101        | 2026-10-12 |\n+--------+----------+--------+---------+------------+------------+",
+        query: "SELECT ROUND(AVG(salary), 2) AS average_salary\nFROM EMPLOYEE;",
+        expectedOutput: "+----------------+\n| average_salary |\n+----------------+\n| 66428.57       |\n+----------------+",
+        explanation: "AVG(salary) computes the arithmetic mean across all employee rows, and ROUND(..., 2) formats it to 2 decimal places.",
       },
       {
-        id: 'sql-16',
-        category: 'SQL Joins',
+        id: "sql-16",
+        category: "Aggregate Functions & GROUP BY",
         number: 16,
-        title: 'Query: Find Employees Without a Matching Department',
+        title: "Count Total Number of Employees",
         isQuery: true,
-        question: 'Write an SQL query to retrieve employees who are not assigned to any department.',
-        sampleTable: 'Employees(emp_id, emp_name, dept_id) | Departments(dept_id, dept_name)',
-        query: `SELECT e.emp_name
-FROM Employees e
-LEFT JOIN Departments d ON e.dept_id = d.dept_id
-WHERE d.dept_id IS NULL;`,
-        expectedOutput: `emp_name
-----------
-David`,
-        explanation: 'LEFT JOIN keeps all employees; checking WHERE d.dept_id IS NULL filters those with no matching department.'
-      }
-    ]
-  },
-
-  // ----------------------------------------------------
-  // 4. SUBQUERIES (5 Questions)
-  // ----------------------------------------------------
-  {
-    name: 'Subqueries',
-    questionCount: 5,
-    description: 'Nested queries, correlated subqueries, IN vs EXISTS, and salary comparisons.',
-    questions: [
+        difficulty: "Easy",
+        question: "Write a query to count the total number of employees.",
+        sampleTable: "EMPLOYEE Table:\n+--------+----------+--------+---------+------------+------------+\n| emp_id | emp_name | salary | dept_id | manager_id | hire_date  |\n+--------+----------+--------+---------+------------+------------+\n| 101    | Rahul    | 55000  | 1       | NULL       | 2026-09-20 |\n| 102    | Priya    | 80000  | 1       | 101        | 2026-09-25 |\n| 103    | Amit     | 45000  | 2       | 101        | 2026-08-10 |\n| 104    | Sneha    | 60000  | 2       | 103        | 2026-10-01 |\n| 105    | Rohit    | 80000  | 3       | 101        | 2026-10-10 |\n| 106    | Pooja    | 50000  | 3       | 105        | 2026-07-15 |\n| 107    | Kiran    | 95000  | 1       | 101        | 2026-10-12 |\n+--------+----------+--------+---------+------------+------------+",
+        query: "SELECT COUNT(*) AS total_employees\nFROM EMPLOYEE;",
+        expectedOutput: "+-----------------+\n| total_employees |\n+-----------------+\n| 7               |\n+-----------------+",
+        explanation: "COUNT(*) counts the total number of rows returned by the table including rows containing NULLs in specific columns.",
+      },
       {
-        id: 'sql-17',
-        category: 'Subqueries',
+        id: "sql-17",
+        category: "Aggregate Functions & GROUP BY",
         number: 17,
-        title: 'What is a Subquery?',
-        isQuery: false,
-        question: 'What is a Subquery in SQL?',
-        answer: 'A Subquery (or inner query / nested query) is a SELECT query embedded inside another SQL statement (SELECT, INSERT, UPDATE, or DELETE). The inner query executes first and passes its result to the outer query.'
+        title: "Total Salary Paid in Each Department",
+        isQuery: true,
+        difficulty: "Medium",
+        question: "Write a query to find the total salary paid to employees in each department.",
+        sampleTable: "DEPARTMENT Table:\n+---------+-----------------+\n| dept_id | department_name |\n+---------+-----------------+\n| 1       | IT              |\n| 2       | HR              |\n| 3       | Finance         |\n| 4       | Sales           |\n+---------+-----------------+\n\nEMPLOYEE Table:\n+--------+----------+--------+---------+------------+------------+\n| emp_id | emp_name | salary | dept_id | manager_id | hire_date  |\n+--------+----------+--------+---------+------------+------------+\n| 101    | Rahul    | 55000  | 1       | NULL       | 2026-09-20 |\n| 102    | Priya    | 80000  | 1       | 101        | 2026-09-25 |\n| 103    | Amit     | 45000  | 2       | 101        | 2026-08-10 |\n| 104    | Sneha    | 60000  | 2       | 103        | 2026-10-01 |\n| 105    | Rohit    | 80000  | 3       | 101        | 2026-10-10 |\n| 106    | Pooja    | 50000  | NULL    | 105        | 2026-07-15 |\n| 107    | Kiran    | 95000  | 1       | 101        | 2026-10-12 |\n+--------+----------+--------+---------+------------+------------+",
+        query: "SELECT d.department_name, SUM(e.salary) AS total_department_salary\nFROM EMPLOYEE e\nJOIN DEPARTMENT d ON e.dept_id = d.dept_id\nGROUP BY d.department_name;",
+        expectedOutput: "+-----------------+-------------------------+\n| department_name | total_department_salary |\n+-----------------+-------------------------+\n| IT              | 230000                  |\n| HR              | 105000                  |\n| Finance         | 80000                   |\n+-----------------+-------------------------+",
+        explanation: "GROUP BY partitions the dataset by department, and SUM(salary) calculates the aggregate salary expenditure within each group.",
       },
       {
-        id: 'sql-18',
-        category: 'Subqueries',
+        id: "sql-18",
+        category: "Aggregate Functions & GROUP BY",
         number: 18,
-        title: 'What is a Correlated Subquery?',
-        isQuery: false,
-        question: 'What is a Correlated Subquery and how is it different from a regular subquery?',
-        answer: '• Regular Subquery: Executes once independently of the outer query, and its result is used by the outer query.\n• Correlated Subquery: References columns from the outer query. It executes repeatedly, once for every single row processed by the outer query.'
-      },
+        title: "Departments Having More Than Two Employees",
+        isQuery: true,
+        difficulty: "Medium",
+        question: "Write a query to display departments having more than two employees.",
+        sampleTable: "DEPARTMENT Table:\n+---------+-----------------+\n| dept_id | department_name |\n+---------+-----------------+\n| 1       | IT              |\n| 2       | HR              |\n| 3       | Finance         |\n| 4       | Sales           |\n+---------+-----------------+\n\nEMPLOYEE Table:\n+--------+----------+--------+---------+------------+------------+\n| emp_id | emp_name | salary | dept_id | manager_id | hire_date  |\n+--------+----------+--------+---------+------------+------------+\n| 101    | Rahul    | 55000  | 1       | NULL       | 2026-09-20 |\n| 102    | Priya    | 80000  | 1       | 101        | 2026-09-25 |\n| 103    | Amit     | 45000  | 2       | 101        | 2026-08-10 |\n| 104    | Sneha    | 60000  | 2       | 103        | 2026-10-01 |\n| 105    | Rohit    | 80000  | 3       | 101        | 2026-10-10 |\n| 106    | Pooja    | 50000  | NULL    | 105        | 2026-07-15 |\n| 107    | Kiran    | 95000  | 1       | 101        | 2026-10-12 |\n+--------+----------+--------+---------+------------+------------+",
+        query: "SELECT d.department_name, COUNT(e.emp_id) AS employee_count\nFROM DEPARTMENT d\nJOIN EMPLOYEE e ON d.dept_id = e.dept_id\nGROUP BY d.department_name\nHAVING COUNT(e.emp_id) > 2;",
+        expectedOutput: "+-----------------+----------------+\n| department_name | employee_count |\n+-----------------+----------------+\n| IT              | 3              |\n+-----------------+----------------+",
+        explanation: "HAVING filters groups post-aggregation. Only departments where COUNT(emp_id) > 2 are included in the final output.",
+      }
+    ]
+  },
+  {
+    name: "Important Interview Queries",
+    questionCount: 10,
+    description: "High-frequency interview queries: duplicate salaries, Nth highest salaries, self-joins, managers, and salary comparisons.",
+    questions: [
       {
-        id: 'sql-19',
-        category: 'Subqueries',
+        id: "sql-19",
+        category: "Important Interview Queries",
         number: 19,
-        title: 'Difference between IN and EXISTS',
-        isQuery: false,
-        question: 'What is the difference between IN and EXISTS operator in SQL?',
-        answer: '• IN: Compares a value against a list or subquery result set. Scans all returned rows. Slower with large subquery sets containing NULLs.\n• EXISTS: Evaluates whether a subquery returns ANY rows (Boolean true/false). Stops scanning as soon as the first matching row is found (short-circuiting), making it faster for large datasets.'
+        title: "Find Duplicate Salaries in Employee Table",
+        isQuery: true,
+        difficulty: "Medium",
+        question: "Write a query to find duplicate salaries in the employee table.",
+        sampleTable: "EMPLOYEE Table:\n+--------+----------+--------+---------+------------+------------+\n| emp_id | emp_name | salary | dept_id | manager_id | hire_date  |\n+--------+----------+--------+---------+------------+------------+\n| 101    | Rahul    | 55000  | 1       | NULL       | 2026-09-20 |\n| 102    | Priya    | 80000  | 1       | 101        | 2026-09-25 |\n| 103    | Amit     | 45000  | 2       | 101        | 2026-08-10 |\n| 104    | Sneha    | 60000  | 2       | 103        | 2026-10-01 |\n| 105    | Rohit    | 80000  | 3       | 101        | 2026-10-10 |\n| 106    | Pooja    | 50000  | 3       | 105        | 2026-07-15 |\n| 107    | Kiran    | 95000  | 1       | 101        | 2026-10-12 |\n+--------+----------+--------+---------+------------+------------+",
+        query: "SELECT salary, COUNT(*) AS occurrences\nFROM EMPLOYEE\nGROUP BY salary\nHAVING COUNT(*) > 1;",
+        expectedOutput: "+--------+-------------+\n| salary | occurrences |\n+--------+-------------+\n| 80000  | 2           |\n+--------+-------------+",
+        explanation: "Groups records by salary and checks which salary groups have a count greater than 1.",
       },
       {
-        id: 'sql-20',
-        category: 'Subqueries',
+        id: "sql-20",
+        category: "Important Interview Queries",
         number: 20,
-        title: 'Query: Employees Earning More than Average Salary',
+        title: "Find Employees Who Receive the Same Salary",
         isQuery: true,
-        question: 'Write an SQL query to find employees whose salary is greater than the average company salary.',
-        sampleTable: 'Employees(emp_id, emp_name, salary)',
-        query: `SELECT emp_name, salary
-FROM Employees
-WHERE salary > (SELECT AVG(salary) FROM Employees);`,
-        expectedOutput: `emp_name | salary
----------+-------
-Bob      | 85000
-Charlie  | 70000`,
-        explanation: 'Subquery calculates AVG(salary) once; outer query filters employees earning more than that average.'
+        difficulty: "Medium",
+        question: "Write a query to find employees who receive the same salary.",
+        sampleTable: "EMPLOYEE Table:\n+--------+----------+--------+---------+------------+------------+\n| emp_id | emp_name | salary | dept_id | manager_id | hire_date  |\n+--------+----------+--------+---------+------------+------------+\n| 101    | Rahul    | 55000  | 1       | NULL       | 2026-09-20 |\n| 102    | Priya    | 80000  | 1       | 101        | 2026-09-25 |\n| 103    | Amit     | 45000  | 2       | 101        | 2026-08-10 |\n| 104    | Sneha    | 60000  | 2       | 103        | 2026-10-01 |\n| 105    | Rohit    | 80000  | 3       | 101        | 2026-10-10 |\n| 106    | Pooja    | 50000  | 3       | 105        | 2026-07-15 |\n| 107    | Kiran    | 95000  | 1       | 101        | 2026-10-12 |\n+--------+----------+--------+---------+------------+------------+",
+        query: "SELECT emp_id, emp_name, salary\nFROM EMPLOYEE\nWHERE salary IN (\n    SELECT salary\n    FROM EMPLOYEE\n    GROUP BY salary\n    HAVING COUNT(*) > 1\n)\nORDER BY salary;",
+        expectedOutput: "+--------+----------+--------+\n| emp_id | emp_name | salary |\n+--------+----------+--------+\n| 102    | Priya    | 80000  |\n| 105    | Rohit    | 80000  |\n+--------+----------+--------+",
+        explanation: "Subquery finds salaries with count > 1. The outer query matches employee records possessing those duplicate salaries.",
       },
       {
-        id: 'sql-21',
-        category: 'Subqueries',
+        id: "sql-21",
+        category: "Important Interview Queries",
         number: 21,
-        title: 'Query: Find Second-Highest Distinct Salary (Subquery)',
+        title: "Highest Salary in Each Department",
         isQuery: true,
-        question: 'Write an SQL query to find the second-highest distinct salary using a subquery.',
-        sampleTable: 'Employees(emp_id, salary)',
-        query: `SELECT MAX(salary) AS SecondHighestSalary
-FROM Employees
-WHERE salary < (SELECT MAX(salary) FROM Employees);`,
-        expectedOutput: `SecondHighestSalary
---------------------
-85000`,
-        explanation: 'Subquery finds the overall maximum salary. The outer query finds the maximum salary strictly less than that.'
-      }
-    ]
-  },
-
-  // ----------------------------------------------------
-  // 5. GROUP BY AND AGGREGATE FUNCTIONS (6 Questions)
-  // ----------------------------------------------------
-  {
-    name: 'GROUP BY & Aggregates',
-    questionCount: 6,
-    description: 'COUNT, SUM, AVG, MIN, MAX, GROUP BY grouping, and HAVING filter clauses.',
-    questions: [
+        difficulty: "Medium",
+        question: "Write a query to find the highest salary in each department.",
+        sampleTable: "DEPARTMENT Table:\n+---------+-----------------+\n| dept_id | department_name |\n+---------+-----------------+\n| 1       | IT              |\n| 2       | HR              |\n| 3       | Finance         |\n| 4       | Sales           |\n+---------+-----------------+\n\nEMPLOYEE Table:\n+--------+----------+--------+---------+------------+------------+\n| emp_id | emp_name | salary | dept_id | manager_id | hire_date  |\n+--------+----------+--------+---------+------------+------------+\n| 101    | Rahul    | 55000  | 1       | NULL       | 2026-09-20 |\n| 102    | Priya    | 80000  | 1       | 101        | 2026-09-25 |\n| 103    | Amit     | 45000  | 2       | 101        | 2026-08-10 |\n| 104    | Sneha    | 60000  | 2       | 103        | 2026-10-01 |\n| 105    | Rohit    | 80000  | 3       | 101        | 2026-10-10 |\n| 106    | Pooja    | 50000  | NULL    | 105        | 2026-07-15 |\n| 107    | Kiran    | 95000  | 1       | 101        | 2026-10-12 |\n+--------+----------+--------+---------+------------+------------+",
+        query: "SELECT d.department_name, MAX(e.salary) AS max_salary\nFROM EMPLOYEE e\nJOIN DEPARTMENT d ON e.dept_id = d.dept_id\nGROUP BY d.department_name;",
+        expectedOutput: "+-----------------+------------+\n| department_name | max_salary |\n+-----------------+------------+\n| IT              | 95000      |\n| HR              | 60000      |\n| Finance         | 80000      |\n+-----------------+------------+",
+        explanation: "Applies MAX(salary) aggregated per department using GROUP BY.",
+      },
       {
-        id: 'sql-22',
-        category: 'GROUP BY & Aggregates',
+        id: "sql-22",
+        category: "Important Interview Queries",
         number: 22,
-        title: 'What are Aggregate Functions?',
-        isQuery: false,
-        question: 'What are aggregate functions in SQL?',
-        answer: 'Aggregate functions perform a calculation on a set of values and return a single summary value. Standard aggregate functions include COUNT(), SUM(), AVG(), MIN(), and MAX(). They ignore NULL values (except COUNT(*)).'
+        title: "Second-Highest Salary in Each Department",
+        isQuery: true,
+        difficulty: "Hard",
+        question: "Write a query to find the second-highest salary in each department.",
+        sampleTable: "DEPARTMENT Table:\n+---------+-----------------+\n| dept_id | department_name |\n+---------+-----------------+\n| 1       | IT              |\n| 2       | HR              |\n| 3       | Finance         |\n| 4       | Sales           |\n+---------+-----------------+\n\nEMPLOYEE Table:\n+--------+----------+--------+---------+------------+------------+\n| emp_id | emp_name | salary | dept_id | manager_id | hire_date  |\n+--------+----------+--------+---------+------------+------------+\n| 101    | Rahul    | 55000  | 1       | NULL       | 2026-09-20 |\n| 102    | Priya    | 80000  | 1       | 101        | 2026-09-25 |\n| 103    | Amit     | 45000  | 2       | 101        | 2026-08-10 |\n| 104    | Sneha    | 60000  | 2       | 103        | 2026-10-01 |\n| 105    | Rohit    | 80000  | 3       | 101        | 2026-10-10 |\n| 106    | Pooja    | 50000  | NULL    | 105        | 2026-07-15 |\n| 107    | Kiran    | 95000  | 1       | 101        | 2026-10-12 |\n+--------+----------+--------+---------+------------+------------+",
+        query: "WITH RankedSalaries AS (\n    SELECT d.department_name, e.salary,\n           DENSE_RANK() OVER (PARTITION BY e.dept_id ORDER BY e.salary DESC) AS rnk\n    FROM EMPLOYEE e\n    JOIN DEPARTMENT d ON e.dept_id = d.dept_id\n)\nSELECT department_name, salary AS second_highest_salary\nFROM RankedSalaries\nWHERE rnk = 2;",
+        expectedOutput: "+-----------------+-----------------------+\n| department_name | second_highest_salary |\n+-----------------+-----------------------+\n| IT              | 80000                 |\n| HR              | 45000                 |\n+-----------------+-----------------------+",
+        explanation: "DENSE_RANK() partitioned by dept_id ranks salaries descending. Filtering rnk = 2 isolates the second-highest salary in each department without gap issues.",
       },
       {
-        id: 'sql-23',
-        category: 'GROUP BY & Aggregates',
+        id: "sql-23",
+        category: "Important Interview Queries",
         number: 23,
-        title: 'What is GROUP BY?',
-        isQuery: false,
-        question: 'What is the purpose of the GROUP BY clause?',
-        answer: 'The GROUP BY clause groups rows that have the same values in specified columns into summary rows (e.g., finding the total salary per department).'
+        title: "Employees Earning More Than the Average Salary",
+        isQuery: true,
+        difficulty: "Medium",
+        question: "Write a query to find employees earning more than the average salary.",
+        sampleTable: "EMPLOYEE Table:\n+--------+----------+--------+---------+------------+------------+\n| emp_id | emp_name | salary | dept_id | manager_id | hire_date  |\n+--------+----------+--------+---------+------------+------------+\n| 101    | Rahul    | 55000  | 1       | NULL       | 2026-09-20 |\n| 102    | Priya    | 80000  | 1       | 101        | 2026-09-25 |\n| 103    | Amit     | 45000  | 2       | 101        | 2026-08-10 |\n| 104    | Sneha    | 60000  | 2       | 103        | 2026-10-01 |\n| 105    | Rohit    | 80000  | 3       | 101        | 2026-10-10 |\n| 106    | Pooja    | 50000  | 3       | 105        | 2026-07-15 |\n| 107    | Kiran    | 95000  | 1       | 101        | 2026-10-12 |\n+--------+----------+--------+---------+------------+------------+",
+        query: "SELECT emp_id, emp_name, salary\nFROM EMPLOYEE\nWHERE salary > (SELECT AVG(salary) FROM EMPLOYEE);",
+        expectedOutput: "+--------+----------+--------+\n| emp_id | emp_name | salary |\n+--------+----------+--------+\n| 102    | Priya    | 80000  |\n| 105    | Rohit    | 80000  |\n| 107    | Kiran    | 95000  |\n+--------+----------+--------+",
+        explanation: "Subquery computes overall company average salary (66,428.57). Outer query returns employees earning above that value.",
       },
       {
-        id: 'sql-24',
-        category: 'GROUP BY & Aggregates',
+        id: "sql-24",
+        category: "Important Interview Queries",
         number: 24,
-        title: 'What is HAVING?',
-        isQuery: false,
-        question: 'What is the HAVING clause in SQL?',
-        answer: 'The HAVING clause filters groups created by the GROUP BY clause based on aggregate conditions. It was introduced because the WHERE keyword cannot be used with aggregate functions.'
+        title: "Employees Earning More Than Department Average",
+        isQuery: true,
+        difficulty: "Hard",
+        question: "Write a query to find employees earning more than the average salary of their department.",
+        sampleTable: "EMPLOYEE Table:\n+--------+----------+--------+---------+------------+------------+\n| emp_id | emp_name | salary | dept_id | manager_id | hire_date  |\n+--------+----------+--------+---------+------------+------------+\n| 101    | Rahul    | 55000  | 1       | NULL       | 2026-09-20 |\n| 102    | Priya    | 80000  | 1       | 101        | 2026-09-25 |\n| 103    | Amit     | 45000  | 2       | 101        | 2026-08-10 |\n| 104    | Sneha    | 60000  | 2       | 103        | 2026-10-01 |\n| 105    | Rohit    | 80000  | 3       | 101        | 2026-10-10 |\n| 106    | Pooja    | 50000  | 3       | 105        | 2026-07-15 |\n| 107    | Kiran    | 95000  | 1       | 101        | 2026-10-12 |\n+--------+----------+--------+---------+------------+------------+",
+        query: "SELECT e1.emp_id, e1.emp_name, e1.salary, e1.dept_id\nFROM EMPLOYEE e1\nWHERE e1.salary > (\n    SELECT AVG(e2.salary)\n    FROM EMPLOYEE e2\n    WHERE e2.dept_id = e1.dept_id\n);",
+        expectedOutput: "+--------+----------+--------+---------+\n| emp_id | emp_name | salary | dept_id |\n+--------+----------+--------+---------+\n| 102    | Priya    | 80000  | 1       |\n| 104    | Sneha    | 60000  | 2       |\n| 107    | Kiran    | 95000  | 1       |\n+--------+----------+--------+---------+",
+        explanation: "Correlated subquery: for each employee e1, the inner query calculates the average salary for e1's specific department.",
       },
       {
-        id: 'sql-25',
-        category: 'GROUP BY & Aggregates',
+        id: "sql-25",
+        category: "Important Interview Queries",
         number: 25,
-        title: 'Difference between WHERE and HAVING',
-        isQuery: false,
-        question: 'What is the difference between WHERE and HAVING clauses in SQL?',
-        answer: '• WHERE: Filters individual rows BEFORE grouping. Cannot be used with aggregate functions.\n• HAVING: Filters grouped records AFTER GROUP BY. Can be used with aggregate functions (e.g. HAVING COUNT(*) > 5).'
+        title: "Employees Who Earn the Highest Salary in the Company",
+        isQuery: true,
+        difficulty: "Medium",
+        question: "Write a query to find employees who earn the highest salary in the company.",
+        sampleTable: "EMPLOYEE Table:\n+--------+----------+--------+---------+------------+------------+\n| emp_id | emp_name | salary | dept_id | manager_id | hire_date  |\n+--------+----------+--------+---------+------------+------------+\n| 101    | Rahul    | 55000  | 1       | NULL       | 2026-09-20 |\n| 102    | Priya    | 80000  | 1       | 101        | 2026-09-25 |\n| 103    | Amit     | 45000  | 2       | 101        | 2026-08-10 |\n| 104    | Sneha    | 60000  | 2       | 103        | 2026-10-01 |\n| 105    | Rohit    | 80000  | 3       | 101        | 2026-10-10 |\n| 106    | Pooja    | 50000  | 3       | 105        | 2026-07-15 |\n| 107    | Kiran    | 95000  | 1       | 101        | 2026-10-12 |\n+--------+----------+--------+---------+------------+------------+",
+        query: "SELECT emp_id, emp_name, salary\nFROM EMPLOYEE\nWHERE salary = (SELECT MAX(salary) FROM EMPLOYEE);",
+        expectedOutput: "+--------+----------+--------+\n| emp_id | emp_name | salary |\n+--------+----------+--------+\n| 107    | Kiran    | 95000  |\n+--------+----------+--------+",
+        explanation: "Finds all employee records whose salary matches the company-wide maximum salary.",
       },
       {
-        id: 'sql-26',
-        category: 'GROUP BY & Aggregates',
+        id: "sql-26",
+        category: "Important Interview Queries",
         number: 26,
-        title: 'Query: Count Employees in Each Department',
+        title: "Display Top Three Highest-Paid Employees",
         isQuery: true,
-        question: 'Write an SQL query to count total employees in each department.',
-        sampleTable: 'Employees(emp_id, emp_name, dept_id)',
-        query: `SELECT dept_id, COUNT(*) AS TotalEmployees
-FROM Employees
-GROUP BY dept_id;`,
-        expectedOutput: `dept_id | TotalEmployees
---------+---------------
-10      | 4
-20      | 8
-30      | 3`,
-        explanation: 'Groups employees by dept_id and counts total members per group using COUNT(*).'
+        difficulty: "Medium",
+        question: "Write a query to display the top three highest-paid employees.",
+        sampleTable: "EMPLOYEE Table:\n+--------+----------+--------+---------+------------+------------+\n| emp_id | emp_name | salary | dept_id | manager_id | hire_date  |\n+--------+----------+--------+---------+------------+------------+\n| 101    | Rahul    | 55000  | 1       | NULL       | 2026-09-20 |\n| 102    | Priya    | 80000  | 1       | 101        | 2026-09-25 |\n| 103    | Amit     | 45000  | 2       | 101        | 2026-08-10 |\n| 104    | Sneha    | 60000  | 2       | 103        | 2026-10-01 |\n| 105    | Rohit    | 80000  | 3       | 101        | 2026-10-10 |\n| 106    | Pooja    | 50000  | 3       | 105        | 2026-07-15 |\n| 107    | Kiran    | 95000  | 1       | 101        | 2026-10-12 |\n+--------+----------+--------+---------+------------+------------+",
+        query: "SELECT emp_id, emp_name, salary\nFROM EMPLOYEE\nORDER BY salary DESC\nLIMIT 3;",
+        expectedOutput: "+--------+----------+--------+\n| emp_id | emp_name | salary |\n+--------+----------+--------+\n| 107    | Kiran    | 95000  |\n| 102    | Priya    | 80000  |\n| 105    | Rohit    | 80000  |\n+--------+----------+--------+",
+        explanation: "ORDER BY salary DESC orders employees in descending order of salary and LIMIT 3 fetches the first 3 rows.",
       },
       {
-        id: 'sql-27',
-        category: 'GROUP BY & Aggregates',
+        id: "sql-27",
+        category: "Important Interview Queries",
         number: 27,
-        title: 'Query: Find Departments With More Than 5 Employees',
+        title: "Employees Earning More Than Their Manager",
         isQuery: true,
-        question: 'Write an SQL query to list departments having more than 5 employees.',
-        sampleTable: 'Employees(emp_id, emp_name, dept_id)',
-        query: `SELECT dept_id, COUNT(*) AS EmpCount
-FROM Employees
-GROUP BY dept_id
-HAVING COUNT(*) > 5;`,
-        expectedOutput: `dept_id | EmpCount
---------+---------
-20      | 8`,
-        explanation: 'Groups by department and uses HAVING COUNT(*) > 5 to filter only departments with more than 5 employees.'
-      }
-    ]
-  },
-
-  // ----------------------------------------------------
-  // 6. COMMON SQL INTERVIEW QUERIES (6 Questions)
-  // ----------------------------------------------------
-  {
-    name: 'Common Interview Queries',
-    questionCount: 6,
-    description: 'Nth highest salary, duplicate detection, window functions (DENSE_RANK), and department leaders.',
-    questions: [
+        difficulty: "Hard",
+        question: "Write a query to find employees whose salary is greater than their manager's salary.",
+        sampleTable: "EMPLOYEE Table:\n+--------+----------+--------+---------+------------+------------+\n| emp_id | emp_name | salary | dept_id | manager_id | hire_date  |\n+--------+----------+--------+---------+------------+------------+\n| 101    | Rahul    | 55000  | 1       | NULL       | 2026-09-20 |\n| 102    | Priya    | 80000  | 1       | 101        | 2026-09-25 |\n| 103    | Amit     | 45000  | 2       | 101        | 2026-08-10 |\n| 104    | Sneha    | 60000  | 2       | 103        | 2026-10-01 |\n| 105    | Rohit    | 80000  | 3       | 101        | 2026-10-10 |\n| 106    | Pooja    | 50000  | 3       | 105        | 2026-07-15 |\n| 107    | Kiran    | 95000  | 1       | 101        | 2026-10-12 |\n+--------+----------+--------+---------+------------+------------+",
+        query: "SELECT e.emp_name AS employee, e.salary AS emp_salary,\n       m.emp_name AS manager, m.salary AS manager_salary\nFROM EMPLOYEE e\nJOIN EMPLOYEE m ON e.manager_id = m.emp_id\nWHERE e.salary > m.salary;",
+        expectedOutput: "+----------+------------+---------+----------------+\n| employee | emp_salary | manager | manager_salary |\n+----------+------------+---------+----------------+\n| Priya    | 80000      | Rahul   | 55000          |\n| Sneha    | 60000      | Amit    | 45000          |\n| Kiran    | 95000      | Rahul   | 55000          |\n+----------+------------+---------+----------------+",
+        explanation: "Self-join: table EMPLOYEE e (employees) is joined with EMPLOYEE m (managers) on e.manager_id = m.emp_id, filtering for e.salary > m.salary.",
+      },
       {
-        id: 'sql-28',
-        category: 'Common Interview Queries',
+        id: "sql-28",
+        category: "Important Interview Queries",
         number: 28,
-        title: 'Query: Find the Highest Salary in the Company',
+        title: "Employees Who Do Not Have a Manager",
         isQuery: true,
-        question: 'Write an SQL query to find the maximum salary among all employees.',
-        sampleTable: 'Employees(emp_id, salary)',
-        query: `SELECT MAX(salary) AS MaxSalary
-FROM Employees;`,
-        expectedOutput: `MaxSalary
----------
-95000`,
-        explanation: 'Uses MAX() aggregate function across the salary column.'
-      },
+        difficulty: "Easy",
+        question: "Write a query to find employees who do not have a manager.",
+        sampleTable: "EMPLOYEE Table:\n+--------+----------+--------+---------+------------+------------+\n| emp_id | emp_name | salary | dept_id | manager_id | hire_date  |\n+--------+----------+--------+---------+------------+------------+\n| 101    | Rahul    | 55000  | 1       | NULL       | 2026-09-20 |\n| 102    | Priya    | 80000  | 1       | 101        | 2026-09-25 |\n| 103    | Amit     | 45000  | 2       | 101        | 2026-08-10 |\n| 104    | Sneha    | 60000  | 2       | 103        | 2026-10-01 |\n| 105    | Rohit    | 80000  | 3       | 101        | 2026-10-10 |\n| 106    | Pooja    | 50000  | 3       | 105        | 2026-07-15 |\n| 107    | Kiran    | 95000  | 1       | 101        | 2026-10-12 |\n+--------+----------+--------+---------+------------+------------+",
+        query: "SELECT emp_id, emp_name, salary, dept_id\nFROM EMPLOYEE\nWHERE manager_id IS NULL;",
+        expectedOutput: "+--------+----------+--------+---------+\n| emp_id | emp_name | salary | dept_id |\n+--------+----------+--------+---------+\n| 101    | Rahul    | 55000  | 1       |\n+--------+----------+--------+---------+",
+        explanation: "In SQL, NULL cannot be compared with '='. We must use IS NULL to match rows where manager_id has no value (CEO/Top executive).",
+      }
+    ]
+  },
+  {
+    name: "Subqueries, Joins & Advanced SQL",
+    questionCount: 12,
+    description: "Advanced joins (INNER, LEFT), subqueries (ANY, ALL), window functions (ROW_NUMBER, DENSE_RANK), and duplicate deletion.",
+    questions: [
       {
-        id: 'sql-29',
-        category: 'Common Interview Queries',
+        id: "sql-29",
+        category: "Subqueries, Joins & Advanced SQL",
         number: 29,
-        title: 'Query: Find Second-Highest Distinct Salary (LIMIT/OFFSET)',
+        title: "Employee Names Alongside Department Names (INNER JOIN)",
         isQuery: true,
-        question: 'Write an SQL query using LIMIT and OFFSET to find the second-highest distinct salary.',
-        sampleTable: 'Employees(emp_id, salary)',
-        query: `SELECT DISTINCT salary
-FROM Employees
-ORDER BY salary DESC
-LIMIT 1 OFFSET 1;`,
-        expectedOutput: `salary
-------
-85000`,
-        explanation: 'Sorts unique salaries descending; OFFSET 1 skips the highest; LIMIT 1 fetches the 2nd highest.'
+        difficulty: "Medium",
+        question: "Write a query to display employee names alongside their department names using an INNER JOIN.",
+        sampleTable: "DEPARTMENT Table:\n+---------+-----------------+\n| dept_id | department_name |\n+---------+-----------------+\n| 1       | IT              |\n| 2       | HR              |\n| 3       | Finance         |\n| 4       | Sales           |\n+---------+-----------------+\n\nEMPLOYEE Table:\n+--------+----------+--------+---------+------------+------------+\n| emp_id | emp_name | salary | dept_id | manager_id | hire_date  |\n+--------+----------+--------+---------+------------+------------+\n| 101    | Rahul    | 55000  | 1       | NULL       | 2026-09-20 |\n| 102    | Priya    | 80000  | 1       | 101        | 2026-09-25 |\n| 103    | Amit     | 45000  | 2       | 101        | 2026-08-10 |\n| 104    | Sneha    | 60000  | 2       | 103        | 2026-10-01 |\n| 105    | Rohit    | 80000  | 3       | 101        | 2026-10-10 |\n| 106    | Pooja    | 50000  | NULL    | 105        | 2026-07-15 |\n| 107    | Kiran    | 95000  | 1       | 101        | 2026-10-12 |\n+--------+----------+--------+---------+------------+------------+",
+        query: "SELECT e.emp_name, d.department_name\nFROM EMPLOYEE e\nINNER JOIN DEPARTMENT d ON e.dept_id = d.dept_id;",
+        expectedOutput: "+----------+-----------------+\n| emp_name | department_name |\n+----------+-----------------+\n| Rahul    | IT              |\n| Priya    | IT              |\n| Kiran    | IT              |\n| Amit     | HR              |\n| Sneha    | HR              |\n| Rohit    | Finance         |\n+----------+-----------------+",
+        explanation: "INNER JOIN matches rows where dept_id exists in both tables, omitting employees without a department and departments without employees.",
       },
       {
-        id: 'sql-30',
-        category: 'Common Interview Queries',
+        id: "sql-30",
+        category: "Subqueries, Joins & Advanced SQL",
         number: 30,
-        title: 'Query: Find Nth-Highest Salary Using DENSE_RANK',
+        title: "All Departments Including Empty Ones (LEFT JOIN)",
         isQuery: true,
-        question: 'Write an SQL query to find the Nth highest salary using the DENSE_RANK() window function (e.g., N = 3).',
-        sampleTable: 'Employees(emp_id, salary)',
-        query: `SELECT salary
-FROM (
-    SELECT salary, DENSE_RANK() OVER (ORDER BY salary DESC) as ranking
-    FROM Employees
-) RankedSalaries
-WHERE ranking = 3;`,
-        expectedOutput: `salary
-------
-75000`,
-        explanation: 'DENSE_RANK() ranks distinct salaries descending without skipping rank numbers on duplicates. ranking = 3 returns 3rd highest.'
+        difficulty: "Medium",
+        question: "Write a query to display all departments, including departments that have no employees, using a LEFT JOIN.",
+        sampleTable: "DEPARTMENT Table:\n+---------+-----------------+\n| dept_id | department_name |\n+---------+-----------------+\n| 1       | IT              |\n| 2       | HR              |\n| 3       | Finance         |\n| 4       | Sales           |\n+---------+-----------------+\n\nEMPLOYEE Table:\n+--------+----------+--------+---------+------------+------------+\n| emp_id | emp_name | salary | dept_id | manager_id | hire_date  |\n+--------+----------+--------+---------+------------+------------+\n| 101    | Rahul    | 55000  | 1       | NULL       | 2026-09-20 |\n| 102    | Priya    | 80000  | 1       | 101        | 2026-09-25 |\n| 103    | Amit     | 45000  | 2       | 101        | 2026-08-10 |\n| 104    | Sneha    | 60000  | 2       | 103        | 2026-10-01 |\n| 105    | Rohit    | 80000  | 3       | 101        | 2026-10-10 |\n| 106    | Pooja    | 50000  | NULL    | 105        | 2026-07-15 |\n| 107    | Kiran    | 95000  | 1       | 101        | 2026-10-12 |\n+--------+----------+--------+---------+------------+------------+",
+        query: "SELECT d.dept_id, d.department_name, e.emp_name\nFROM DEPARTMENT d\nLEFT JOIN EMPLOYEE e ON d.dept_id = e.dept_id;",
+        expectedOutput: "+---------+-----------------+----------+\n| dept_id | department_name | emp_name |\n+---------+-----------------+----------+\n| 1       | IT              | Rahul    |\n| 1       | IT              | Priya    |\n| 1       | IT              | Kiran    |\n| 2       | HR              | Amit     |\n| 2       | HR              | Sneha    |\n| 3       | Finance         | Rohit    |\n| 4       | Sales           | NULL     |\n+---------+-----------------+----------+",
+        explanation: "LEFT JOIN from DEPARTMENT preserves all department rows (even Sales which has no matching employee rows, showing NULL).",
       },
       {
-        id: 'sql-31',
-        category: 'Common Interview Queries',
+        id: "sql-31",
+        category: "Subqueries, Joins & Advanced SQL",
         number: 31,
-        title: 'Query: Find Duplicate Records in a Table',
+        title: "Employees Who Do Not Belong to Any Department",
         isQuery: true,
-        question: 'Write an SQL query to identify duplicate email addresses in a Users table.',
-        sampleTable: 'Users(user_id, email)',
-        query: `SELECT email, COUNT(*) AS DuplicateCount
-FROM Users
-GROUP BY email
-HAVING COUNT(*) > 1;`,
-        expectedOutput: `email            | DuplicateCount
------------------+---------------
-john@example.com | 2`,
-        explanation: 'Groups by email and filters groups where frequency is strictly greater than 1.'
+        difficulty: "Medium",
+        question: "Write a query to find employees who do not belong to any department.",
+        sampleTable: "DEPARTMENT Table:\n+---------+-----------------+\n| dept_id | department_name |\n+---------+-----------------+\n| 1       | IT              |\n| 2       | HR              |\n| 3       | Finance         |\n| 4       | Sales           |\n+---------+-----------------+\n\nEMPLOYEE Table:\n+--------+----------+--------+---------+------------+------------+\n| emp_id | emp_name | salary | dept_id | manager_id | hire_date  |\n+--------+----------+--------+---------+------------+------------+\n| 101    | Rahul    | 55000  | 1       | NULL       | 2026-09-20 |\n| 102    | Priya    | 80000  | 1       | 101        | 2026-09-25 |\n| 103    | Amit     | 45000  | 2       | 101        | 2026-08-10 |\n| 104    | Sneha    | 60000  | 2       | 103        | 2026-10-01 |\n| 105    | Rohit    | 80000  | 3       | 101        | 2026-10-10 |\n| 106    | Pooja    | 50000  | NULL    | 105        | 2026-07-15 |\n| 107    | Kiran    | 95000  | 1       | 101        | 2026-10-12 |\n+--------+----------+--------+---------+------------+------------+",
+        query: "SELECT emp_id, emp_name, salary\nFROM EMPLOYEE\nWHERE dept_id IS NULL;",
+        expectedOutput: "+--------+----------+--------+\n| emp_id | emp_name | salary |\n+--------+----------+--------+\n| 106    | Pooja    | 50000  |\n+--------+----------+--------+",
+        explanation: "Filters for records in EMPLOYEE where the foreign key column dept_id has not been assigned (IS NULL).",
       },
       {
-        id: 'sql-32',
-        category: 'Common Interview Queries',
+        id: "sql-32",
+        category: "Subqueries, Joins & Advanced SQL",
         number: 32,
-        title: 'Query: Find Highest Salary in Each Department',
+        title: "Departments That Have No Employees",
         isQuery: true,
-        question: 'Write an SQL query to find the maximum salary in each department along with department ID.',
-        sampleTable: 'Employees(emp_id, dept_id, salary)',
-        query: `SELECT dept_id, MAX(salary) AS MaxSalary
-FROM Employees
-GROUP BY dept_id;`,
-        expectedOutput: `dept_id | MaxSalary
---------+----------
-10      | 95000
-20      | 82000
-30      | 60000`,
-        explanation: 'Groups rows by dept_id and returns the highest salary in that specific group.'
+        difficulty: "Medium",
+        question: "Write a query to find departments that have no employees.",
+        sampleTable: "DEPARTMENT Table:\n+---------+-----------------+\n| dept_id | department_name |\n+---------+-----------------+\n| 1       | IT              |\n| 2       | HR              |\n| 3       | Finance         |\n| 4       | Sales           |\n+---------+-----------------+\n\nEMPLOYEE Table:\n+--------+----------+--------+---------+------------+------------+\n| emp_id | emp_name | salary | dept_id | manager_id | hire_date  |\n+--------+----------+--------+---------+------------+------------+\n| 101    | Rahul    | 55000  | 1       | NULL       | 2026-09-20 |\n| 102    | Priya    | 80000  | 1       | 101        | 2026-09-25 |\n| 103    | Amit     | 45000  | 2       | 101        | 2026-08-10 |\n| 104    | Sneha    | 60000  | 2       | 103        | 2026-10-01 |\n| 105    | Rohit    | 80000  | 3       | 101        | 2026-10-10 |\n| 106    | Pooja    | 50000  | NULL    | 105        | 2026-07-15 |\n| 107    | Kiran    | 95000  | 1       | 101        | 2026-10-12 |\n+--------+----------+--------+---------+------------+------------+",
+        query: "SELECT d.dept_id, d.department_name\nFROM DEPARTMENT d\nLEFT JOIN EMPLOYEE e ON d.dept_id = e.dept_id\nWHERE e.emp_id IS NULL;",
+        expectedOutput: "+---------+-----------------+\n| dept_id | department_name |\n+---------+-----------------+\n| 4       | Sales           |\n+---------+-----------------+",
+        explanation: "LEFT JOIN produces NULL in employee columns for departments with no matching staff. WHERE e.emp_id IS NULL filters specifically for those empty departments.",
       },
       {
-        id: 'sql-33',
-        category: 'Common Interview Queries',
+        id: "sql-33",
+        category: "Subqueries, Joins & Advanced SQL",
         number: 33,
-        title: 'Query: Employees Earning More than Their Department Average',
+        title: "Employees Earning More Than ANY Employee in HR",
         isQuery: true,
-        question: 'Write an SQL query to find employees whose salary exceeds their department average salary (Correlated Subquery).',
-        sampleTable: 'Employees(emp_id, emp_name, dept_id, salary)',
-        query: `SELECT e.emp_name, e.dept_id, e.salary
-FROM Employees e
-WHERE e.salary > (
-    SELECT AVG(e2.salary)
-    FROM Employees e2
-    WHERE e2.dept_id = e.dept_id
-);`,
-        expectedOutput: `emp_name | dept_id | salary
----------+---------+-------
-Alice    | 10      | 90000
-David    | 20      | 78000`,
-        explanation: 'Correlated subquery computes the average salary specifically for the outer row\'s department ID.'
-      }
-    ]
-  },
-
-  // ----------------------------------------------------
-  // 7. NORMALIZATION AND DATABASE DESIGN (5 Questions)
-  // ----------------------------------------------------
-  {
-    name: 'Normalization & Design',
-    questionCount: 5,
-    description: '1NF, 2NF, 3NF normal forms, redundancy elimination, and relational modeling.',
-    questions: [
+        difficulty: "Hard",
+        question: "Write a query to find employees who earn more than at least one employee in the HR department.",
+        sampleTable: "DEPARTMENT Table:\n+---------+-----------------+\n| dept_id | department_name |\n+---------+-----------------+\n| 1       | IT              |\n| 2       | HR              |\n| 3       | Finance         |\n| 4       | Sales           |\n+---------+-----------------+\n\nEMPLOYEE Table:\n+--------+----------+--------+---------+------------+------------+\n| emp_id | emp_name | salary | dept_id | manager_id | hire_date  |\n+--------+----------+--------+---------+------------+------------+\n| 101    | Rahul    | 55000  | 1       | NULL       | 2026-09-20 |\n| 102    | Priya    | 80000  | 1       | 101        | 2026-09-25 |\n| 103    | Amit     | 45000  | 2       | 101        | 2026-08-10 |\n| 104    | Sneha    | 60000  | 2       | 103        | 2026-10-01 |\n| 105    | Rohit    | 80000  | 3       | 101        | 2026-10-10 |\n| 106    | Pooja    | 50000  | NULL    | 105        | 2026-07-15 |\n| 107    | Kiran    | 95000  | 1       | 101        | 2026-10-12 |\n+--------+----------+--------+---------+------------+------------+",
+        query: "SELECT emp_id, emp_name, salary\nFROM EMPLOYEE\nWHERE salary > ANY (\n    SELECT salary\n    FROM EMPLOYEE e\n    JOIN DEPARTMENT d ON e.dept_id = d.dept_id\n    WHERE d.department_name = 'HR'\n);",
+        expectedOutput: "+--------+----------+--------+\n| emp_id | emp_name | salary |\n+--------+----------+--------+\n| 101    | Rahul    | 55000  |\n| 102    | Priya    | 80000  |\n| 104    | Sneha    | 60000  |\n| 105    | Rohit    | 80000  |\n| 106    | Pooja    | 50000  |\n| 107    | Kiran    | 95000  |\n+--------+----------+--------+",
+        explanation: "> ANY means greater than the minimum salary in the HR department (min HR salary is 45,000 for Amit).",
+      },
       {
-        id: 'sql-34',
-        category: 'Normalization & Design',
+        id: "sql-34",
+        category: "Subqueries, Joins & Advanced SQL",
         number: 34,
-        title: 'What is Normalization?',
-        isQuery: false,
-        question: 'What is Normalization in database design?',
-        answer: 'Normalization is the systematic process of organizing tables and columns to reduce data redundancy and eliminate insert, update, and delete anomalies while maintaining data integrity.'
+        title: "Employees Earning More Than EVERY Employee in HR",
+        isQuery: true,
+        difficulty: "Hard",
+        question: "Write a query to find employees who earn more than every employee in the HR department.",
+        sampleTable: "DEPARTMENT Table:\n+---------+-----------------+\n| dept_id | department_name |\n+---------+-----------------+\n| 1       | IT              |\n| 2       | HR              |\n| 3       | Finance         |\n| 4       | Sales           |\n+---------+-----------------+\n\nEMPLOYEE Table:\n+--------+----------+--------+---------+------------+------------+\n| emp_id | emp_name | salary | dept_id | manager_id | hire_date  |\n+--------+----------+--------+---------+------------+------------+\n| 101    | Rahul    | 55000  | 1       | NULL       | 2026-09-20 |\n| 102    | Priya    | 80000  | 1       | 101        | 2026-09-25 |\n| 103    | Amit     | 45000  | 2       | 101        | 2026-08-10 |\n| 104    | Sneha    | 60000  | 2       | 103        | 2026-10-01 |\n| 105    | Rohit    | 80000  | 3       | 101        | 2026-10-10 |\n| 106    | Pooja    | 50000  | NULL    | 105        | 2026-07-15 |\n| 107    | Kiran    | 95000  | 1       | 101        | 2026-10-12 |\n+--------+----------+--------+---------+------------+------------+",
+        query: "SELECT emp_id, emp_name, salary\nFROM EMPLOYEE\nWHERE salary > ALL (\n    SELECT salary\n    FROM EMPLOYEE e\n    JOIN DEPARTMENT d ON e.dept_id = d.dept_id\n    WHERE d.department_name = 'HR'\n);",
+        expectedOutput: "+--------+----------+--------+\n| emp_id | emp_name | salary |\n+--------+----------+--------+\n| 102    | Priya    | 80000  |\n| 105    | Rohit    | 80000  |\n| 107    | Kiran    | 95000  |\n+--------+----------+--------+",
+        explanation: "> ALL means greater than the highest salary in the HR department (max HR salary is 60,000 for Sneha). Returns salaries > 60,000.",
       },
       {
-        id: 'sql-35',
-        category: 'Normalization & Design',
+        id: "sql-35",
+        category: "Subqueries, Joins & Advanced SQL",
         number: 35,
-        title: 'Explain 1NF, 2NF, and 3NF',
-        isQuery: false,
-        question: 'Explain First Normal Form (1NF), Second Normal Form (2NF), and Third Normal Form (3NF).',
-        answer: '• 1NF: Each column must contain atomic (indivisible) values, and each record must be unique (primary key).\n• 2NF: Table must be in 1NF and have NO partial dependency (all non-key columns must depend on the whole primary key).\n• 3NF: Table must be in 2NF and have NO transitive dependency (non-key columns must not depend on other non-key columns).'
+        title: "Highest-Paid Employee in Each Department using ROW_NUMBER()",
+        isQuery: true,
+        difficulty: "Hard",
+        question: "Write a query to find the highest-paid employee in each department using ROW_NUMBER().",
+        sampleTable: "DEPARTMENT Table:\n+---------+-----------------+\n| dept_id | department_name |\n+---------+-----------------+\n| 1       | IT              |\n| 2       | HR              |\n| 3       | Finance         |\n| 4       | Sales           |\n+---------+-----------------+\n\nEMPLOYEE Table:\n+--------+----------+--------+---------+------------+------------+\n| emp_id | emp_name | salary | dept_id | manager_id | hire_date  |\n+--------+----------+--------+---------+------------+------------+\n| 101    | Rahul    | 55000  | 1       | NULL       | 2026-09-20 |\n| 102    | Priya    | 80000  | 1       | 101        | 2026-09-25 |\n| 103    | Amit     | 45000  | 2       | 101        | 2026-08-10 |\n| 104    | Sneha    | 60000  | 2       | 103        | 2026-10-01 |\n| 105    | Rohit    | 80000  | 3       | 101        | 2026-10-10 |\n| 106    | Pooja    | 50000  | NULL    | 105        | 2026-07-15 |\n| 107    | Kiran    | 95000  | 1       | 101        | 2026-10-12 |\n+--------+----------+--------+---------+------------+------------+",
+        query: "WITH RankedEmployees AS (\n    SELECT emp_id, emp_name, salary, dept_id,\n           ROW_NUMBER() OVER (PARTITION BY dept_id ORDER BY salary DESC) AS rn\n    FROM EMPLOYEE\n    WHERE dept_id IS NOT NULL\n)\nSELECT emp_id, emp_name, salary, dept_id\nFROM RankedEmployees\nWHERE rn = 1;",
+        expectedOutput: "+--------+----------+--------+---------+\n| emp_id | emp_name | salary | dept_id |\n+--------+----------+--------+---------+\n| 107    | Kiran    | 95000  | 1       |\n| 104    | Sneha    | 60000  | 2       |\n| 105    | Rohit    | 80000  | 3       |\n+--------+----------+--------+---------+",
+        explanation: "ROW_NUMBER() assigns sequential integers (1, 2, 3...) to rows partitioned by department ordered by salary descending. rn = 1 extracts the top earner.",
       },
       {
-        id: 'sql-36',
-        category: 'Normalization & Design',
+        id: "sql-36",
+        category: "Subqueries, Joins & Advanced SQL",
         number: 36,
-        title: 'What is Denormalization?',
-        isQuery: false,
-        question: 'What is Denormalization and when is it used?',
-        answer: 'Denormalization is the intentional introduction of redundancy into a normalized database by combining tables. It reduces expensive multi-table JOIN operations, significantly improving read performance in reporting systems and data warehouses.'
+        title: "Rank Employees According to Salary using DENSE_RANK()",
+        isQuery: true,
+        difficulty: "Hard",
+        question: "Write a query to rank employees according to salary using DENSE_RANK().",
+        sampleTable: "EMPLOYEE Table:\n+--------+----------+--------+---------+------------+------------+\n| emp_id | emp_name | salary | dept_id | manager_id | hire_date  |\n+--------+----------+--------+---------+------------+------------+\n| 101    | Rahul    | 55000  | 1       | NULL       | 2026-09-20 |\n| 102    | Priya    | 80000  | 1       | 101        | 2026-09-25 |\n| 103    | Amit     | 45000  | 2       | 101        | 2026-08-10 |\n| 104    | Sneha    | 60000  | 2       | 103        | 2026-10-01 |\n| 105    | Rohit    | 80000  | 3       | 101        | 2026-10-10 |\n| 106    | Pooja    | 50000  | 3       | 105        | 2026-07-15 |\n| 107    | Kiran    | 95000  | 1       | 101        | 2026-10-12 |\n+--------+----------+--------+---------+------------+------------+",
+        query: "SELECT emp_id, emp_name, salary,\n       DENSE_RANK() OVER (ORDER BY salary DESC) AS salary_rank\nFROM EMPLOYEE;",
+        expectedOutput: "+--------+----------+--------+-------------+\n| emp_id | emp_name | salary | salary_rank |\n+--------+----------+--------+-------------+\n| 107    | Kiran    | 95000  | 1           |\n| 102    | Priya    | 80000  | 2           |\n| 105    | Rohit    | 80000  | 2           |\n| 104    | Sneha    | 60000  | 3           |\n| 101    | Rahul    | 55000  | 4           |\n| 106    | Pooja    | 50000  | 5           |\n| 103    | Amit     | 45000  | 6           |\n+--------+----------+--------+-------------+",
+        explanation: "DENSE_RANK() assigns identical ranks for tied values (e.g. 80,000 both receive rank 2) without skipping subsequent ranks (next rank is 3, unlike RANK()).",
       },
       {
-        id: 'sql-37',
-        category: 'Normalization & Design',
+        id: "sql-37",
+        category: "Subqueries, Joins & Advanced SQL",
         number: 37,
-        title: 'What is Data Redundancy?',
-        isQuery: false,
-        question: 'What is Data Redundancy and what problems does it cause?',
-        answer: 'Data redundancy occurs when the exact same data is stored unnecessarily in multiple places. It wastes disk space and causes data anomalies:\n1. Insertion anomaly\n2. Deletion anomaly\n3. Update anomaly (inconsistent data across rows).'
+        title: "Third-Highest Distinct Salary Using a Window Function",
+        isQuery: true,
+        difficulty: "Hard",
+        question: "Write a query to find the third-highest distinct salary using a window function.",
+        sampleTable: "EMPLOYEE Table:\n+--------+----------+--------+---------+------------+------------+\n| emp_id | emp_name | salary | dept_id | manager_id | hire_date  |\n+--------+----------+--------+---------+------------+------------+\n| 101    | Rahul    | 55000  | 1       | NULL       | 2026-09-20 |\n| 102    | Priya    | 80000  | 1       | 101        | 2026-09-25 |\n| 103    | Amit     | 45000  | 2       | 101        | 2026-08-10 |\n| 104    | Sneha    | 60000  | 2       | 103        | 2026-10-01 |\n| 105    | Rohit    | 80000  | 3       | 101        | 2026-10-10 |\n| 106    | Pooja    | 50000  | 3       | 105        | 2026-07-15 |\n| 107    | Kiran    | 95000  | 1       | 101        | 2026-10-12 |\n+--------+----------+--------+---------+------------+------------+",
+        query: "WITH SalaryRanking AS (\n    SELECT salary,\n           DENSE_RANK() OVER (ORDER BY salary DESC) AS rnk\n    FROM EMPLOYEE\n)\nSELECT DISTINCT salary AS third_highest_salary\nFROM SalaryRanking\nWHERE rnk = 3;",
+        expectedOutput: "+----------------------+\n| third_highest_salary |\n+----------------------+\n| 60000                |\n+----------------------+",
+        explanation: "DENSE_RANK() guarantees that the 3rd rank represents the 3rd highest distinct salary, irrespective of how many ties exist above it.",
       },
       {
-        id: 'sql-38',
-        category: 'Normalization & Design',
+        id: "sql-38",
+        category: "Subqueries, Joins & Advanced SQL",
         number: 38,
-        title: 'What is a Relationship between Tables?',
-        isQuery: false,
-        question: 'What are the types of relationships between tables in SQL?',
-        answer: '1. One-to-One (1:1): One row in Table A links to at most one row in Table B (e.g., User and Passport).\n2. One-to-Many (1:N): One row in Table A links to multiple rows in Table B (e.g., Department and Employees).\n3. Many-to-Many (M:N): Multiple rows in Table A link to multiple rows in Table B, implemented using a junction/bridge table (e.g., Students and Courses).'
-      }
-    ]
-  },
-
-  // ----------------------------------------------------
-  // 8. INDEXES AND PERFORMANCE (5 Questions)
-  // ----------------------------------------------------
-  {
-    name: 'Indexes & Performance',
-    questionCount: 5,
-    description: 'B-Tree indexes, clustered vs non-clustered, composite indexes, and query optimization.',
-    questions: [
+        title: "Employee's Salary Alongside Department Average",
+        isQuery: true,
+        difficulty: "Hard",
+        question: "Write a query to display each employee's salary alongside the department's average salary.",
+        sampleTable: "EMPLOYEE Table:\n+--------+----------+--------+---------+------------+------------+\n| emp_id | emp_name | salary | dept_id | manager_id | hire_date  |\n+--------+----------+--------+---------+------------+------------+\n| 101    | Rahul    | 55000  | 1       | NULL       | 2026-09-20 |\n| 102    | Priya    | 80000  | 1       | 101        | 2026-09-25 |\n| 103    | Amit     | 45000  | 2       | 101        | 2026-08-10 |\n| 104    | Sneha    | 60000  | 2       | 103        | 2026-10-01 |\n| 105    | Rohit    | 80000  | 3       | 101        | 2026-10-10 |\n| 106    | Pooja    | 50000  | 3       | 105        | 2026-07-15 |\n| 107    | Kiran    | 95000  | 1       | 101        | 2026-10-12 |\n+--------+----------+--------+---------+------------+------------+",
+        query: "SELECT emp_id, emp_name, salary, dept_id,\n       ROUND(AVG(salary) OVER (PARTITION BY dept_id), 2) AS dept_avg_salary\nFROM EMPLOYEE\nWHERE dept_id IS NOT NULL;",
+        expectedOutput: "+--------+----------+--------+---------+-----------------+\n| emp_id | emp_name | salary | dept_id | dept_avg_salary |\n+--------+----------+--------+---------+-----------------+\n| 101    | Rahul    | 55000  | 1       | 76666.67        |\n| 102    | Priya    | 80000  | 1       | 76666.67        |\n| 107    | Kiran    | 95000  | 1       | 76666.67        |\n| 103    | Amit     | 45000  | 2       | 52500.00        |\n| 104    | Sneha    | 60000  | 2       | 52500.00        |\n| 105    | Rohit    | 80000  | 3       | 80000.00        |\n+--------+----------+--------+---------+-----------------+",
+        explanation: "Window function AVG(salary) OVER (PARTITION BY dept_id) computes the department average without collapsing individual employee rows.",
+      },
       {
-        id: 'sql-39',
-        category: 'Indexes & Performance',
+        id: "sql-39",
+        category: "Subqueries, Joins & Advanced SQL",
         number: 39,
-        title: 'What is an Index?',
-        isQuery: false,
-        question: 'What is an Index in SQL and how does it work?',
-        answer: 'An index is a database data structure (typically a B-Tree) that improves the speed of data retrieval operations on a table. It works like an index in a book, allowing the database engine to find rows without scanning the entire table.'
+        title: "Employees Hired Within the Last 30 Days",
+        isQuery: true,
+        difficulty: "Hard",
+        question: "Write a query to find employees hired within the last 30 days. Assume the table has a hire_date column.",
+        sampleTable: "EMPLOYEE Table:\n+--------+----------+--------+---------+------------+------------+\n| emp_id | emp_name | salary | dept_id | manager_id | hire_date  |\n+--------+----------+--------+---------+------------+------------+\n| 101    | Rahul    | 55000  | 1       | NULL       | 2026-09-20 |\n| 102    | Priya    | 80000  | 1       | 101        | 2026-09-25 |\n| 103    | Amit     | 45000  | 2       | 101        | 2026-08-10 |\n| 104    | Sneha    | 60000  | 2       | 103        | 2026-10-01 |\n| 105    | Rohit    | 80000  | 3       | 101        | 2026-10-10 |\n| 106    | Pooja    | 50000  | 3       | 105        | 2026-07-15 |\n| 107    | Kiran    | 95000  | 1       | 101        | 2026-10-12 |\n+--------+----------+--------+---------+------------+------------+",
+        query: "SELECT emp_id, emp_name, hire_date\nFROM EMPLOYEE\nWHERE hire_date >= CURDATE() - INTERVAL 30 DAY;",
+        expectedOutput: "+--------+----------+------------+\n| emp_id | emp_name | hire_date  |\n+--------+----------+------------+\n| 101    | Rahul    | 2026-09-20 |\n| 102    | Priya    | 2026-09-25 |\n| 104    | Sneha    | 2026-10-01 |\n| 105    | Rohit    | 2026-10-10 |\n| 107    | Kiran    | 2026-10-12 |\n+--------+----------+------------+",
+        explanation: "CURDATE() returns current system date and INTERVAL 30 DAY subtracts 30 days. Matches hire dates from that cutoff date onwards.",
       },
       {
-        id: 'sql-40',
-        category: 'Indexes & Performance',
+        id: "sql-40",
+        category: "Subqueries, Joins & Advanced SQL",
         number: 40,
-        title: 'Why do we use Indexes?',
-        isQuery: false,
-        question: 'Why do we use Indexes in relational databases?',
-        answer: 'We use indexes to dramatically reduce disk I/O and query execution time for SELECT statements with WHERE, JOIN, and ORDER BY clauses, turning full table scans (O(n)) into fast index lookups (O(log n)).'
-      },
-      {
-        id: 'sql-41',
-        category: 'Indexes & Performance',
-        number: 41,
-        title: 'Advantages and Disadvantages of Indexes',
-        isQuery: false,
-        question: 'What are the advantages and disadvantages of using indexes?',
-        answer: '• Advantages: Much faster SELECT queries, faster sorting and grouping operations, enforces uniqueness.\n• Disadvantages: Consumes extra storage space and slows down INSERT, UPDATE, and DELETE operations because the index tree must be updated on every modification.'
-      },
-      {
-        id: 'sql-42',
-        category: 'Indexes & Performance',
-        number: 42,
-        title: 'What is a Composite Index?',
-        isQuery: false,
-        question: 'What is a Composite Index and what is the leftmost prefix rule?',
-        answer: 'A Composite Index is an index created on two or more columns of a table (e.g., CREATE INDEX idx_name_dept ON Employees(last_name, dept_id)). It uses the leftmost prefix rule: queries filtering by last_name, or last_name AND dept_id can use the index, but queries filtering only by dept_id cannot.'
-      },
-      {
-        id: 'sql-43',
-        category: 'Indexes & Performance',
-        number: 43,
-        title: 'How can you Optimize a Slow SQL Query?',
-        isQuery: false,
-        question: 'How can you identify and optimize a slow SQL query in production?',
-        answer: '1. Use EXPLAIN (or EXPLAIN ANALYZE) to inspect the query execution plan.\n2. Avoid SELECT *; select only required columns.\n3. Create indexes on columns used in WHERE, JOIN, and ORDER BY clauses.\n4. Avoid wildcards at the beginning of LIKE queries (e.g. LIKE "%abc" prevents index use).\n5. Use EXISTS instead of IN for subqueries.\n6. Ensure correct JOIN conditions to prevent Cartesian products.'
+        title: "Delete Duplicate Employee Records Keeping One",
+        isQuery: true,
+        difficulty: "Hard",
+        question: "Write a query to delete duplicate employee records while keeping one record for each employee name. Assume emp_id uniquely identifies each record.",
+        sampleTable: "EMPLOYEE with Duplicates:\n+--------+----------+--------+\n| emp_id | emp_name | salary |\n+--------+----------+--------+\n| 1      | Rahul    | 55000  |\n| 2      | Rahul    | 55000  |\n| 3      | Sneha    | 60000  |\n+--------+----------+--------+",
+        query: "DELETE e1 FROM EMPLOYEE e1\nINNER JOIN EMPLOYEE e2\nON e1.emp_name = e2.emp_name AND e1.emp_id > e2.emp_id;",
+        expectedOutput: "Query OK, 1 row affected (emp_id 2 removed).\nRemaining:\n+--------+----------+--------+\n| emp_id | emp_name | salary |\n+--------+----------+--------+\n| 1      | Rahul    | 55000  |\n| 3      | Sneha    | 60000  |\n+--------+----------+--------+",
+        explanation: "Self-joins EMPLOYEE on identical emp_name and e1.emp_id > e2.emp_id. Deleting e1 deletes higher-id duplicates while keeping the record with the minimum emp_id.",
       }
     ]
   }

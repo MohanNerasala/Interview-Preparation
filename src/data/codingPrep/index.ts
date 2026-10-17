@@ -38,13 +38,13 @@ export const prepSections: SectionMeta[] = [
   {
     id: 'sql',
     title: 'SQL QUERIES',
-    shortDesc: 'Master SQL Joins, Subqueries, Aggregates, Normalization, Indexes, and common real-world interview queries.',
-    topicCount: sqlPrepCategories.length, // 8 categories
-    questionCount: sqlPrepCategories.reduce((acc, c) => acc + c.questions.length, 0), // 43 questions
+    shortDesc: 'Master Basic queries, Aggregate functions, GROUP BY, Self-joins, Subqueries, and Window functions across 4 interview levels.',
+    topicCount: sqlPrepCategories.length, // 4 levels
+    questionCount: sqlPrepCategories.reduce((acc, c) => acc + c.questions.length, 0), // 40 questions
     icon: 'Database',
     accentColor: 'from-emerald-600 to-teal-600',
   },
 ];
 
 export const TOTAL_QUESTIONS_COUNT = 
-  prepSections.reduce((acc, s) => acc + s.questionCount, 0); // 138 total
+  prepSections.reduce((acc, s) => acc + s.questionCount, 0); // 135 total (65 Core Java + 30 DSA + 40 SQL)
