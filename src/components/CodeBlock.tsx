@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Check, Copy, Maximize2, Minimize2 } from 'lucide-react';
+import { Check, Copy, Maximize2, X } from 'lucide-react';
 
 interface CodeBlockProps {
   code: string;
@@ -33,33 +33,39 @@ export default function CodeBlock({ code, language = 'java', title }: CodeBlockP
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isBig]);
 
-  const defaultTitle = language === 'sql' ? 'Tested MySQL Query' : 'Complete Runnable Java Code';
+  // Clean short title that never gets squished or truncated into "Comp..."
+  const displayTitle = title && !title.toLowerCase().includes('complete runnable')
+    ? title 
+    : (language === 'sql' ? 'SQL Query' : 'Java Solution');
 
   return (
     <>
       {/* Clean Inline Code Box */}
-      <div className="rounded-xl overflow-hidden border border-slate-700/60 bg-slate-900 shadow-md my-4">
+      <div className="rounded-xl overflow-hidden border border-slate-700/70 bg-slate-900 shadow-md my-4">
         {/* Header Bar */}
-        <div className="flex items-center justify-between px-4 py-2.5 bg-slate-800/80 border-b border-slate-700/60 text-xs text-slate-300">
-          <span className="font-mono text-xs text-slate-300 font-medium truncate mr-2">
-            {title || defaultTitle}
-          </span>
+        <div className="flex items-center justify-between px-3.5 sm:px-4 py-2 bg-slate-800/90 border-b border-slate-700/60 text-xs">
+          {/* Left Title: Clean & Compact */}
+          <div className="flex items-center gap-2 min-w-0">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 shrink-0" />
+            <span className="font-mono text-xs text-slate-200 font-semibold truncate">
+              {displayTitle}
+            </span>
+          </div>
 
-          <div className="flex items-center gap-2 shrink-0">
-            {/* Big Button */}
+          {/* Right Buttons: Matching & Sleek */}
+          <div className="flex items-center gap-1.5 shrink-0">
             <button
               onClick={() => setIsBig(true)}
-              className="flex items-center gap-1.5 px-2.5 py-1 rounded bg-slate-700/60 hover:bg-slate-700 text-slate-200 hover:text-white transition-colors cursor-pointer text-xs font-medium"
-              title="Expand to Big View"
+              className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-slate-700/60 hover:bg-slate-700 text-slate-300 hover:text-white transition-colors cursor-pointer text-xs font-medium"
+              title="Expand code to Big view"
             >
               <Maximize2 className="w-3.5 h-3.5 text-blue-400" />
               <span>Big</span>
             </button>
 
-            {/* Copy Button */}
             <button
               onClick={handleCopy}
-              className="flex items-center gap-1.5 px-2.5 py-1 rounded bg-slate-700/60 hover:bg-slate-700 text-slate-200 hover:text-white transition-colors cursor-pointer text-xs font-medium"
+              className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-slate-700/60 hover:bg-slate-700 text-slate-300 hover:text-white transition-colors cursor-pointer text-xs font-medium"
               title="Copy code"
             >
               {copied ? (
@@ -77,21 +83,21 @@ export default function CodeBlock({ code, language = 'java', title }: CodeBlockP
           </div>
         </div>
 
-        {/* Code Content */}
-        <div className="p-4 overflow-x-auto text-xs sm:text-sm font-mono leading-relaxed text-slate-100">
-          <pre>
+        {/* Code Body */}
+        <div className="p-3.5 sm:p-4 overflow-x-auto text-xs sm:text-sm font-mono leading-relaxed text-slate-100">
+          <pre className="whitespace-pre">
             <code>{code}</code>
           </pre>
         </div>
       </div>
 
       {/* ======================================================== */}
-      {/* BIG FULLSCREEN VIEW */}
+      {/* BIG FULLSCREEN MODAL VIEW */}
       {/* ======================================================== */}
       <AnimatePresence>
         {isBig && (
           <div
-            className="fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-md p-3 sm:p-6 flex items-center justify-center animate-fade-in"
+            className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm p-3 sm:p-6 flex items-center justify-center animate-fade-in"
             onClick={() => setIsBig(false)}
           >
             <motion.div
@@ -99,24 +105,23 @@ export default function CodeBlock({ code, language = 'java', title }: CodeBlockP
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.96, opacity: 0 }}
               transition={{ type: 'spring', damping: 25, stiffness: 350 }}
-              className="w-full max-w-5xl h-[88vh] bg-slate-900 border border-slate-700 rounded-2xl flex flex-col shadow-2xl overflow-hidden"
+              className="w-full max-w-4xl max-h-[88vh] bg-slate-900 border border-slate-700 rounded-2xl flex flex-col shadow-2xl overflow-hidden"
               onClick={e => e.stopPropagation()}
             >
-              {/* Big Header */}
-              <div className="flex items-center justify-between px-5 sm:px-6 py-3.5 bg-slate-800/90 border-b border-slate-700/80 shrink-0">
-                <div className="flex items-center gap-2.5 min-w-0">
-                  <h3 className="font-semibold text-slate-100 text-sm sm:text-base truncate font-mono">
-                    {title || defaultTitle}
+              {/* Big Header: Clean & Spacious */}
+              <div className="flex items-center justify-between px-4 sm:px-6 py-3 bg-slate-800/95 border-b border-slate-700/80 shrink-0">
+                <div className="flex items-center gap-2 min-w-0">
+                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 shrink-0" />
+                  <h3 className="font-bold text-slate-100 text-sm sm:text-base font-mono truncate">
+                    {displayTitle}
                   </h3>
-                  <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-700 text-slate-300 uppercase">
-                    {language}
-                  </span>
                 </div>
 
                 <div className="flex items-center gap-2 shrink-0">
+                  {/* Copy Button */}
                   <button
                     onClick={handleCopy}
-                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-700 hover:bg-slate-600 text-slate-100 text-xs font-medium transition-colors cursor-pointer"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-700 hover:bg-slate-600 text-slate-200 text-xs font-medium transition-colors cursor-pointer"
                   >
                     {copied ? (
                       <>
@@ -126,25 +131,26 @@ export default function CodeBlock({ code, language = 'java', title }: CodeBlockP
                     ) : (
                       <>
                         <Copy className="w-3.5 h-3.5 text-slate-300" />
-                        <span>Copy Code</span>
+                        <span>Copy</span>
                       </>
                     )}
                   </button>
 
+                  {/* Close Button */}
                   <button
                     onClick={() => setIsBig(false)}
-                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-700 hover:bg-slate-600 text-slate-100 text-xs font-medium transition-colors cursor-pointer"
-                    title="Exit Big View (Esc)"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-700 hover:bg-rose-500/20 hover:text-rose-300 text-slate-200 text-xs font-medium transition-colors cursor-pointer"
+                    title="Close (Esc)"
                   >
-                    <Minimize2 className="w-3.5 h-3.5" />
-                    <span>Exit Big</span>
+                    <X className="w-3.5 h-3.5" />
+                    <span>Close</span>
                   </button>
                 </div>
               </div>
 
-              {/* Big Code Content */}
-              <div className="flex-1 overflow-auto p-5 sm:p-7 text-xs sm:text-sm md:text-base font-mono leading-relaxed text-slate-100 bg-slate-950">
-                <pre>
+              {/* Big Code Scrollable Body */}
+              <div className="flex-1 overflow-auto p-4 sm:p-6 text-xs sm:text-sm font-mono leading-relaxed text-slate-100 bg-slate-950">
+                <pre className="whitespace-pre">
                   <code>{code}</code>
                 </pre>
               </div>

@@ -552,7 +552,7 @@ export default function CodingPracticePage() {
                           <CodeBlock
                             code={prob.code}
                             language="java"
-                            title="Complete Runnable Java Code"
+                            title="Java Solution"
                           />
                         )}
 
@@ -560,7 +560,7 @@ export default function CodingPracticePage() {
                           <CodeBlock
                             code={prob.query}
                             language="sql"
-                            title="Tested MySQL Query"
+                            title="SQL Query"
                           />
                         )}
 
