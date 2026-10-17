@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect, useRef } from 'react';
+import React, { useState, useMemo, useEffect, useRef, useCallback } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
@@ -33,6 +33,210 @@ export interface UnifiedQuestion {
 }
 
 type SortOption = 'default' | 'easy-to-hard' | 'hard-to-easy';
+
+const difficultyBadgeStyle = (difficulty: string) => {
+  switch (difficulty) {
+    case 'Easy':
+      return 'bg-emerald-50 text-emerald-700 border-emerald-200';
+    case 'Medium':
+      return 'bg-blue-50 text-blue-700 border-blue-200';
+    case 'Hard':
+      return 'bg-purple-50 text-purple-700 border-purple-200';
+    default:
+      return 'bg-slate-100 text-slate-700 border-slate-200';
+  }
+};
+
+interface QuestionCardProps {
+  prob: UnifiedQuestion;
+  isExpanded: boolean;
+  onToggle: (id: string) => void;
+}
+
+// Optimized & Memoized Question Card for 60fps zero-lag rendering
+const QuestionCard = React.memo(function QuestionCard({
+  prob,
+  isExpanded,
+  onToggle,
+}: QuestionCardProps) {
+  return (
+    <div
+      className={`bg-white rounded-2xl border transition-colors duration-150 overflow-hidden ${
+        isExpanded
+          ? 'border-primary/40 shadow-xs'
+          : 'border-slate-200 hover:border-slate-300 hover:shadow-2xs'
+      }`}
+    >
+      {/* Accordion Header (Clickable) */}
+      <div
+        onClick={() => onToggle(prob.id)}
+        className="p-4 sm:p-5 flex items-center justify-between gap-3 cursor-pointer hover:bg-slate-50/70 transition-colors select-none"
+      >
+        <div className="flex items-start gap-3 flex-1 min-w-0">
+          {/* Blue Icon Chevron Box */}
+          <div className="p-1.5 rounded-lg bg-blue-50 text-primary shrink-0 mt-0.5">
+            <ChevronDown 
+              className={`w-4 h-4 transition-transform duration-200 ease-out ${
+                isExpanded ? 'rotate-180 text-primary' : 'rotate-0'
+              }`} 
+            />
+          </div>
+
+          <div className="min-w-0 flex-1">
+            {/* Meta Badges */}
+            <div className="flex flex-wrap items-center gap-2 mb-1.5">
+              <span className="text-[11px] font-mono font-bold px-2 py-0.5 rounded-md bg-slate-100 text-slate-700 border border-slate-200">
+                Q{prob.number < 10 ? `0${prob.number}` : prob.number}
+              </span>
+              <span className="text-[10px] font-semibold px-2 py-0.5 rounded-md bg-blue-50 text-primary border border-blue-200">
+                {prob.track}
+              </span>
+              <span className="text-[10px] font-medium px-2 py-0.5 rounded-md bg-slate-50 text-slate-600 border border-slate-200">
+                {prob.topic}
+              </span>
+              <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-md border ${difficultyBadgeStyle(prob.difficulty)}`}>
+                {prob.difficulty}
+              </span>
+            </div>
+
+            {/* Question Title */}
+            <h3 className="text-sm sm:text-base font-bold text-slate-900 group-hover:text-primary transition-colors">
+              {prob.title}
+            </h3>
+          </div>
+        </div>
+
+        {/* Toggle Button */}
+        <button
+          type="button"
+          onClick={e => {
+            e.stopPropagation();
+            onToggle(prob.id);
+          }}
+          className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-all duration-150 active:scale-95 cursor-pointer select-none shrink-0 ${
+            isExpanded
+              ? 'bg-slate-800 text-white hover:bg-slate-900'
+              : 'bg-primary text-white hover:bg-primary-dark shadow-xs'
+          }`}
+        >
+          {isExpanded ? 'Hide Solution' : 'View Solution'}
+        </button>
+      </div>
+
+      {/* Accordion Expanded Content */}
+      <AnimatePresence initial={false}>
+        {isExpanded && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+            className="overflow-hidden border-t border-slate-100"
+          >
+            <div className="p-5 sm:p-6 bg-slate-50/50 space-y-5">
+              {/* 1. THEORY INTERVIEW-READY ANSWER */}
+              {prob.answer && (
+                <div className="p-4 bg-white rounded-xl border border-blue-200/80 space-y-1.5 shadow-2xs">
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-primary flex items-center gap-1.5">
+                    <Sparkles className="w-3.5 h-3.5 text-primary" />
+                    <span>Spoken Interview Answer</span>
+                  </h4>
+                  <p className="text-xs sm:text-sm text-slate-800 leading-relaxed whitespace-pre-line font-medium">
+                    {prob.answer}
+                  </p>
+                </div>
+              )}
+
+              {/* 2. PROBLEM STATEMENT (FOR CODING / DSA) */}
+              {prob.problemStatement && (
+                <div>
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">
+                    Problem Statement
+                  </h4>
+                  <p className="text-xs sm:text-sm text-slate-800 leading-relaxed font-medium">
+                    {prob.problemStatement}
+                  </p>
+                </div>
+              )}
+
+              {/* 3. SAMPLE TABLE (FOR SQL) */}
+              {prob.sampleTable && (
+                <div>
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">
+                    Sample Table Data
+                  </h4>
+                  <div className="p-3 bg-slate-900 text-slate-100 rounded-xl text-xs font-mono overflow-x-auto shadow-2xs">
+                    <pre>{prob.sampleTable}</pre>
+                  </div>
+                </div>
+              )}
+
+              {/* 4. SAMPLE INPUT & EXPECTED OUTPUT */}
+              {(prob.input || prob.output || prob.expectedOutput) && (
+                <div>
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">
+                    Input & Expected Output
+                  </h4>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                    {prob.input && (
+                      <div className="p-3.5 bg-white rounded-xl border border-slate-200 shadow-2xs">
+                        <span className="font-semibold text-slate-500 block mb-1 text-[11px] uppercase tracking-wider">
+                          Sample Input:
+                        </span>
+                        <code className="text-slate-800 font-mono text-xs sm:text-sm font-semibold block break-all">
+                          {prob.input}
+                        </code>
+                      </div>
+                    )}
+
+                    {(prob.output || prob.expectedOutput) && (
+                      <div className="p-3.5 bg-white rounded-xl border border-emerald-200/90 shadow-2xs">
+                        <span className="font-semibold text-emerald-700 block mb-1 text-[11px] uppercase tracking-wider">
+                          Expected Output:
+                        </span>
+                        <code className="text-emerald-800 font-mono text-xs sm:text-sm font-semibold block break-all whitespace-pre-line">
+                          {prob.output || prob.expectedOutput}
+                        </code>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {/* 5. CODE / SQL QUERY (ALWAYS VISIBLE DIRECTLY) */}
+              {prob.code && (
+                <CodeBlock
+                  code={prob.code}
+                  language="java"
+                  title="Java Solution"
+                />
+              )}
+
+              {prob.query && (
+                <CodeBlock
+                  code={prob.query}
+                  language="sql"
+                  title="SQL Query"
+                />
+              )}
+
+              {/* Close Panel Button */}
+              <div className="text-right pt-1">
+                <button
+                  type="button"
+                  onClick={() => onToggle(prob.id)}
+                  className="text-primary hover:text-primary-dark font-medium text-xs cursor-pointer"
+                >
+                  Close Panel ↑
+                </button>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+});
 
 export default function CodingPracticePage() {
   const [searchParams] = useSearchParams();
@@ -78,21 +282,21 @@ export default function CodingPracticePage() {
     }
   }, [searchParams]);
 
-  const toggleExpand = (id: string) => {
+  const toggleExpand = useCallback((id: string) => {
     setExpandedIds(prev => {
       const next = new Set(prev);
       if (next.has(id)) next.delete(id);
       else next.add(id);
       return next;
     });
-  };
+  }, []);
 
-  // Build the complete Unified List of 128 Questions
+  // Build the complete Unified List of 135 Questions
   const allQuestions: UnifiedQuestion[] = useMemo(() => {
     const list: UnifiedQuestion[] = [];
     let gNum = 1;
 
-    // 1. Core Java (55 questions)
+    // 1. Core Java (65 questions)
     coreJavaTopics.forEach(topic => {
       topic.questions.forEach(q => {
         list.push({
@@ -156,9 +360,28 @@ export default function CodingPracticePage() {
     return list;
   }, []);
 
+  // Pre-calculated track counts for instant lookups
+  const trackCounts = useMemo(() => ({
+    'All': allQuestions.length,
+    'Core Java': allQuestions.filter(q => q.track === 'Core Java').length,
+    'DSA & Coding': allQuestions.filter(q => q.track === 'DSA & Coding').length,
+    'SQL Queries': allQuestions.filter(q => q.track === 'SQL Queries').length,
+  }), [allQuestions]);
+
+  const tracks = useMemo(() => [
+    { id: 'All', label: 'All Questions', count: trackCounts['All'] },
+    { id: 'Core Java', label: 'Core Java', count: trackCounts['Core Java'] },
+    { id: 'DSA & Coding', label: 'DSA & Coding', count: trackCounts['DSA & Coding'] },
+    { id: 'SQL Queries', label: 'SQL Queries', count: trackCounts['SQL Queries'] },
+  ], [trackCounts]);
+
   // Compute available Sub-Topics dynamically based on Selected Track
+  // When 'All' is selected, include all topics so the filter row is always present without layout shift
   const availableTopics = useMemo(() => {
-    if (selectedTrack === 'All') return ['All'];
+    if (selectedTrack === 'All') {
+      const topics = Array.from(new Set(allQuestions.map(q => q.topic)));
+      return ['All', ...topics];
+    }
     const topics = Array.from(
       new Set(allQuestions.filter(q => q.track === selectedTrack).map(q => q.topic))
     );
@@ -207,19 +430,6 @@ export default function CodingPracticePage() {
     return result;
   }, [allQuestions, selectedTrack, selectedTopic, selectedDifficulty, searchQuery, sortBy]);
 
-  const difficultyBadgeStyle = (difficulty: string) => {
-    switch (difficulty) {
-      case 'Easy':
-        return 'bg-emerald-50 text-emerald-700 border-emerald-200';
-      case 'Medium':
-        return 'bg-blue-50 text-blue-700 border-blue-200';
-      case 'Hard':
-        return 'bg-purple-50 text-purple-700 border-purple-200';
-      default:
-        return 'bg-slate-100 text-slate-700 border-slate-200';
-    }
-  };
-
   return (
     <div className="space-y-6 pb-24 animate-fade-in text-slate-800">
       {/* ======================================================== */}
@@ -261,47 +471,40 @@ export default function CodingPracticePage() {
       </div>
 
       {/* ======================================================== */}
-      {/* 3. PRIMARY TRACK SWITCHER PILLS (WHITE & BLUE) */}
+      {/* 3. PRIMARY TRACK SWITCHER PILLS (SMOOTH, INSTANT, ZERO BLINK) */}
       {/* ======================================================== */}
       <div className="flex items-center gap-2 p-1.5 bg-slate-100/90 rounded-2xl border border-slate-200/80 overflow-x-auto scrollbar-none relative">
-        {[
-          { id: 'All', label: 'All Questions', count: allQuestions.length },
-          { id: 'Core Java', label: 'Core Java', count: allQuestions.filter(q => q.track === 'Core Java').length },
-          { id: 'DSA & Coding', label: 'DSA & Coding', count: allQuestions.filter(q => q.track === 'DSA & Coding').length },
-          { id: 'SQL Queries', label: 'SQL Queries', count: allQuestions.filter(q => q.track === 'SQL Queries').length },
-        ].map(track => {
+        {tracks.map(track => {
           const isSelected = selectedTrack === track.id;
           return (
-            <motion.button
+            <button
               key={track.id}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.96 }}
-              transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+              type="button"
               onClick={() => {
                 setSelectedTrack(track.id);
                 setSelectedTopic('All');
               }}
-              className={`relative flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold whitespace-nowrap transition-all duration-150 cursor-pointer select-none ${
+              className={`relative flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm whitespace-nowrap transition-all duration-150 active:scale-[0.98] cursor-pointer select-none border ${
                 isSelected
-                  ? 'bg-white text-primary shadow-xs border border-blue-200/90 font-bold'
-                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/50'
+                  ? 'bg-white text-primary shadow-xs border-blue-200/90 font-bold'
+                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/60 border-transparent font-medium'
               }`}
             >
               <span>{track.label}</span>
               <span
-                className={`text-[10px] px-2 py-0.5 rounded-full font-bold transition-colors ${
+                className={`text-[10px] px-2 py-0.5 rounded-full font-bold transition-colors duration-150 ${
                   isSelected ? 'bg-blue-100 text-primary' : 'bg-slate-200 text-slate-600'
                 }`}
               >
                 {track.count}
               </span>
-            </motion.button>
+            </button>
           );
         })}
       </div>
 
       {/* ======================================================== */}
-      {/* 4. SUB-TOPIC FILTER CHIPS (WHITE & BLUE) */}
+      {/* 4. SUB-TOPIC FILTER CHIPS (STABLE, SMOOTH & RESPONSIVE) */}
       {/* ======================================================== */}
       {availableTopics.length > 1 && (
         <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none">
@@ -312,27 +515,29 @@ export default function CodingPracticePage() {
             const isSelected = selectedTopic === top;
             const count =
               top === 'All'
-                ? allQuestions.filter(q => q.track === selectedTrack).length
-                : allQuestions.filter(q => q.track === selectedTrack && q.topic === top).length;
+                ? (selectedTrack === 'All'
+                    ? allQuestions.length
+                    : allQuestions.filter(q => q.track === selectedTrack).length)
+                : (selectedTrack === 'All'
+                    ? allQuestions.filter(q => q.topic === top).length
+                    : allQuestions.filter(q => q.track === selectedTrack && q.topic === top).length);
 
             return (
-              <motion.button
+              <button
                 key={top}
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.94 }}
-                transition={{ type: 'spring', stiffness: 500, damping: 25 }}
+                type="button"
                 onClick={() => setSelectedTopic(top)}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap border transition-all cursor-pointer select-none ${
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs whitespace-nowrap border transition-all duration-150 active:scale-95 cursor-pointer select-none ${
                   isSelected
                     ? 'bg-primary text-white border-primary shadow-2xs font-bold'
-                    : 'bg-white hover:bg-slate-50 text-slate-600 hover:text-primary border-slate-200'
+                    : 'bg-white hover:bg-slate-50 text-slate-600 hover:text-primary border-slate-200 font-medium'
                 }`}
               >
                 <span>{top}</span>
                 <span className={`text-[10px] ${isSelected ? 'text-white/80' : 'text-slate-400'}`}>
                   ({count})
                 </span>
-              </motion.button>
+              </button>
             );
           })}
         </div>
@@ -358,27 +563,27 @@ export default function CodingPracticePage() {
           {/* Difficulty Filter */}
           <div className="flex items-center gap-1 p-1 bg-slate-100/90 rounded-xl border border-slate-200/60">
             {['All', 'Easy', 'Medium', 'Hard'].map(diff => (
-              <motion.button
+              <button
                 key={diff}
-                whileTap={{ scale: 0.94 }}
+                type="button"
                 onClick={() => setSelectedDifficulty(diff)}
-                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all cursor-pointer ${
+                className={`px-3 py-1.5 rounded-lg text-xs transition-all duration-150 active:scale-95 cursor-pointer border ${
                   selectedDifficulty === diff
-                    ? 'bg-white text-primary font-bold shadow-2xs border border-blue-200'
-                    : 'text-slate-600 hover:text-slate-900'
+                    ? 'bg-white text-primary font-bold shadow-2xs border-blue-200'
+                    : 'text-slate-600 hover:text-slate-900 border-transparent font-medium'
                 }`}
               >
                 {diff}
-              </motion.button>
+              </button>
             ))}
           </div>
 
           {/* Custom Modern CSS Sort Dropdown */}
           <div className="relative" ref={sortDropdownRef}>
-            <motion.button
-              whileTap={{ scale: 0.96 }}
+            <button
+              type="button"
               onClick={() => setIsSortDropdownOpen(prev => !prev)}
-              className={`flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all cursor-pointer select-none ${
+              className={`flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all duration-150 active:scale-95 cursor-pointer select-none ${
                 isSortDropdownOpen
                   ? 'bg-white text-primary border-primary shadow-xs ring-2 ring-primary/10'
                   : 'bg-slate-100 hover:bg-white text-slate-700 hover:text-slate-900 border-slate-200/80 shadow-2xs'
@@ -391,7 +596,7 @@ export default function CodingPracticePage() {
                   isSortDropdownOpen ? 'rotate-180 text-primary' : ''
                 }`}
               />
-            </motion.button>
+            </button>
 
             {/* Custom Animated Popup Menu */}
             <AnimatePresence>
@@ -408,6 +613,7 @@ export default function CodingPracticePage() {
                     return (
                       <button
                         key={opt}
+                        type="button"
                         onClick={() => {
                           setSortBy(opt);
                           setIsSortDropdownOpen(false);
@@ -435,6 +641,7 @@ export default function CodingPracticePage() {
         <span>Showing {filteredQuestions.length} of {allQuestions.length} interview questions</span>
         {searchQuery && (
           <button
+            type="button"
             onClick={() => setSearchQuery('')}
             className="text-primary hover:underline font-semibold cursor-pointer"
           >
@@ -444,7 +651,7 @@ export default function CodingPracticePage() {
       </div>
 
       {/* ======================================================== */}
-      {/* 6. CLEAN ACCORDION LIST (WHITE & BLUE THEME) */}
+      {/* 6. CLEAN ACCORDION LIST (INSTANT 60FPS, MEMOIZED, NO FLICKER) */}
       {/* ======================================================== */}
       <div className="space-y-3">
         {filteredQuestions.length === 0 ? (
@@ -454,192 +661,14 @@ export default function CodingPracticePage() {
             <p className="text-xs text-slate-400">Try adjusting your search query or filters.</p>
           </div>
         ) : (
-          filteredQuestions.map(prob => {
-            const isExpanded = expandedIds.has(prob.id);
-
-            return (
-              <motion.div
-                key={prob.id}
-                layout
-                transition={{ duration: 0.2 }}
-                className={`bg-white rounded-2xl border transition-all duration-200 overflow-hidden ${
-                  isExpanded
-                    ? 'border-primary/40 shadow-xs'
-                    : 'border-slate-200 hover:border-slate-300 hover:shadow-2xs'
-                }`}
-              >
-                {/* Accordion Header (Clickable) */}
-                <motion.div
-                  whileTap={{ scale: 0.995 }}
-                  onClick={() => toggleExpand(prob.id)}
-                  className="p-4 sm:p-5 flex items-center justify-between gap-3 cursor-pointer hover:bg-slate-50/70 transition-colors select-none"
-                >
-                  <div className="flex items-start gap-3 flex-1 min-w-0">
-                    {/* Blue Icon Chevron Box */}
-                    <div className="p-1.5 rounded-lg bg-blue-50 text-primary shrink-0 mt-0.5">
-                      <ChevronDown 
-                        className={`w-4 h-4 transition-transform duration-300 ease-out ${
-                          isExpanded ? 'rotate-180 text-primary' : 'rotate-0'
-                        }`} 
-                      />
-                    </div>
-
-                    <div className="min-w-0 flex-1">
-                      {/* Meta Badges */}
-                      <div className="flex flex-wrap items-center gap-2 mb-1.5">
-                        <span className="text-[11px] font-mono font-bold px-2 py-0.5 rounded-md bg-slate-100 text-slate-700 border border-slate-200">
-                          Q{prob.number < 10 ? `0${prob.number}` : prob.number}
-                        </span>
-                        <span className="text-[10px] font-semibold px-2 py-0.5 rounded-md bg-blue-50 text-primary border border-blue-200">
-                          {prob.track}
-                        </span>
-                        <span className="text-[10px] font-medium px-2 py-0.5 rounded-md bg-slate-50 text-slate-600 border border-slate-200">
-                          {prob.topic}
-                        </span>
-                        <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-md border ${difficultyBadgeStyle(prob.difficulty)}`}>
-                          {prob.difficulty}
-                        </span>
-                      </div>
-
-                      {/* Question Title */}
-                      <h3 className="text-sm sm:text-base font-bold text-slate-900 group-hover:text-primary transition-colors">
-                        {prob.title}
-                      </h3>
-                    </div>
-                  </div>
-
-                  {/* Toggle Button */}
-                  <motion.button
-                    whileHover={{ scale: 1.04 }}
-                    whileTap={{ scale: 0.93 }}
-                    transition={{ type: 'spring', stiffness: 500, damping: 25 }}
-                    onClick={e => {
-                      e.stopPropagation();
-                      toggleExpand(prob.id);
-                    }}
-                    className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-all cursor-pointer select-none shrink-0 ${
-                      isExpanded
-                        ? 'bg-slate-800 text-white hover:bg-slate-900'
-                        : 'bg-primary text-white hover:bg-primary-dark shadow-xs'
-                    }`}
-                  >
-                    {isExpanded ? 'Hide Solution' : 'View Solution'}
-                  </motion.button>
-                </motion.div>
-
-                {/* Accordion Expanded Content: strictly question, input, output, code */}
-                <AnimatePresence initial={false}>
-                  {isExpanded && (
-                    <motion.div
-                      initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: 'auto' }}
-                      exit={{ opacity: 0, height: 0 }}
-                      transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
-                      className="overflow-hidden border-t border-slate-100"
-                    >
-                      <div className="p-5 sm:p-6 bg-slate-50/50 space-y-5">
-                        {/* 1. THEORY INTERVIEW-READY ANSWER */}
-                        {prob.answer && (
-                          <div className="p-4 bg-white rounded-xl border border-blue-200/80 space-y-1.5 shadow-2xs">
-                            <h4 className="text-xs font-bold uppercase tracking-wider text-primary flex items-center gap-1.5">
-                              <Sparkles className="w-3.5 h-3.5 text-primary" />
-                              <span>Spoken Interview Answer</span>
-                            </h4>
-                            <p className="text-xs sm:text-sm text-slate-800 leading-relaxed whitespace-pre-line font-medium">
-                              {prob.answer}
-                            </p>
-                          </div>
-                        )}
-
-                        {/* 2. PROBLEM STATEMENT (FOR CODING / DSA) */}
-                        {prob.problemStatement && (
-                          <div>
-                            <h4 className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">
-                              Problem Statement
-                            </h4>
-                            <p className="text-xs sm:text-sm text-slate-800 leading-relaxed font-medium">
-                              {prob.problemStatement}
-                            </p>
-                          </div>
-                        )}
-
-                        {/* 3. SAMPLE TABLE (FOR SQL) */}
-                        {prob.sampleTable && (
-                          <div>
-                            <h4 className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">
-                              Sample Table Data
-                            </h4>
-                            <div className="p-3 bg-slate-900 text-slate-100 rounded-xl text-xs font-mono overflow-x-auto shadow-2xs">
-                              <pre>{prob.sampleTable}</pre>
-                            </div>
-                          </div>
-                        )}
-
-                        {/* 4. SAMPLE INPUT & EXPECTED OUTPUT */}
-                        {(prob.input || prob.output || prob.expectedOutput) && (
-                          <div>
-                            <h4 className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">
-                              Input & Expected Output
-                            </h4>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-                              {prob.input && (
-                                <div className="p-3.5 bg-white rounded-xl border border-slate-200 shadow-2xs">
-                                  <span className="font-semibold text-slate-500 block mb-1 text-[11px] uppercase tracking-wider">
-                                    Sample Input:
-                                  </span>
-                                  <code className="text-slate-800 font-mono text-xs sm:text-sm font-semibold block break-all">
-                                    {prob.input}
-                                  </code>
-                                </div>
-                              )}
-
-                              {(prob.output || prob.expectedOutput) && (
-                                <div className="p-3.5 bg-white rounded-xl border border-emerald-200/90 shadow-2xs">
-                                  <span className="font-semibold text-emerald-700 block mb-1 text-[11px] uppercase tracking-wider">
-                                    Expected Output:
-                                  </span>
-                                  <code className="text-emerald-800 font-mono text-xs sm:text-sm font-semibold block break-all whitespace-pre-line">
-                                    {prob.output || prob.expectedOutput}
-                                  </code>
-                                </div>
-                              )}
-                            </div>
-                          </div>
-                        )}
-
-                        {/* 5. CODE / SQL QUERY (ALWAYS VISIBLE DIRECTLY) */}
-                        {prob.code && (
-                          <CodeBlock
-                            code={prob.code}
-                            language="java"
-                            title="Java Solution"
-                          />
-                        )}
-
-                        {prob.query && (
-                          <CodeBlock
-                            code={prob.query}
-                            language="sql"
-                            title="SQL Query"
-                          />
-                        )}
-
-                        {/* Close Panel Button */}
-                        <div className="text-right pt-1">
-                          <button
-                            onClick={() => toggleExpand(prob.id)}
-                            className="text-primary hover:text-primary-dark font-medium text-xs cursor-pointer"
-                          >
-                            Close Panel ↑
-                          </button>
-                        </div>
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </motion.div>
-            );
-          })
+          filteredQuestions.map(prob => (
+            <QuestionCard
+              key={prob.id}
+              prob={prob}
+              isExpanded={expandedIds.has(prob.id)}
+              onToggle={toggleExpand}
+            />
+          ))
         )}
       </div>
     </div>
