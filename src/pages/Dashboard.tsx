@@ -9,6 +9,7 @@ import {
 import { allTopics, getTotalConcepts, getTotalQuestions } from '../data';
 import type { CodeProgram } from '../types';
 import FormattedDefinitionBox from '../components/FormattedDefinitionBox';
+import CodeBlock from '../components/CodeBlock';
 
 type FilterCategory = 'all' | 'core-java' | 'sql' | 'frontend' | 'backend' | 'hr-round';
 
@@ -55,70 +56,9 @@ const menvyProjectParagraphs = [
 const fullSelfIntroSpeech = selfIntroParagraphs.join('\n\n');
 const fullMenvySpeech = menvyProjectParagraphs.join('\n\n');
 
-// Clean small-size code viewer with line numbers and copy button (reduced font size, no jumping)
-function CleanCodeViewer({ code }: { code: string; title?: string }) {
-  const [copied, setCopied] = useState(false);
-  const lines = code.trim().split('\n');
-
-  const handleCopy = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    navigator.clipboard.writeText(code);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
-
-  return (
-    <div className="rounded-xl overflow-hidden border border-slate-800 bg-slate-950 shadow-sm">
-      {/* Code Header Bar */}
-      <div className="flex items-center justify-between px-3 sm:px-4 py-2 bg-slate-900 border-b border-slate-800 text-xs">
-        <div className="flex items-center gap-2">
-          <Code className="w-3.5 h-3.5 text-primary" />
-          <span className="font-semibold text-slate-200 text-[11px] sm:text-xs">Java Source Code</span>
-          <span className="text-[9px] font-mono px-1.5 py-0.2 rounded bg-slate-800 text-slate-400 border border-slate-700 shrink-0">
-            JAVA
-          </span>
-          <span className="text-[10px] text-slate-500 font-mono hidden sm:inline">
-            ({lines.length} lines)
-          </span>
-        </div>
-
-        <button
-          onClick={handleCopy}
-          className="inline-flex items-center gap-1 px-2 py-0.8 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-[11px] font-medium transition-colors cursor-pointer shrink-0"
-        >
-          {copied ? (
-            <>
-              <Check className="w-3 h-3 text-emerald-400" />
-              <span className="text-emerald-400 font-semibold text-[10px]">Copied!</span>
-            </>
-          ) : (
-            <>
-              <Copy className="w-3 h-3 text-slate-400" />
-              <span className="text-[10px]">Copy</span>
-            </>
-          )}
-        </button>
-      </div>
-
-      {/* Code Lines with Line Numbers - Reduced Font Size */}
-      <div className="p-2 sm:p-3 overflow-x-auto max-h-[260px] sm:max-h-[320px] overflow-y-auto text-[11px] sm:text-xs font-mono leading-tight sm:leading-snug text-slate-100">
-        <table className="border-collapse w-full">
-          <tbody>
-            {lines.map((line, idx) => (
-              <tr key={idx} className="hover:bg-slate-900/60 transition-colors">
-                <td className="pr-2 sm:pr-3 text-right text-slate-500 select-none text-[10px] font-mono w-6 sm:w-7 align-top py-0.5">
-                  {idx + 1}
-                </td>
-                <td className="whitespace-pre font-mono text-slate-200 pl-2 border-l border-slate-800/80 py-0.5">
-                  {line}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </div>
-  );
+// Clean code viewer with Big fullscreen view, line numbers, and copy button
+function CleanCodeViewer({ code, title }: { code: string; title?: string }) {
+  return <CodeBlock code={code} language="java" title={title || "Java Source Code"} />;
 }
 
 export default function Dashboard() {
