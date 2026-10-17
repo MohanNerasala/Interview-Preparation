@@ -14,15 +14,11 @@ const navItems = [
     path: '/', 
     icon: LayoutDashboard, 
     label: 'Concepts',
-    badge: '10 Modules',
-    badgeColor: 'bg-slate-100 text-slate-700 border border-slate-200'
   },
   { 
     path: '/coding', 
     icon: Code2, 
     label: 'Core Java, DSA & SQL',
-    badge: '128 Qs',
-    badgeColor: 'bg-slate-900 text-white font-bold'
   },
 ];
 
@@ -81,29 +77,34 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                     <span className="tracking-tight">{item.label}</span>
                   </div>
 
-                  <div className="flex items-center gap-1.5 relative z-10">
-                    <span className={`text-[10px] px-2 py-0.5 rounded-full ${item.badgeColor}`}>
-                      {item.badge}
-                    </span>
-                    <ChevronRight className="w-3.5 h-3.5 text-slate-400 group-hover:translate-x-1 transition-transform duration-200" />
-                  </div>
+                  <ChevronRight className="w-3.5 h-3.5 text-slate-400 group-hover:translate-x-1 transition-transform duration-200 relative z-10" />
                 </motion.div>
               </NavLink>
             );
           })}
         </nav>
 
-        {/* Bottom Card */}
+        {/* Bottom Card - Featured 128 Questions */}
         <motion.div 
           whileHover={{ y: -2 }}
-          className="p-4 m-3 rounded-2xl bg-slate-900 text-white shadow-md relative overflow-hidden cursor-default select-none"
+          className="p-4 m-3 rounded-2xl bg-slate-900 text-white shadow-md relative overflow-hidden cursor-default select-none border border-slate-800"
         >
-          <div className="flex items-center gap-2 mb-1.5">
-            <Sparkles className="w-3.5 h-3.5 text-slate-300" />
-            <span className="text-[11px] font-bold text-slate-200 uppercase tracking-wider">Interview Ready</span>
+          <div className="flex items-center justify-between mb-2">
+            <div className="flex items-center gap-1.5">
+              <Sparkles className="w-3.5 h-3.5 text-slate-300" />
+              <span className="text-[11px] font-bold text-slate-200 uppercase tracking-wider">
+                Interview Ready
+              </span>
+            </div>
+            <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-slate-800 text-slate-200 border border-slate-700">
+              128 Qs
+            </span>
           </div>
-          <p className="text-[11px] text-slate-300 leading-snug">
-            128 Core Java, DSA, and SQL queries with complete solutions.
+          <p className="text-xs font-semibold text-white mb-0.5">
+            Core Java, DSA & SQL
+          </p>
+          <p className="text-[11px] text-slate-400 leading-relaxed">
+            55 Core Java • 30 DSA • 43 SQL Queries with solutions.
           </p>
         </motion.div>
       </aside>
@@ -143,7 +144,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
               </motion.button>
             </div>
 
-            <nav className="flex-1 py-5 px-3 space-y-2.5 overflow-y-auto">
+            <nav className="flex-1 py-5 px-3 space-y-2 overflow-y-auto">
               {navItems.map(item => {
                 const isActive = location.pathname === item.path;
                 const Icon = item.icon;
@@ -162,7 +163,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                       className={`relative flex items-center justify-between px-4 py-3.5 rounded-2xl text-sm font-semibold transition-all duration-200 cursor-pointer select-none group border ${
                         isActive 
                           ? 'bg-slate-100 text-slate-950 border-slate-400 shadow-xs' 
-                          : 'bg-white hover:bg-slate-50 text-slate-600 border-slate-200'
+                          : 'bg-white hover:bg-slate-50 text-slate-700 border-slate-200'
                       }`}
                     >
                       <div className="flex items-center gap-3">
@@ -174,23 +175,36 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                         <span className="tracking-tight">{item.label}</span>
                       </div>
 
-                      <div className="flex items-center gap-2">
-                        <span className={`text-[10px] px-2 py-0.5 rounded-full ${item.badgeColor}`}>
-                          {item.badge}
-                        </span>
-                        <ChevronRight className="w-4 h-4 text-slate-400 group-hover:translate-x-1 transition-transform duration-200" />
-                      </div>
+                      <ChevronRight className="w-4 h-4 text-slate-400 group-hover:translate-x-1 transition-transform duration-200" />
                     </motion.div>
                   </NavLink>
                 );
               })}
             </nav>
 
-            {/* Mobile Footer Card */}
-            <div className="p-4 border-t border-slate-100 m-3 rounded-2xl bg-slate-50 text-center select-none">
-              <span className="text-xs font-bold text-slate-800 block">Java Full-Stack Prep</span>
-              <span className="text-[11px] text-slate-400">Concepts • DSA • SQL Queries</span>
-            </div>
+            {/* Mobile Footer Card - Featured 128 Questions */}
+            <motion.div 
+              whileHover={{ y: -2 }}
+              className="p-4 m-3 rounded-2xl bg-slate-900 text-white shadow-md relative overflow-hidden cursor-default select-none border border-slate-800"
+            >
+              <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center gap-1.5">
+                  <Sparkles className="w-3.5 h-3.5 text-slate-300" />
+                  <span className="text-[11px] font-bold text-slate-200 uppercase tracking-wider">
+                    Interview Ready
+                  </span>
+                </div>
+                <span className="text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-full bg-slate-800 text-slate-200 border border-slate-700">
+                  128 Qs
+                </span>
+              </div>
+              <p className="text-xs font-semibold text-white mb-0.5">
+                Core Java, DSA & SQL
+              </p>
+              <p className="text-[11px] text-slate-400 leading-relaxed">
+                55 Core Java • 30 DSA • 43 SQL Queries with solutions.
+              </p>
+            </motion.div>
           </motion.aside>
         )}
       </AnimatePresence>
