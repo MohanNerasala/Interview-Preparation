@@ -1865,66 +1865,87 @@ public class BalancedParentheses {
   },
 
   // ----------------------------------------------------
-  // TOPIC 4: EXCEPTION HANDLING (5 Questions)
+  // TOPIC: EXCEPTION HANDLING (5 Questions)
   // ----------------------------------------------------
   {
     id: 'exceptions',
     title: 'Exception Handling',
     questionCount: 5,
-    description: '5 high-impact Exception Handling interview questions covering try-catch-finally, checked vs unchecked, and custom exceptions.',
+    description: "5 essential Exception Handling interview coding programs covering try-catch, multiple catch blocks, custom exceptions, propagation, and finally block.",
     questions: [
       {
-        id: 'cj-ex-1',
-        topicId: 'exceptions',
+        id: "cj-ex-1",
+        topicId: "exceptions",
         number: 1,
-        title: 'What is an Exception? Error vs Exception',
-        isCoding: false,
-        difficulty: 'Easy',
-        question: 'What is an Exception in Java? What is the difference between Error and Exception?',
-        answer: 'An Exception is an abnormal condition that occurs during program execution that can be caught and handled.\n• Error: Serious, fatal JVM-level problem that programs cannot recover from (e.g., OutOfMemoryError, StackOverflowError).\n• Exception: Conditions that an application can anticipate and recover from (e.g., IOException, NullPointerException).'
-      },
-      {
-        id: 'cj-ex-2',
-        topicId: 'exceptions',
-        number: 2,
-        title: 'Difference between Checked and Unchecked Exceptions',
-        isCoding: false,
-        difficulty: 'Easy',
-        question: 'What is the difference between Checked and Unchecked Exceptions?',
-        answer: '• Checked Exceptions: Checked at compile-time. Must be handled with try-catch or declared with throws (e.g., IOException, SQLException).\n• Unchecked Exceptions: Occur at runtime (subclasses of RuntimeException). Not checked by compiler (e.g., NullPointerException, ArithmeticException).'
-      },
-      {
-        id: 'cj-ex-3',
-        topicId: 'exceptions',
-        number: 3,
-        title: 'Explain try, catch, and finally',
-        isCoding: false,
-        difficulty: 'Easy',
-        question: 'Explain the purpose of try, catch, and finally blocks.',
-        answer: '• try: Encloses code that might throw an exception.\n• catch: Catches and handles the thrown exception.\n• finally: Always executes after try and catch blocks, whether an exception occurred or not (used for releasing resources like closing files or DB connections), unless System.exit(0) is called.'
-      },
-      {
-        id: 'cj-ex-4',
-        topicId: 'exceptions',
-        number: 4,
-        title: 'Difference between throw and throws',
-        isCoding: false,
-        difficulty: 'Easy',
-        question: 'What is the difference between throw and throws in Java?',
-        answer: '• throw: A keyword used inside a method body to explicitly throw an exception object (e.g., throw new IllegalArgumentException()).\n• throws: A keyword used in the method signature to declare exceptions that the caller must handle (e.g., void readFile() throws IOException).'
-      },
-      {
-        id: 'cj-ex-5',
-        topicId: 'exceptions',
-        number: 5,
-        title: 'What is a Custom Exception? Write a Program',
+        title: "Handle ArithmeticException Using try-catch",
         isCoding: true,
-        difficulty: 'Medium',
-        question: 'What is a custom exception in Java? Write a complete program to demonstrate defining and throwing a custom exception.',
-        problemStatement: 'Define a user-defined checked exception by extending Exception and throw it when age is less than 18.',
-        input: 'int age = 15;',
-        output: 'Caught Custom Exception: Age 15 is not eligible to vote',
-        code: `// 1. Defining custom exception class
+        difficulty: "Easy",
+        question: "Write a Java program to handle ArithmeticException using try-catch.",
+        input: "int a = 10, b = 0;",
+        output: "Cannot divide by zero: / by zero\nProgram execution continues normally.",
+        explanation: "Division by zero throws an ArithmeticException at runtime. Enclosing the division in a try block and handling it with a catch block prevents program termination.",
+        code: `public class ArithmeticExceptionDemo {
+    public static void main(String[] args) {
+        int a = 10;
+        int b = 0;
+
+        try {
+            int result = a / b;
+            System.out.println("Result: " + result);
+        } catch (ArithmeticException e) {
+            System.out.println("Cannot divide by zero: " + e.getMessage());
+        }
+
+        System.out.println("Program execution continues normally.");
+    }
+}`
+      },
+      {
+        id: "cj-ex-2",
+        topicId: "exceptions",
+        number: 2,
+        title: "Handle Multiple Exceptions Using Multiple Catch Blocks",
+        isCoding: true,
+        difficulty: "Easy",
+        question: "Write a Java program to handle multiple exceptions using multiple catch blocks.",
+        input: "int[] numbers = new int[5]; int a = 10, b = 2; numbers[10] = 50;",
+        output: "Division: 5\nArray index out of bounds: Index 10 out of bounds for length 5\nExecution finished safely.",
+        explanation: "Multiple catch blocks allow specific handling for each exception type. Subclasses must be caught before parent Exception classes to avoid unreachable code compile errors.",
+        code: `public class MultipleCatchDemo {
+    public static void main(String[] args) {
+        try {
+            int[] numbers = new int[5];
+            int a = 10;
+            int b = 2;
+            int div = a / b;
+            System.out.println("Division: " + div);
+
+            // Accessing invalid index throws ArrayIndexOutOfBoundsException
+            numbers[10] = 50;
+        } catch (ArithmeticException e) {
+            System.out.println("Arithmetic Exception caught: " + e.getMessage());
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.out.println("Array index out of bounds: " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("General Exception caught: " + e.getMessage());
+        }
+
+        System.out.println("Execution finished safely.");
+    }
+}`
+      },
+      {
+        id: "cj-ex-3",
+        topicId: "exceptions",
+        number: 3,
+        title: "Create and Handle Custom Exception (InvalidAgeException)",
+        isCoding: true,
+        difficulty: "Medium",
+        question: "Write a Java program to create and handle a custom exception called InvalidAgeException.",
+        input: "int age = 15;",
+        output: "Caught Custom Exception: Invalid age: 15. Must be 18 or above to vote.",
+        explanation: "Custom exceptions extend Exception (checked) or RuntimeException (unchecked). Throw the instance using 'throw new InvalidAgeException(...)' and catch it with try-catch.",
+        code: `// Custom Exception class
 class InvalidAgeException extends Exception {
     public InvalidAgeException(String message) {
         super(message);
@@ -1932,20 +1953,83 @@ class InvalidAgeException extends Exception {
 }
 
 public class CustomExceptionDemo {
-    // 2. Declaring throws in method signature
     static void validateAge(int age) throws InvalidAgeException {
         if (age < 18) {
-            throw new InvalidAgeException("Age " + age + " is not eligible to vote");
+            throw new InvalidAgeException("Invalid age: " + age + ". Must be 18 or above to vote.");
         }
-        System.out.println("Eligible to vote!");
+        System.out.println("Age is valid. Eligible to vote!");
+    }
+
+    public static void main(String[] args) {
+        int age = 15;
+        try {
+            validateAge(age);
+        } catch (InvalidAgeException e) {
+            System.out.println("Caught Custom Exception: " + e.getMessage());
+        }
+    }
+}`
+      },
+      {
+        id: "cj-ex-4",
+        topicId: "exceptions",
+        number: 4,
+        title: "Demonstrate Exception Propagation Using throws",
+        isCoding: true,
+        difficulty: "Medium",
+        question: "Write a Java program to demonstrate exception propagation using throws.",
+        input: "Call methodA() -> methodB() -> methodC() with 50 / 0",
+        output: "Exception caught in main: / by zero\nProgram terminated gracefully.",
+        explanation: "When an exception occurs, JVM walks up the call stack looking for a matching catch block. If not caught, it propagates to the caller method until caught or handled by JVM.",
+        code: `public class ExceptionPropagationDemo {
+    // Exception originates in methodC and propagates up the call stack
+    static void methodC() {
+        int result = 50 / 0; // Unchecked ArithmeticException
+    }
+
+    static void methodB() {
+        methodC();
+    }
+
+    static void methodA() {
+        methodB();
     }
 
     public static void main(String[] args) {
         try {
-            validateAge(15);
-        } catch (InvalidAgeException e) {
-            System.out.println("Caught Custom Exception: " + e.getMessage());
+            methodA();
+        } catch (ArithmeticException e) {
+            System.out.println("Exception caught in main: " + e.getMessage());
         }
+
+        System.out.println("Program terminated gracefully.");
+    }
+}`
+      },
+      {
+        id: "cj-ex-5",
+        topicId: "exceptions",
+        number: 5,
+        title: "Demonstrate Execution of the finally Block",
+        isCoding: true,
+        difficulty: "Easy",
+        question: "Write a Java program to demonstrate the execution of the finally block in exception handling.",
+        input: "int data = 25 / 0;",
+        output: "Inside try block (divide by zero)\nInside catch block: / by zero\nInside finally block: Cleanup executed!\nProgram continues after try-catch-finally.",
+        explanation: "The finally block always executes whether an exception occurs, is caught, or does not occur at all. It is primarily used to close file streams and database connections.",
+        code: `public class FinallyBlockDemo {
+    public static void main(String[] args) {
+        try {
+            System.out.println("Inside try block (divide by zero)");
+            int data = 25 / 0;
+            System.out.println("Result: " + data);
+        } catch (ArithmeticException e) {
+            System.out.println("Inside catch block: " + e.getMessage());
+        } finally {
+            System.out.println("Inside finally block: Cleanup executed!");
+        }
+
+        System.out.println("Program continues after try-catch-finally.");
     }
 }`
       }
@@ -1953,59 +2037,87 @@ public class CustomExceptionDemo {
   },
 
   // ----------------------------------------------------
-  // TOPIC 5: MULTITHREADING (5 Questions)
+  // TOPIC: MULTITHREADING (5 Questions)
   // ----------------------------------------------------
   {
     id: 'multithreading',
     title: 'Multithreading',
     questionCount: 5,
-    description: '5 essential Multithreading interview questions covering thread creation, start() vs run(), synchronization, and deadlocks.',
+    description: "5 essential Multithreading interview coding programs covering Thread class, Runnable interface, synchronized keyword, wait/notify, and sleep/join/priority.",
     questions: [
       {
-        id: 'cj-mt-1',
-        topicId: 'multithreading',
+        id: "cj-mt-1",
+        topicId: "multithreading",
         number: 1,
-        title: 'What is Multithreading? How do you create a thread?',
-        isCoding: false,
-        difficulty: 'Easy',
-        question: 'What is Multithreading in Java? How can we create a thread?',
-        answer: 'Multithreading is executing multiple threads concurrently within a single program to maximize CPU utilization.\nIn Java, threads are created in two ways:\n1. Extending the Thread class and overriding run().\n2. Implementing the Runnable interface and passing it to a Thread object (preferred approach).'
-      },
-      {
-        id: 'cj-mt-2',
-        topicId: 'multithreading',
-        number: 2,
-        title: 'Difference between Thread and Runnable',
-        isCoding: false,
-        difficulty: 'Easy',
-        question: 'What is the difference between extending Thread and implementing Runnable?',
-        answer: '• Extending Thread: A class cannot extend any other class because Java does not support multiple inheritance of classes.\n• Implementing Runnable: Recommended because the class can still extend another class, promotes loose coupling, and supports lambda expressions.'
-      },
-      {
-        id: 'cj-mt-3',
-        topicId: 'multithreading',
-        number: 3,
-        title: 'Difference between start() and run()',
-        isCoding: false,
-        difficulty: 'Easy',
-        question: 'What is the difference between start() and run() in Multithreading?',
-        answer: '• start(): Spawns a new operating system thread and then internally invokes the run() method asynchronously.\n• run(): If called directly, executes like a normal synchronous method in the current thread without starting a new thread.'
-      },
-      {
-        id: 'cj-mt-4',
-        topicId: 'multithreading',
-        number: 4,
-        title: 'What is Synchronization? Explain with an example',
+        title: "Create a Thread by Extending Thread Class",
         isCoding: true,
-        difficulty: 'Medium',
-        question: 'What is Synchronization in Java? Write a program demonstrating a synchronized method to prevent race conditions.',
-        problemStatement: 'Use the synchronized keyword on a shared counter method so only one thread can modify count at a time.',
-        input: 'Two threads incrementing shared counter 1000 times each',
-        output: 'Final Count: 2000',
+        difficulty: "Easy",
+        question: "Write a Java program to create a thread by extending the Thread class.",
+        input: "MyThread t1 = new MyThread(); t1.start();",
+        output: "Main thread running: main\nWorker thread running: Thread-0\nThread-0 -> Count: 1\nThread-0 -> Count: 2\nThread-0 -> Count: 3",
+        explanation: "Extending Thread requires overriding run(). Calling start() initiates a new thread of execution in JVM.",
+        code: `class MyThread extends Thread {
+    @Override
+    public void run() {
+        System.out.println("Worker thread running: " + Thread.currentThread().getName());
+        for (int i = 1; i <= 3; i++) {
+            System.out.println(Thread.currentThread().getName() + " -> Count: " + i);
+        }
+    }
+}
+
+public class ThreadClassDemo {
+    public static void main(String[] args) {
+        System.out.println("Main thread running: " + Thread.currentThread().getName());
+        MyThread t1 = new MyThread();
+        t1.start(); // Spawns new thread and invokes run() asynchronously
+    }
+}`
+      },
+      {
+        id: "cj-mt-2",
+        topicId: "multithreading",
+        number: 2,
+        title: "Create a Thread by Implementing Runnable Interface",
+        isCoding: true,
+        difficulty: "Easy",
+        question: "Write a Java program to create a thread by implementing the Runnable interface.",
+        input: "Thread t = new Thread(new MyRunnableTask()); t.start();",
+        output: "Runnable task executing on thread: Thread-0\nTask iteration: 1\nTask iteration: 2\nTask iteration: 3",
+        explanation: "Implementing Runnable is preferred because Java only supports single class inheritance. The class remains open to extend another base class.",
+        code: `class MyRunnableTask implements Runnable {
+    @Override
+    public void run() {
+        System.out.println("Runnable task executing on thread: " + Thread.currentThread().getName());
+        for (int i = 1; i <= 3; i++) {
+            System.out.println("Task iteration: " + i);
+        }
+    }
+}
+
+public class RunnableInterfaceDemo {
+    public static void main(String[] args) {
+        MyRunnableTask task = new MyRunnableTask();
+        Thread thread = new Thread(task);
+        thread.start();
+    }
+}`
+      },
+      {
+        id: "cj-mt-3",
+        topicId: "multithreading",
+        number: 3,
+        title: "Demonstrate Thread Synchronization Using synchronized",
+        isCoding: true,
+        difficulty: "Medium",
+        question: "Write a Java program to demonstrate thread synchronization using the synchronized keyword.",
+        input: "2 threads incrementing a shared counter 1,000 times each",
+        output: "Final synchronized counter value: 2000 (Consistent & Thread-Safe)",
+        explanation: "synchronized ensures that only one thread executes increment() at a time on the counter instance, preventing race conditions and lost updates.",
         code: `class Counter {
     private int count = 0;
 
-    // synchronized ensures only one thread executes at a time
+    // synchronized keyword prevents race conditions
     public synchronized void increment() {
         count++;
     }
@@ -2015,7 +2127,7 @@ public class CustomExceptionDemo {
     }
 }
 
-public class SyncDemo {
+public class SynchronizationDemo {
     public static void main(String[] args) throws InterruptedException {
         Counter counter = new Counter();
 
@@ -2029,22 +2141,111 @@ public class SyncDemo {
 
         t1.start();
         t2.start();
+
         t1.join();
         t2.join();
 
-        System.out.println("Final Count: " + counter.getCount());
+        System.out.println("Final synchronized counter value: " + counter.getCount());
     }
 }`
       },
       {
-        id: 'cj-mt-5',
-        topicId: 'multithreading',
+        id: "cj-mt-4",
+        topicId: "multithreading",
+        number: 4,
+        title: "Demonstrate Inter-Thread Communication Using wait() and notify()",
+        isCoding: true,
+        difficulty: "Hard",
+        question: "Write a Java program to demonstrate inter-thread communication using wait(), notify(), and notifyAll().",
+        input: "withdrawThread attempts to withdraw 15000 -> waits; depositThread deposits 20000 -> notifies",
+        output: "Withdrawing 15000...\nInsufficient balance (10000). Waiting for deposit...\nDepositing 20000...\nDeposit completed. Notifying waiting threads...\nWithdrawal of 15000 completed! Remaining balance: 15000",
+        explanation: "wait() releases the monitor lock and suspends the thread. notify() wakes up a waiting thread once state changes (e.g., funds deposited).",
+        code: `class BankAccount {
+    private int balance = 10000;
+
+    public synchronized void withdraw(int amount) {
+        System.out.println("Withdrawing " + amount + "...");
+        while (balance < amount) {
+            System.out.println("Insufficient balance (" + balance + "). Waiting for deposit...");
+            try {
+                wait(); // Releases lock and pauses until notified
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        balance -= amount;
+        System.out.println("Withdrawal of " + amount + " completed! Remaining balance: " + balance);
+    }
+
+    public synchronized void deposit(int amount) {
+        System.out.println("Depositing " + amount + "...");
+        balance += amount;
+        System.out.println("Deposit completed. Notifying waiting threads...");
+        notify(); // Wakes up one thread waiting on this object monitor
+    }
+}
+
+public class InterThreadCommunicationDemo {
+    public static void main(String[] args) {
+        BankAccount account = new BankAccount();
+
+        Thread withdrawThread = new Thread(() -> account.withdraw(15000));
+        Thread depositThread = new Thread(() -> {
+            try {
+                Thread.sleep(1000); // 1-second delay before depositing
+            } catch (InterruptedException e) {}
+            account.deposit(20000);
+        });
+
+        withdrawThread.start();
+        depositThread.start();
+    }
+}`
+      },
+      {
+        id: "cj-mt-5",
+        topicId: "multithreading",
         number: 5,
-        title: 'What is Deadlock?',
-        isCoding: false,
-        difficulty: 'Easy',
-        question: 'What is Deadlock in Multithreading and how can it be avoided?',
-        answer: 'Deadlock is a situation where two or more threads are permanently blocked, each waiting for a lock held by the other.\nExample: Thread 1 holds Lock A and waits for Lock B; Thread 2 holds Lock B and waits for Lock A.\nPrevention: Acquire locks in a consistent global order, use tryLock() with timeouts, and avoid nested locks.'
+        title: "Demonstrate Thread Execution Using sleep(), join(), and Priorities",
+        isCoding: true,
+        difficulty: "Medium",
+        question: "Write a Java program to demonstrate thread execution using sleep(), join(), and thread priorities.",
+        input: "t1 (priority 1) sleeps 500ms; t2 (priority 10) runs; main calls t1.join() and t2.join()",
+        output: "Worker-1 Priority: 1\nWorker-2 Priority: 10\nThread 2 executing immediately.\nThread 1 executing (sleeping 500ms)...\nThread 1 completed.\nMain resumed after join(). All threads finished.",
+        explanation: "sleep() pauses execution without losing locks. join() makes the calling thread wait for completion. Priorities give execution hints to the thread scheduler.",
+        code: `public class ThreadLifecycleDemo {
+    public static void main(String[] args) throws InterruptedException {
+        Thread t1 = new Thread(() -> {
+            try {
+                System.out.println("Thread 1 executing (sleeping 500ms)...");
+                Thread.sleep(500); // Pauses thread for 500ms
+                System.out.println("Thread 1 completed.");
+            } catch (InterruptedException e) {
+                System.out.println("Thread 1 interrupted");
+            }
+        }, "Worker-1");
+
+        Thread t2 = new Thread(() -> {
+            System.out.println("Thread 2 executing immediately.");
+        }, "Worker-2");
+
+        // Thread Priorities (1 to 10)
+        t1.setPriority(Thread.MIN_PRIORITY); // 1
+        t2.setPriority(Thread.MAX_PRIORITY); // 10
+
+        System.out.println(t1.getName() + " Priority: " + t1.getPriority());
+        System.out.println(t2.getName() + " Priority: " + t2.getPriority());
+
+        t1.start();
+        t2.start();
+
+        // join() halts current thread until the target thread finishes execution
+        t1.join();
+        t2.join();
+
+        System.out.println("Main resumed after join(). All threads finished.");
+    }
+}`
       }
     ]
   }
