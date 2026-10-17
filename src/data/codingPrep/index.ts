@@ -22,7 +22,7 @@ export const prepSections: SectionMeta[] = [
     title: 'CORE JAVA',
     shortDesc: 'Arrays, Strings, Collections, Exception Handling, and Multithreading with interview answers & runnable Java programs.',
     topicCount: coreJavaTopics.length, // 5 topics
-    questionCount: coreJavaTopics.reduce((acc, t) => acc + t.questions.length, 0), // 55 questions
+    questionCount: coreJavaTopics.reduce((acc, t) => acc + t.questions.length, 0), // 65 questions
     icon: 'Coffee',
     accentColor: 'from-amber-500 to-orange-600',
   },
@@ -47,4 +47,4 @@ export const prepSections: SectionMeta[] = [
 ];
 
 export const TOTAL_QUESTIONS_COUNT = 
-  prepSections.reduce((acc, s) => acc + s.questionCount, 0); // 128 total
+  prepSections.reduce((acc, s) => acc + s.questionCount, 0); // 138 total

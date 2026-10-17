@@ -2,8 +2,8 @@ import { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
-  ArrowLeft, Search, ChevronDown,
-  ArrowUpDown, Terminal, Sparkles
+  ArrowLeft, Search, ChevronDown, 
+  ArrowUpDown, Terminal, Sparkles, Code2
 } from 'lucide-react';
 import CodeBlock from '../components/CodeBlock';
 import { 
@@ -185,12 +185,25 @@ export default function CodingPracticePage() {
     return result;
   }, [allQuestions, selectedTrack, selectedTopic, selectedDifficulty, searchQuery, sortBy]);
 
+  const difficultyBadgeStyle = (difficulty: string) => {
+    switch (difficulty) {
+      case 'Easy':
+        return 'bg-emerald-50 text-emerald-700 border-emerald-200';
+      case 'Medium':
+        return 'bg-blue-50 text-blue-700 border-blue-200';
+      case 'Hard':
+        return 'bg-purple-50 text-purple-700 border-purple-200';
+      default:
+        return 'bg-slate-100 text-slate-700 border-slate-200';
+    }
+  };
+
   return (
     <div className="space-y-6 pb-24 animate-fade-in text-slate-800">
       {/* ======================================================== */}
-      {/* 1. TOP HEADER & PROMINENT BACK BUTTON */}
+      {/* 1. TOP HEADER & PROMINENT BACK BUTTON (WHITE & BLUE) */}
       {/* ======================================================== */}
-      <div className="flex items-center justify-between pb-3 border-b border-slate-200">
+      <div className="flex items-center justify-between pb-3 border-b border-slate-200/90">
         <Link
           to="/"
           className="outline-none inline-flex"
@@ -199,36 +212,41 @@ export default function CodingPracticePage() {
             whileHover={{ x: -3 }}
             whileTap={{ scale: 0.95 }}
             transition={{ type: 'spring', stiffness: 500, damping: 25 }}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white hover:bg-slate-50 border border-slate-300 text-slate-800 text-xs sm:text-sm font-semibold shadow-2xs hover:border-slate-400 transition-colors select-none cursor-pointer"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 hover:text-primary text-xs sm:text-sm font-semibold shadow-2xs hover:border-blue-300 transition-all select-none cursor-pointer group"
             title="Return to Concepts Dashboard"
           >
-            <ArrowLeft className="w-4 h-4 text-slate-700" />
+            <ArrowLeft className="w-4 h-4 text-primary group-hover:-translate-x-1 transition-transform" />
             <span>Back to Concepts</span>
           </motion.div>
         </Link>
       </div>
 
       {/* ======================================================== */}
-      {/* 2. TITLE SECTION */}
+      {/* 2. TITLE SECTION WITH BLUE ACCENT ICON */}
       {/* ======================================================== */}
-      <div>
-        <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-          Core Java, DSA & SQL Coding Preparation
-        </h1>
-        <p className="text-xs sm:text-sm text-slate-600 mt-1">
-          128 curated interview questions with clean Java code, input/output examples, and MySQL queries.
-        </p>
+      <div className="flex items-center gap-3.5">
+        <div className="p-2.5 rounded-2xl bg-blue-50 text-primary border border-blue-100 shadow-2xs shrink-0">
+          <Code2 className="w-6 h-6 text-primary" />
+        </div>
+        <div>
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+            Core Java, DSA & SQL Coding Preparation
+          </h1>
+          <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
+            {allQuestions.length} curated interview questions with clean Java code, input/output examples, and MySQL queries.
+          </p>
+        </div>
       </div>
 
       {/* ======================================================== */}
-      {/* 3. PRIMARY TRACK SWITCHER PILLS */}
+      {/* 3. PRIMARY TRACK SWITCHER PILLS (WHITE & BLUE) */}
       {/* ======================================================== */}
-      <div className="flex items-center gap-2 p-1.5 bg-slate-100 rounded-2xl border border-slate-200 overflow-x-auto scrollbar-none relative">
+      <div className="flex items-center gap-2 p-1.5 bg-slate-100/90 rounded-2xl border border-slate-200/80 overflow-x-auto scrollbar-none relative">
         {[
-          { id: 'All', label: 'All Questions', count: 128 },
-          { id: 'Core Java', label: 'Core Java', count: 55 },
-          { id: 'DSA & Coding', label: 'DSA & Coding', count: 30 },
-          { id: 'SQL Queries', label: 'SQL Queries', count: 43 },
+          { id: 'All', label: 'All Questions', count: allQuestions.length },
+          { id: 'Core Java', label: 'Core Java', count: allQuestions.filter(q => q.track === 'Core Java').length },
+          { id: 'DSA & Coding', label: 'DSA & Coding', count: allQuestions.filter(q => q.track === 'DSA & Coding').length },
+          { id: 'SQL Queries', label: 'SQL Queries', count: allQuestions.filter(q => q.track === 'SQL Queries').length },
         ].map(track => {
           const isSelected = selectedTrack === track.id;
           return (
@@ -241,16 +259,16 @@ export default function CodingPracticePage() {
                 setSelectedTrack(track.id);
                 setSelectedTopic('All');
               }}
-              className={`relative flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold whitespace-nowrap transition-colors duration-150 cursor-pointer select-none ${
+              className={`relative flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold whitespace-nowrap transition-all duration-150 cursor-pointer select-none ${
                 isSelected
-                  ? 'bg-slate-900 text-white shadow-xs'
-                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/60'
+                  ? 'bg-white text-primary shadow-xs border border-blue-200/90 font-bold'
+                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/50'
               }`}
             >
               <span>{track.label}</span>
               <span
-                className={`text-[10px] px-1.5 py-0.2 rounded-md font-mono ${
-                  isSelected ? 'bg-slate-800 text-slate-200' : 'bg-slate-200 text-slate-600'
+                className={`text-[10px] px-2 py-0.5 rounded-full font-bold transition-colors ${
+                  isSelected ? 'bg-blue-100 text-primary' : 'bg-slate-200 text-slate-600'
                 }`}
               >
                 {track.count}
@@ -261,7 +279,7 @@ export default function CodingPracticePage() {
       </div>
 
       {/* ======================================================== */}
-      {/* 4. SUB-TOPIC FILTER CHIPS */}
+      {/* 4. SUB-TOPIC FILTER CHIPS (WHITE & BLUE) */}
       {/* ======================================================== */}
       {availableTopics.length > 1 && (
         <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none">
@@ -282,14 +300,16 @@ export default function CodingPracticePage() {
                 whileTap={{ scale: 0.94 }}
                 transition={{ type: 'spring', stiffness: 500, damping: 25 }}
                 onClick={() => setSelectedTopic(top)}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap border transition-colors cursor-pointer select-none ${
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap border transition-all cursor-pointer select-none ${
                   isSelected
-                    ? 'bg-slate-800 text-white border-slate-800 font-semibold shadow-2xs'
-                    : 'bg-white hover:bg-slate-50 text-slate-600 border-slate-200'
+                    ? 'bg-primary text-white border-primary shadow-2xs font-bold'
+                    : 'bg-white hover:bg-slate-50 text-slate-600 hover:text-primary border-slate-200'
                 }`}
               >
                 <span>{top}</span>
-                <span className="text-[10px] opacity-70">({count})</span>
+                <span className={`text-[10px] ${isSelected ? 'text-white/80' : 'text-slate-400'}`}>
+                  ({count})
+                </span>
               </motion.button>
             );
           })}
@@ -299,8 +319,8 @@ export default function CodingPracticePage() {
       {/* ======================================================== */}
       {/* 5. SEARCH & SORT CONTROLS (EASY TO HARD SORTING) */}
       {/* ======================================================== */}
-      <div className="p-3.5 bg-white rounded-2xl border border-slate-200 flex flex-col md:flex-row md:items-center justify-between gap-3 shadow-2xs">
-        {/* Search */}
+      <div className="p-3.5 bg-white rounded-2xl border border-slate-200/90 flex flex-col md:flex-row md:items-center justify-between gap-3 shadow-2xs">
+        {/* Search Input */}
         <div className="relative flex-1 min-w-[220px]">
           <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
           <input
@@ -308,13 +328,13 @@ export default function CodingPracticePage() {
             value={searchQuery}
             onChange={e => setSearchQuery(e.target.value)}
             placeholder="Search questions by title, problem, or topic..."
-            className="w-full pl-9 pr-3 py-2 bg-slate-50 hover:bg-white focus:bg-white rounded-xl border border-slate-200 text-xs sm:text-sm outline-none focus:border-slate-400 transition-colors"
+            className="w-full pl-9 pr-3 py-2 bg-slate-50 hover:bg-white focus:bg-white rounded-xl border border-slate-200 text-xs sm:text-sm outline-none focus:border-primary transition-colors"
           />
         </div>
 
         <div className="flex flex-wrap items-center gap-2">
           {/* Difficulty Filter */}
-          <div className="flex items-center gap-1 p-1 bg-slate-100 rounded-xl">
+          <div className="flex items-center gap-1 p-1 bg-slate-100/90 rounded-xl border border-slate-200/60">
             {['All', 'Easy', 'Medium', 'Hard'].map(diff => (
               <motion.button
                 key={diff}
@@ -322,7 +342,7 @@ export default function CodingPracticePage() {
                 onClick={() => setSelectedDifficulty(diff)}
                 className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all cursor-pointer ${
                   selectedDifficulty === diff
-                    ? 'bg-white text-slate-900 font-semibold shadow-2xs'
+                    ? 'bg-white text-primary font-bold shadow-2xs border border-blue-200'
                     : 'text-slate-600 hover:text-slate-900'
                 }`}
               >
@@ -332,8 +352,8 @@ export default function CodingPracticePage() {
           </div>
 
           {/* Easy to Hard Sorting Dropdown */}
-          <div className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 rounded-xl text-xs text-slate-700">
-            <ArrowUpDown className="w-3.5 h-3.5 text-slate-500" />
+          <div className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-100/90 rounded-xl text-xs text-slate-700 border border-slate-200/60">
+            <ArrowUpDown className="w-3.5 h-3.5 text-primary" />
             <select
               value={sortBy}
               onChange={e => setSortBy(e.target.value as SortOption)}
@@ -353,7 +373,7 @@ export default function CodingPracticePage() {
         {searchQuery && (
           <button
             onClick={() => setSearchQuery('')}
-            className="text-slate-700 hover:underline font-semibold cursor-pointer"
+            className="text-primary hover:underline font-semibold cursor-pointer"
           >
             Clear Search
           </button>
@@ -361,7 +381,7 @@ export default function CodingPracticePage() {
       </div>
 
       {/* ======================================================== */}
-      {/* 6. CLEAN ACCORDION LIST (JUST QUESTION, INPUT, OUTPUT, CODE) */}
+      {/* 6. CLEAN ACCORDION LIST (WHITE & BLUE THEME) */}
       {/* ======================================================== */}
       <div className="space-y-3">
         {filteredQuestions.length === 0 ? (
@@ -381,66 +401,67 @@ export default function CodingPracticePage() {
                 transition={{ duration: 0.2 }}
                 className={`bg-white rounded-2xl border transition-all duration-200 overflow-hidden ${
                   isExpanded
-                    ? 'border-slate-400 shadow-xs'
+                    ? 'border-primary/40 shadow-xs'
                     : 'border-slate-200 hover:border-slate-300 hover:shadow-2xs'
                 }`}
               >
-                {/* Accordion Header */}
+                {/* Accordion Header (Clickable) */}
                 <motion.div
                   whileTap={{ scale: 0.995 }}
                   onClick={() => toggleExpand(prob.id)}
                   className="p-4 sm:p-5 flex items-center justify-between gap-3 cursor-pointer hover:bg-slate-50/70 transition-colors select-none"
                 >
-                  <div className="min-w-0 flex-1">
-                    {/* Meta Badges */}
-                    <div className="flex flex-wrap items-center gap-2 mb-1.5">
-                      <span className="text-[11px] font-mono font-bold px-2 py-0.5 rounded-md bg-slate-100 text-slate-700 border border-slate-200">
-                        Q{prob.number < 10 ? `0${prob.number}` : prob.number}
-                      </span>
-                      <span className="text-[10px] font-semibold px-2 py-0.5 rounded-md bg-slate-100 text-slate-700 border border-slate-200">
-                        {prob.track}
-                      </span>
-                      <span className="text-[10px] font-medium px-2 py-0.5 rounded-md bg-slate-50 text-slate-600 border border-slate-200">
-                        {prob.topic}
-                      </span>
-                      <span className="text-[10px] font-semibold px-2 py-0.5 rounded-md bg-slate-100 text-slate-700 border border-slate-200">
-                        {prob.difficulty}
-                      </span>
-                    </div>
-
-                    {/* Question Title */}
-                    <h3 className="text-sm sm:text-base font-bold text-slate-900">
-                      {prob.title}
-                    </h3>
-                  </div>
-
-                  {/* Toggle Button with Rotating Chevron */}
-                  <div className="flex items-center gap-2 shrink-0">
-                    <motion.button
-                      whileHover={{ scale: 1.04 }}
-                      whileTap={{ scale: 0.93 }}
-                      transition={{ type: 'spring', stiffness: 500, damping: 25 }}
-                      onClick={e => {
-                        e.stopPropagation();
-                        toggleExpand(prob.id);
-                      }}
-                      className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-all cursor-pointer select-none ${
-                        isExpanded
-                          ? 'bg-slate-800 text-white hover:bg-slate-900'
-                          : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
-                      }`}
-                    >
-                      {isExpanded ? 'Hide Solution' : 'View Solution'}
-                    </motion.button>
-
-                    <div className="p-1 text-slate-400">
+                  <div className="flex items-start gap-3 flex-1 min-w-0">
+                    {/* Blue Icon Chevron Box */}
+                    <div className="p-1.5 rounded-lg bg-blue-50 text-primary shrink-0 mt-0.5">
                       <ChevronDown 
                         className={`w-4 h-4 transition-transform duration-300 ease-out ${
-                          isExpanded ? 'rotate-180 text-slate-800' : 'rotate-0'
+                          isExpanded ? 'rotate-180 text-primary' : 'rotate-0'
                         }`} 
                       />
                     </div>
+
+                    <div className="min-w-0 flex-1">
+                      {/* Meta Badges */}
+                      <div className="flex flex-wrap items-center gap-2 mb-1.5">
+                        <span className="text-[11px] font-mono font-bold px-2 py-0.5 rounded-md bg-slate-100 text-slate-700 border border-slate-200">
+                          Q{prob.number < 10 ? `0${prob.number}` : prob.number}
+                        </span>
+                        <span className="text-[10px] font-semibold px-2 py-0.5 rounded-md bg-blue-50 text-primary border border-blue-200">
+                          {prob.track}
+                        </span>
+                        <span className="text-[10px] font-medium px-2 py-0.5 rounded-md bg-slate-50 text-slate-600 border border-slate-200">
+                          {prob.topic}
+                        </span>
+                        <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-md border ${difficultyBadgeStyle(prob.difficulty)}`}>
+                          {prob.difficulty}
+                        </span>
+                      </div>
+
+                      {/* Question Title */}
+                      <h3 className="text-sm sm:text-base font-bold text-slate-900 group-hover:text-primary transition-colors">
+                        {prob.title}
+                      </h3>
+                    </div>
                   </div>
+
+                  {/* Toggle Button */}
+                  <motion.button
+                    whileHover={{ scale: 1.04 }}
+                    whileTap={{ scale: 0.93 }}
+                    transition={{ type: 'spring', stiffness: 500, damping: 25 }}
+                    onClick={e => {
+                      e.stopPropagation();
+                      toggleExpand(prob.id);
+                    }}
+                    className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-all cursor-pointer select-none shrink-0 ${
+                      isExpanded
+                        ? 'bg-slate-800 text-white hover:bg-slate-900'
+                        : 'bg-primary text-white hover:bg-primary-dark shadow-xs'
+                    }`}
+                  >
+                    {isExpanded ? 'Hide Solution' : 'View Solution'}
+                  </motion.button>
                 </motion.div>
 
                 {/* Accordion Expanded Content: strictly question, input, output, code */}
@@ -451,14 +472,14 @@ export default function CodingPracticePage() {
                       animate={{ opacity: 1, height: 'auto' }}
                       exit={{ opacity: 0, height: 0 }}
                       transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
-                      className="overflow-hidden border-t border-slate-200"
+                      className="overflow-hidden border-t border-slate-100"
                     >
-                      <div className="p-5 sm:p-6 bg-slate-50/70 space-y-5">
+                      <div className="p-5 sm:p-6 bg-slate-50/50 space-y-5">
                         {/* 1. THEORY INTERVIEW-READY ANSWER */}
                         {prob.answer && (
-                          <div className="p-4 bg-white rounded-xl border border-slate-200 space-y-1.5 shadow-2xs">
-                            <h4 className="text-xs font-bold uppercase tracking-wider text-slate-600 flex items-center gap-1.5">
-                              <Sparkles className="w-3.5 h-3.5 text-slate-500" />
+                          <div className="p-4 bg-white rounded-xl border border-blue-200/80 space-y-1.5 shadow-2xs">
+                            <h4 className="text-xs font-bold uppercase tracking-wider text-primary flex items-center gap-1.5">
+                              <Sparkles className="w-3.5 h-3.5 text-primary" />
                               <span>Spoken Interview Answer</span>
                             </h4>
                             <p className="text-xs sm:text-sm text-slate-800 leading-relaxed whitespace-pre-line font-medium">
@@ -485,7 +506,7 @@ export default function CodingPracticePage() {
                             <h4 className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">
                               Sample Table Data
                             </h4>
-                            <div className="p-3 bg-slate-900 text-slate-100 rounded-xl text-xs font-mono overflow-x-auto">
+                            <div className="p-3 bg-slate-900 text-slate-100 rounded-xl text-xs font-mono overflow-x-auto shadow-2xs">
                               <pre>{prob.sampleTable}</pre>
                             </div>
                           </div>
@@ -510,11 +531,11 @@ export default function CodingPracticePage() {
                               )}
 
                               {(prob.output || prob.expectedOutput) && (
-                                <div className="p-3.5 bg-white rounded-xl border border-slate-300 shadow-2xs">
-                                  <span className="font-semibold text-slate-700 block mb-1 text-[11px] uppercase tracking-wider">
+                                <div className="p-3.5 bg-white rounded-xl border border-emerald-200/90 shadow-2xs">
+                                  <span className="font-semibold text-emerald-700 block mb-1 text-[11px] uppercase tracking-wider">
                                     Expected Output:
                                   </span>
-                                  <code className="text-slate-900 font-mono text-xs sm:text-sm font-semibold block break-all whitespace-pre-line">
+                                  <code className="text-emerald-800 font-mono text-xs sm:text-sm font-semibold block break-all whitespace-pre-line">
                                     {prob.output || prob.expectedOutput}
                                   </code>
                                 </div>
@@ -544,7 +565,7 @@ export default function CodingPracticePage() {
                         <div className="text-right pt-1">
                           <button
                             onClick={() => toggleExpand(prob.id)}
-                            className="text-slate-500 hover:text-slate-800 font-medium text-xs cursor-pointer"
+                            className="text-primary hover:text-primary-dark font-medium text-xs cursor-pointer"
                           >
                             Close Panel ↑
                           </button>

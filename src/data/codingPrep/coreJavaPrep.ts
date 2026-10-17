@@ -1,6 +1,6 @@
 // ========================================================
 // CORE JAVA CODING & INTERVIEW PREPARATION DATA
-// 5 Topics | Exactly 55 Questions with Complete Java Code
+// 5 Topics | Exactly 65 Questions with Complete Java Code
 // ========================================================
 
 export interface JavaQuestion {
@@ -928,317 +928,936 @@ public class LongestUniqueSubstring {
   },
 
   // ----------------------------------------------------
-  // TOPIC 3: COLLECTIONS FRAMEWORK (15 Questions)
+  // TOPIC 3: COLLECTIONS FRAMEWORK (25 Questions)
   // ----------------------------------------------------
   {
     id: 'collections',
     title: 'Collections Framework',
-    questionCount: 15,
-    description: '15 crucial Java Collections interview questions covering List, Set, Map, Comparators, and Map-based coding.',
+    questionCount: 25,
+    description: '25 crucial Java Collections interview coding questions covering HashMap, HashSet, LinkedHashMap, TreeMap, PriorityQueue, and Deque across 3 levels.',
     questions: [
       {
-        id: 'cj-col-1',
-        topicId: 'collections',
+        id: "cj-col-1",
+        topicId: "collections",
         number: 1,
-        title: 'What is the Collection Framework?',
-        isCoding: false,
-        difficulty: 'Easy',
-        question: 'What is the Collection Framework in Java?',
-        answer: 'The Collection Framework is a unified architecture in Java containing interfaces (List, Set, Queue, Map) and classes (ArrayList, HashSet, HashMap) used to store, manage, and manipulate groups of objects efficiently.'
-      },
-      {
-        id: 'cj-col-2',
-        topicId: 'collections',
-        number: 2,
-        title: 'Difference between List, Set, and Map',
-        isCoding: false,
-        difficulty: 'Easy',
-        question: 'What is the difference between List, Set, and Map in Java?',
-        answer: '• List: Allows duplicate elements and preserves insertion order (e.g. ArrayList, LinkedList).\n• Set: Does not allow duplicate elements and ensures uniqueness (e.g. HashSet, TreeSet).\n• Map: Stores data in key-value pairs where keys must be unique (e.g. HashMap, TreeMap).'
-      },
-      {
-        id: 'cj-col-3',
-        topicId: 'collections',
-        number: 3,
-        title: 'Difference between ArrayList and LinkedList',
-        isCoding: false,
-        difficulty: 'Easy',
-        question: 'What is the difference between ArrayList and LinkedList?',
-        answer: '• ArrayList uses a dynamic resizable array, offering fast O(1) index access, but slower insertions/deletions in the middle.\n• LinkedList uses a doubly-linked list, offering efficient O(1) insertions and removals when the position is known, but slower O(n) index lookups.'
-      },
-      {
-        id: 'cj-col-4',
-        topicId: 'collections',
-        number: 4,
-        title: 'Difference between HashSet and TreeSet',
-        isCoding: false,
-        difficulty: 'Easy',
-        question: 'What is the difference between HashSet and TreeSet?',
-        answer: '• HashSet stores unique elements without guaranteeing order, backed by a Hash Table with O(1) lookup.\n• TreeSet stores unique elements in sorted ascending order, backed by a Red-Black Tree with O(log n) lookup.'
-      },
-      {
-        id: 'cj-col-5',
-        topicId: 'collections',
-        number: 5,
-        title: 'Difference between HashMap and Hashtable',
-        isCoding: false,
-        difficulty: 'Easy',
-        question: 'What is the difference between HashMap and Hashtable?',
-        answer: '• HashMap is not synchronized (not thread-safe), is faster, and allows one null key and multiple null values.\n• Hashtable is synchronized (thread-safe, legacy), is slower, and does not allow any null keys or null values.'
-      },
-      {
-        id: 'cj-col-6',
-        topicId: 'collections',
-        number: 6,
-        title: 'Difference between HashMap and TreeMap',
-        isCoding: false,
-        difficulty: 'Easy',
-        question: 'What is the difference between HashMap and TreeMap?',
-        answer: '• HashMap stores key-value pairs without guaranteeing any order, with O(1) time complexity.\n• TreeMap stores key-value pairs sorted in natural ascending order of keys (or via custom Comparator) with O(log n) time complexity.'
-      },
-      {
-        id: 'cj-col-7',
-        topicId: 'collections',
-        number: 7,
-        title: 'Difference between Comparable and Comparator',
-        isCoding: false,
-        difficulty: 'Easy',
-        question: 'What is the difference between Comparable and Comparator?',
-        answer: '• Comparable: Defines natural ordering of objects using compareTo() in java.lang. Modifies the original class.\n• Comparator: Defines custom multiple sorting strategies using compare() in java.util. Does not modify the original class.'
-      },
-      {
-        id: 'cj-col-8',
-        topicId: 'collections',
-        number: 8,
-        title: 'Difference between Iterator and ListIterator',
-        isCoding: false,
-        difficulty: 'Easy',
-        question: 'What is the difference between Iterator and ListIterator?',
-        answer: '• Iterator: Traverses any collection in the forward direction only and supports element removal.\n• ListIterator: Works only with List implementations, supports bidirectional traversal (forward and backward), and supports adding, replacing, and removing elements.'
-      },
-      {
-        id: 'cj-col-9',
-        topicId: 'collections',
-        number: 9,
-        title: 'Count Character Frequency Using HashMap',
+        title: "Count the frequency of each character in a String",
         isCoding: true,
-        difficulty: 'Easy',
-        question: 'Write a Java program to count the frequency of each character in a string using HashMap.',
-        problemStatement: 'Iterate through string characters and populate a Map with character frequencies using entrySet() traversal.',
-        input: 'String str = "developer";',
-        output: 'd -> 1\ne -> 3\nv -> 1\nl -> 1\no -> 1\np -> 1\nr -> 1',
-        code: `import java.util.LinkedHashMap;
+        difficulty: "Easy",
+        question: "Given a string, count the frequency of each character using Java's HashMap.",
+        input: "String s = \"interview preparation\";",
+        output: "{ =1, a=2, p=2, r=3, e=3, t=2, v=1, w=1, i=3, n=1, o=1}",
+        explanation: "Iterate through each character using str.toCharArray(). Use freqMap.getOrDefault(ch, 0) + 1 to increment the count in O(1) average time per character.",
+        code: `import java.util.HashMap;
 import java.util.Map;
 
-public class CharFrequencyMap {
+public class CharFrequency {
     public static void main(String[] args) {
-        String str = "developer";
-        Map<Character, Integer> map = new LinkedHashMap<>();
+        String str = "interview preparation";
+        Map<Character, Integer> freqMap = new HashMap<>();
 
         for (char ch : str.toCharArray()) {
-            map.put(ch, map.getOrDefault(ch, 0) + 1);
+            freqMap.put(ch, freqMap.getOrDefault(ch, 0) + 1);
         }
 
-        for (Map.Entry<Character, Integer> entry : map.entrySet()) {
+        System.out.println("Character Frequencies: " + freqMap);
+    }
+}`
+      },
+      {
+        id: "cj-col-2",
+        topicId: "collections",
+        number: 2,
+        title: "Count the frequency of each word in a String",
+        isCoding: true,
+        difficulty: "Easy",
+        question: "Given a sentence or string of words, count how many times each word occurs using HashMap and iterate through the results using entrySet().",
+        input: "String text = \"java python java spring boot java python spring\";",
+        output: "boot -> 1\\npython -> 2\\njava -> 3\\nspring -> 2",
+        explanation: "Split the string into words using regular expression \\\\s+. Store the count in a HashMap and use entrySet() to access both word (key) and frequency (value) without extra map lookups.",
+        code: `import java.util.HashMap;
+import java.util.Map;
+
+public class WordFrequency {
+    public static void main(String[] args) {
+        String text = "java python java spring boot java python spring";
+        String[] words = text.toLowerCase().split("\\s+");
+        Map<String, Integer> wordCount = new HashMap<>();
+
+        for (String word : words) {
+            wordCount.put(word, wordCount.getOrDefault(word, 0) + 1);
+        }
+
+        // Iterating using entrySet()
+        System.out.println("Word Frequencies:");
+        for (Map.Entry<String, Integer> entry : wordCount.entrySet()) {
             System.out.println(entry.getKey() + " -> " + entry.getValue());
         }
     }
 }`
       },
       {
-        id: 'cj-col-10',
-        topicId: 'collections',
-        number: 10,
-        title: 'Count Word Frequency Using HashMap',
+        id: "cj-col-3",
+        topicId: "collections",
+        number: 3,
+        title: "Find duplicate characters in a String",
         isCoding: true,
-        difficulty: 'Easy',
-        question: 'Write a Java program to count the frequency of words in a sentence using HashMap.',
-        problemStatement: 'Split the sentence into words and count occurrences of each word with a HashMap.',
-        input: 'String sentence = "java is fun and java is powerful";',
-        output: 'java -> 2\nis -> 2\nfun -> 1\nand -> 1\npowerful -> 1',
+        difficulty: "Easy",
+        question: "Given a string, find all characters that appear more than once using a HashMap.",
+        input: "String str = \"programming language\";",
+        output: "Duplicate characters: [a, r, g, m, n]",
+        explanation: "Build a frequency map of characters. Then filter keys whose mapped value is greater than 1 using entrySet().",
+        code: `import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public class DuplicateCharacters {
+    public static void main(String[] args) {
+        String str = "programming language";
+        Map<Character, Integer> charMap = new HashMap<>();
+
+        for (char c : str.toCharArray()) {
+            if (c != ' ') { // Ignore spaces
+                charMap.put(c, charMap.getOrDefault(c, 0) + 1);
+            }
+        }
+
+        List<Character> duplicates = new ArrayList<>();
+        for (Map.Entry<Character, Integer> entry : charMap.entrySet()) {
+            if (entry.getValue() > 1) {
+                duplicates.add(entry.getKey());
+            }
+        }
+
+        System.out.println("Duplicate characters: " + duplicates);
+    }
+}`
+      },
+      {
+        id: "cj-col-4",
+        topicId: "collections",
+        number: 4,
+        title: "Find the first non-repeated character in a String",
+        isCoding: true,
+        difficulty: "Easy",
+        question: "Find the first character in a string that does not repeat. Use LinkedHashMap to preserve the order in which characters were encountered.",
+        input: "String str = \"swiss\";",
+        output: "First non-repeated character: 'w'",
+        explanation: "LinkedHashMap retains the chronological insertion order of elements. The first key with a count of 1 is guaranteed to be the first non-repeating character.",
         code: `import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class WordFrequencyMap {
+public class FirstNonRepeatedChar {
     public static void main(String[] args) {
-        String sentence = "java is fun and java is powerful";
-        String[] words = sentence.split(" ");
-        Map<String, Integer> wordMap = new LinkedHashMap<>();
+        String str = "swiss";
+        Map<Character, Integer> counts = new LinkedHashMap<>();
 
-        for (String word : words) {
-            wordMap.put(word, wordMap.getOrDefault(word, 0) + 1);
+        // LinkedHashMap preserves character insertion order
+        for (char ch : str.toCharArray()) {
+            counts.put(ch, counts.getOrDefault(ch, 0) + 1);
         }
 
-        for (Map.Entry<String, Integer> entry : wordMap.entrySet()) {
-            System.out.println(entry.getKey() + " -> " + entry.getValue());
-        }
-    }
-}`
-      },
-      {
-        id: 'cj-col-11',
-        topicId: 'collections',
-        number: 11,
-        title: 'Find Duplicate Elements Using HashSet',
-        isCoding: true,
-        difficulty: 'Easy',
-        question: 'Write a Java program to find duplicate elements from an array using HashSet.',
-        problemStatement: 'Iterate through items and add to a Set. If add() returns false, collect as duplicate.',
-        input: 'Integer[] items = {10, 20, 30, 20, 40, 10, 50};',
-        output: 'Duplicate items: [20, 10]',
-        code: `import java.util.HashSet;
-import java.util.Set;
-
-public class DuplicateHashSet {
-    public static void main(String[] args) {
-        int[] items = {10, 20, 30, 20, 40, 10, 50};
-        Set<Integer> unique = new HashSet<>();
-        Set<Integer> duplicates = new HashSet<>();
-
-        for (int item : items) {
-            if (!unique.add(item)) {
-                duplicates.add(item);
+        Character result = null;
+        for (Map.Entry<Character, Integer> entry : counts.entrySet()) {
+            if (entry.getValue() == 1) {
+                result = entry.getKey();
+                break;
             }
         }
 
-        System.out.println("Duplicate items: " + duplicates);
+        if (result != null) {
+            System.out.println("First non-repeated character: '" + result + "'");
+        } else {
+            System.out.println("No non-repeated character found.");
+        }
     }
 }`
       },
       {
-        id: 'cj-col-12',
-        topicId: 'collections',
-        number: 12,
-        title: 'Find Repeated Words in a Sentence',
+        id: "cj-col-5",
+        topicId: "collections",
+        number: 5,
+        title: "Find the first repeated character in a String",
         isCoding: true,
-        difficulty: 'Easy',
-        question: 'Write a Java program to find all repeated words in a sentence.',
-        problemStatement: 'Split by space and use a Set to find words that appear more than once.',
-        input: 'String text = "hello world hello java world";',
-        output: 'Repeated words: [hello, world]',
+        difficulty: "Easy",
+        question: "Given a string, find the first character that repeats as you scan from left to right. Use HashSet's add() method which returns false for duplicates.",
+        input: "String str = \"interview\";",
+        output: "First repeated character: 'i'",
+        explanation: "HashSet.add() returns false when trying to insert an element already present in the set. The moment false is returned, we have found the first repeated character.",
         code: `import java.util.HashSet;
 import java.util.Set;
 
-public class RepeatedWords {
+public class FirstRepeatedChar {
     public static void main(String[] args) {
-        String text = "hello world hello java world";
-        String[] words = text.split(" ");
-        Set<String> seen = new HashSet<>();
-        Set<String> repeated = new HashSet<>();
+        String str = "interview";
+        Set<Character> seen = new HashSet<>();
+        Character firstRepeat = null;
 
-        for (String word : words) {
-            if (!seen.add(word)) {
-                repeated.add(word);
+        for (char ch : str.toCharArray()) {
+            // set.add(ch) returns false if element is already present
+            if (!seen.add(ch)) {
+                firstRepeat = ch;
+                break;
             }
         }
 
-        System.out.println("Repeated words: " + repeated);
+        if (firstRepeat != null) {
+            System.out.println("First repeated character: '" + firstRepeat + "'");
+        } else {
+            System.out.println("No repeated character found.");
+        }
     }
 }`
       },
       {
-        id: 'cj-col-13',
-        topicId: 'collections',
-        number: 13,
-        title: 'Find the Most Frequent Element Using HashMap',
+        id: "cj-col-6",
+        topicId: "collections",
+        number: 6,
+        title: "Find duplicate elements in an ArrayList",
         isCoding: true,
-        difficulty: 'Medium',
-        question: 'Write a Java program to find the element that occurs with the highest frequency in an array.',
-        problemStatement: 'Build a frequency map and find the key with maximum count.',
-        input: 'int[] arr = {1, 3, 2, 1, 4, 1, 3, 3, 3};',
-        output: 'Most frequent element: 3 (Occurred 4 times)',
+        difficulty: "Easy",
+        question: "Given an ArrayList with duplicate elements, extract all duplicate values using a HashSet.",
+        input: "List<Integer> list = Arrays.asList(10, 20, 30, 20, 40, 50, 30, 60, 20);",
+        output: "Duplicate elements: [20, 30]",
+        explanation: "Maintain two sets: uniqueSet to track encountered items, and duplicateSet to store items that fail to be added into uniqueSet.",
+        code: `import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+public class FindDuplicatesArrayList {
+    public static void main(String[] args) {
+        List<Integer> list = Arrays.asList(10, 20, 30, 20, 40, 50, 30, 60, 20);
+        Set<Integer> uniqueSet = new HashSet<>();
+        Set<Integer> duplicateSet = new HashSet<>();
+
+        for (Integer num : list) {
+            if (!uniqueSet.add(num)) {
+                duplicateSet.add(num);
+            }
+        }
+
+        System.out.println("Original List: " + list);
+        System.out.println("Duplicate elements: " + duplicateSet);
+    }
+}`
+      },
+      {
+        id: "cj-col-7",
+        topicId: "collections",
+        number: 7,
+        title: "Remove duplicate elements from an ArrayList",
+        isCoding: true,
+        difficulty: "Easy",
+        question: "Given an ArrayList with duplicate items, remove all duplicates while preserving the original order using LinkedHashSet.",
+        input: "List<Integer> list = Arrays.asList(10, 20, 20, 30, 40, 40, 50, 10);",
+        output: "After removing duplicates: [10, 20, 30, 40, 50]",
+        explanation: "LinkedHashSet removes duplicates in O(N) time while preserving the original list sequence. Re-wrapping in an ArrayList restores the list interface.",
+        code: `import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
+
+public class RemoveDuplicatesArrayList {
+    public static void main(String[] args) {
+        List<Integer> list = new ArrayList<>(Arrays.asList(10, 20, 20, 30, 40, 40, 50, 10));
+
+        // LinkedHashSet retains insertion order and discards duplicates
+        Set<Integer> set = new LinkedHashSet<>(list);
+        List<Integer> uniqueList = new ArrayList<>(set);
+
+        System.out.println("Original: " + list);
+        System.out.println("After removing duplicates: " + uniqueList);
+    }
+}`
+      },
+      {
+        id: "cj-col-8",
+        topicId: "collections",
+        number: 8,
+        title: "Count the frequency of each element in an array",
+        isCoding: true,
+        difficulty: "Easy",
+        question: "Given an integer array, find the occurrence count of each unique number using a HashMap.",
+        input: "int[] arr = {1, 2, 8, 3, 2, 2, 2, 5, 1};",
+        output: "{1=2, 2=4, 3=1, 5=1, 8=1}",
+        explanation: "Each array element is mapped to its frequency count using HashMap.put() with getOrDefault(). Iterating over entrySet() prints each unique value and count.",
+        code: `import java.util.HashMap;
+import java.util.Map;
+
+public class ArrayElementFrequency {
+    public static void main(String[] args) {
+        int[] arr = {1, 2, 8, 3, 2, 2, 2, 5, 1};
+        Map<Integer, Integer> freqMap = new HashMap<>();
+
+        for (int num : arr) {
+            freqMap.put(num, freqMap.getOrDefault(num, 0) + 1);
+        }
+
+        System.out.println("Element Frequencies:");
+        for (Map.Entry<Integer, Integer> entry : freqMap.entrySet()) {
+            System.out.println(entry.getKey() + " occurs " + entry.getValue() + " time(s)");
+        }
+    }
+}`
+      },
+      {
+        id: "cj-col-9",
+        topicId: "collections",
+        number: 9,
+        title: "Find the most frequently occurring element in an array",
+        isCoding: true,
+        difficulty: "Easy",
+        question: "Find the element that appears the maximum number of times in an array using a HashMap.",
+        input: "int[] arr = {1, 3, 2, 1, 4, 1, 3, 3, 1, 5};",
+        output: "Most frequent element: 1 (Frequency: 4)",
+        explanation: "Store counts in a HashMap, then find the entry with the highest value in O(N) time and O(N) space.",
         code: `import java.util.HashMap;
 import java.util.Map;
 
 public class MostFrequentElement {
     public static void main(String[] args) {
-        int[] arr = {1, 3, 2, 1, 4, 1, 3, 3, 3};
-        Map<Integer, Integer> map = new HashMap<>();
+        int[] arr = {1, 3, 2, 1, 4, 1, 3, 3, 1, 5};
+        Map<Integer, Integer> freq = new HashMap<>();
 
+        for (int num : arr) {
+            freq.put(num, freq.getOrDefault(num, 0) + 1);
+        }
+
+        int maxElement = arr[0];
+        int maxCount = 0;
+
+        for (Map.Entry<Integer, Integer> entry : freq.entrySet()) {
+            if (entry.getValue() > maxCount) {
+                maxCount = entry.getValue();
+                maxElement = entry.getKey();
+            }
+        }
+
+        System.out.println("Most frequent element: " + maxElement + " (Frequency: " + maxCount + ")");
+    }
+}`
+      },
+      {
+        id: "cj-col-10",
+        topicId: "collections",
+        number: 10,
+        title: "Sort a HashMap by its keys",
+        isCoding: true,
+        difficulty: "Easy",
+        question: "Sort an unsorted HashMap based on its keys in natural ascending order using TreeMap.",
+        input: "HashMap: {Banana=2, Apple=5, Orange=3, Mango=7}",
+        output: "Sorted by Keys: {Apple=5, Banana=2, Mango=7, Orange=3}",
+        explanation: "TreeMap is a Red-Black tree-based NavigableMap implementation. Initializing a TreeMap with an existing Map automatically orders all entries by keys in O(N log N) time.",
+        code: `import java.util.HashMap;
+import java.util.Map;
+import java.util.TreeMap;
+
+public class SortHashMapByKeys {
+    public static void main(String[] args) {
+        Map<String, Integer> map = new HashMap<>();
+        map.put("Banana", 2);
+        map.put("Apple", 5);
+        map.put("Orange", 3);
+        map.put("Mango", 7);
+
+        System.out.println("Before Sorting: " + map);
+
+        // Passing HashMap into TreeMap automatically sorts keys in natural order
+        Map<String, Integer> sortedMap = new TreeMap<>(map);
+
+        System.out.println("Sorted by Keys (TreeMap): " + sortedMap);
+    }
+}`
+      },
+      {
+        id: "cj-col-11",
+        topicId: "collections",
+        number: 11,
+        title: "Sort a HashMap by its values",
+        isCoding: true,
+        difficulty: "Medium",
+        question: "Given a HashMap, sort its entries by values (ascending order) using a List of Map.Entry and a Comparator, then store the result into a LinkedHashMap.",
+        input: "Map: {\"Alice\"=85, \"Bob\"=92, \"Charlie\"=78, \"David\"=95}",
+        output: "Sorted by Values: {Charlie=78, Alice=85, Bob=92, David=95}",
+        explanation: "Because Map interfaces do not provide value-based ordering, entries are copied into an ArrayList, sorted via Map.Entry.comparingByValue(), and collected into a LinkedHashMap.",
+        code: `import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+public class SortHashMapByValues {
+    public static void main(String[] args) {
+        Map<String, Integer> scores = new HashMap<>();
+        scores.put("Alice", 85);
+        scores.put("Bob", 92);
+        scores.put("Charlie", 78);
+        scores.put("David", 95);
+
+        // 1. Convert entrySet into a List
+        List<Map.Entry<String, Integer>> entryList = new ArrayList<>(scores.entrySet());
+
+        // 2. Sort using Map.Entry.comparingByValue()
+        entryList.sort(Map.Entry.comparingByValue());
+
+        // 3. Put into LinkedHashMap to preserve sorted sequence
+        Map<String, Integer> sortedMap = new LinkedHashMap<>();
+        for (Map.Entry<String, Integer> entry : entryList) {
+            sortedMap.put(entry.getKey(), entry.getValue());
+        }
+
+        System.out.println("Sorted by Values: " + sortedMap);
+    }
+}`
+      },
+      {
+        id: "cj-col-12",
+        topicId: "collections",
+        number: 12,
+        title: "Find the first non-repeated element in an array",
+        isCoding: true,
+        difficulty: "Medium",
+        question: "Find the first element in an array of numbers that does not repeat anywhere in the array using LinkedHashMap.",
+        input: "int[] arr = {4, 5, 1, 2, 0, 4, 1, 2};",
+        output: "First non-repeated element: 5",
+        explanation: "LinkedHashMap retains the chronological arrival order. By scanning the entries in insertion order, the first key with count 1 is the first non-repeated element in O(N) time.",
+        code: `import java.util.LinkedHashMap;
+import java.util.Map;
+
+public class FirstNonRepeatedArrayElement {
+    public static void main(String[] args) {
+        int[] arr = {4, 5, 1, 2, 0, 4, 1, 2};
+        Map<Integer, Integer> map = new LinkedHashMap<>();
+
+        // LinkedHashMap preserves array element encounter order
         for (int num : arr) {
             map.put(num, map.getOrDefault(num, 0) + 1);
         }
 
-        int mostFrequent = arr[0];
-        int maxCount = 0;
-
+        Integer result = null;
         for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
-            if (entry.getValue() > maxCount) {
-                maxCount = entry.getValue();
-                mostFrequent = entry.getKey();
+            if (entry.getValue() == 1) {
+                result = entry.getKey();
+                break;
             }
         }
 
-        System.out.println("Most frequent element: " + mostFrequent + " (Occurred " + maxCount + " times)");
+        if (result != null) {
+            System.out.println("First non-repeated element: " + result);
+        } else {
+            System.out.println("No non-repeated element found.");
+        }
     }
 }`
       },
       {
-        id: 'cj-col-14',
-        topicId: 'collections',
-        number: 14,
-        title: 'Remove Duplicate Elements from a List',
+        id: "cj-col-13",
+        topicId: "collections",
+        number: 13,
+        title: "Find the common elements between two arrays",
         isCoding: true,
-        difficulty: 'Easy',
-        question: 'Write a Java program to remove duplicates from an ArrayList while maintaining order.',
-        problemStatement: 'Pass the List into a LinkedHashSet and convert back to a List.',
-        input: 'List<String> list = Arrays.asList("apple", "banana", "apple", "orange", "banana");',
-        output: 'List without duplicates: [apple, banana, orange]',
+        difficulty: "Medium",
+        question: "Given two integer arrays, find all unique elements present in both arrays using HashSet.",
+        input: "arr1 = [1, 4, 9, 73, 2, 6], arr2 = [2, 3, 89, 4, 7, 2]",
+        output: "Common Elements: [2, 4]",
+        explanation: "Store elements of the first array in a HashSet for O(1) lookup. Iterate through the second array; if an element is in set1, add it to commonSet.",
+        code: `import java.util.HashSet;
+import java.util.Set;
+
+public class CommonElementsTwoArrays {
+    public static void main(String[] args) {
+        int[] arr1 = {1, 4, 9, 73, 2, 6};
+        int[] arr2 = {2, 3, 89, 4, 7, 2};
+
+        Set<Integer> set1 = new HashSet<>();
+        for (int num : arr1) {
+            set1.add(num);
+        }
+
+        Set<Integer> commonSet = new HashSet<>();
+        for (int num : arr2) {
+            if (set1.contains(num)) {
+                commonSet.add(num);
+            }
+        }
+
+        System.out.println("Common Elements: " + commonSet);
+    }
+}`
+      },
+      {
+        id: "cj-col-14",
+        topicId: "collections",
+        number: 14,
+        title: "Check whether two Strings are anagrams",
+        isCoding: true,
+        difficulty: "Medium",
+        question: "Determine if two strings are anagrams (contain identical characters with identical frequencies) using a frequency HashMap.",
+        input: "String s1 = \"listen\", String s2 = \"silent\";",
+        output: "Are \"listen\" and \"silent\" anagrams? true",
+        explanation: "Increment character frequencies for string 1 and decrement for string 2. If the map ends up empty and lengths match, the two strings are anagrams.",
+        code: `import java.util.HashMap;
+import java.util.Map;
+
+public class AnagramCheck {
+    public static boolean isAnagram(String s1, String s2) {
+        if (s1.length() != s2.length()) return false;
+
+        Map<Character, Integer> charCount = new HashMap<>();
+
+        for (char c : s1.toCharArray()) {
+            charCount.put(c, charCount.getOrDefault(c, 0) + 1);
+        }
+
+        for (char c : s2.toCharArray()) {
+            if (!charCount.containsKey(c)) return false;
+            charCount.put(c, charCount.get(c) - 1);
+            if (charCount.get(c) == 0) {
+                charCount.remove(c);
+            }
+        }
+
+        return charCount.isEmpty();
+    }
+
+    public static void main(String[] args) {
+        String s1 = "listen";
+        String s2 = "silent";
+        System.out.println("Are \"" + s1 + "\" and \"" + s2 + "\" anagrams? " + isAnagram(s1, s2));
+    }
+}`
+      },
+      {
+        id: "cj-col-15",
+        topicId: "collections",
+        number: 15,
+        title: "Find the top two most frequent elements in an array",
+        isCoding: true,
+        difficulty: "Medium",
+        question: "Given an array, determine the top two elements that occur most frequently using a frequency HashMap.",
+        input: "int[] arr = {1, 1, 1, 2, 2, 3, 4, 4, 4, 4, 5};",
+        output: "Top 1: 4 (Frequency: 4)\\nTop 2: 1 (Frequency: 3)",
+        explanation: "Count frequencies using HashMap, convert entries to a List, and sort descending by value using a lambda comparator to extract top 1 and top 2.",
+        code: `import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public class TopTwoFrequentElements {
+    public static void main(String[] args) {
+        int[] arr = {1, 1, 1, 2, 2, 3, 4, 4, 4, 4, 5};
+        Map<Integer, Integer> freqMap = new HashMap<>();
+
+        for (int num : arr) {
+            freqMap.put(num, freqMap.getOrDefault(num, 0) + 1);
+        }
+
+        // Sort entries by frequency descending
+        List<Map.Entry<Integer, Integer>> list = new ArrayList<>(freqMap.entrySet());
+        list.sort((e1, e2) -> e2.getValue() - e1.getValue());
+
+        System.out.println("Top 1: " + list.get(0).getKey() + " (Frequency: " + list.get(0).getValue() + ")");
+        if (list.size() > 1) {
+            System.out.println("Top 2: " + list.get(1).getKey() + " (Frequency: " + list.get(1).getValue() + ")");
+        }
+    }
+}`
+      },
+      {
+        id: "cj-col-16",
+        topicId: "collections",
+        number: 16,
+        title: "Group words that are anagrams",
+        isCoding: true,
+        difficulty: "Medium",
+        question: "Given an array of strings, group anagrams together using HashMap<String, List<String>> where the sorted character representation serves as the map key.",
+        input: "String[] words = {\"eat\", \"tea\", \"tan\", \"ate\", \"nat\", \"bat\"};",
+        output: "Grouped Anagrams: [[eat, tea, ate], [tan, nat], [bat]]",
+        explanation: "All anagrams produce the exact same string when their characters are sorted. Use that sorted string as a key in HashMap<String, List<String>>.",
         code: `import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedHashSet;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class RemoveDuplicatesList {
+public class GroupAnagrams {
+    public static List<List<String>> groupAnagrams(String[] strs) {
+        Map<String, List<String>> map = new HashMap<>();
+
+        for (String word : strs) {
+            char[] chars = word.toCharArray();
+            Arrays.sort(chars);
+            String sortedKey = new String(chars);
+
+            map.putIfAbsent(sortedKey, new ArrayList<>());
+            map.get(sortedKey).add(word);
+        }
+
+        return new ArrayList<>(map.values());
+    }
+
     public static void main(String[] args) {
-        List<String> fruits = Arrays.asList("apple", "banana", "apple", "orange", "banana");
-        
-        // LinkedHashSet removes duplicates and preserves insertion order
-        List<String> uniqueFruits = new ArrayList<>(new LinkedHashSet<>(fruits));
-
-        System.out.println("List without duplicates: " + uniqueFruits);
+        String[] words = {"eat", "tea", "tan", "ate", "nat", "bat"};
+        List<List<String>> grouped = groupAnagrams(words);
+        System.out.println("Grouped Anagrams: " + grouped);
     }
 }`
       },
       {
-        id: 'cj-col-15',
-        topicId: 'collections',
-        number: 15,
-        title: 'Sort a List of Custom Objects Using Comparator',
+        id: "cj-col-17",
+        topicId: "collections",
+        number: 17,
+        title: "Find the union of two arrays without duplicates",
         isCoding: true,
-        difficulty: 'Medium',
-        question: 'Write a Java program to sort a list of Employee objects by salary in descending order.',
-        problemStatement: 'Create an Employee class and sort using Collections.sort with a custom Comparator.',
-        input: 'Employees: Alice(50000), Bob(85000), Charlie(65000)',
-        output: 'Bob: 85000\nCharlie: 65000\nAlice: 50000',
+        difficulty: "Medium",
+        question: "Find the union of two arrays containing all distinct elements from both arrays using LinkedHashSet.",
+        input: "int[] arr1 = {1, 2, 3, 4, 5}; int[] arr2 = {1, 2, 3, 6, 7};",
+        output: "Union without duplicates: [1, 2, 3, 4, 5, 6, 7]",
+        explanation: "A Set automatically ignores duplicates. Using LinkedHashSet preserves the encounter sequence of both arrays.",
+        code: `import java.util.LinkedHashSet;
+import java.util.Set;
+
+public class UnionOfArrays {
+    public static void main(String[] args) {
+        int[] arr1 = {1, 2, 3, 4, 5};
+        int[] arr2 = {1, 2, 3, 6, 7};
+
+        Set<Integer> unionSet = new LinkedHashSet<>();
+
+        for (int num : arr1) unionSet.add(num);
+        for (int num : arr2) unionSet.add(num);
+
+        System.out.println("Union without duplicates: " + unionSet);
+    }
+}`
+      },
+      {
+        id: "cj-col-18",
+        topicId: "collections",
+        number: 18,
+        title: "Find the intersection of two arrays without duplicates",
+        isCoding: true,
+        difficulty: "Medium",
+        question: "Compute the intersection of two arrays returning only unique common values using HashSet.",
+        input: "int[] arr1 = {1, 2, 2, 1, 3}; int[] arr2 = {2, 2, 3, 4};",
+        output: "Intersection: [2, 3]",
+        explanation: "Collect elements of array 1 in a HashSet. For array 2, add elements to intersection only if set1 contains them. This ensures O(N + M) time complexity.",
+        code: `import java.util.HashSet;
+import java.util.Set;
+
+public class IntersectionOfArrays {
+    public static void main(String[] args) {
+        int[] arr1 = {1, 2, 2, 1, 3};
+        int[] arr2 = {2, 2, 3, 4};
+
+        Set<Integer> set1 = new HashSet<>();
+        for (int num : arr1) {
+            set1.add(num);
+        }
+
+        Set<Integer> intersection = new HashSet<>();
+        for (int num : arr2) {
+            if (set1.contains(num)) {
+                intersection.add(num);
+            }
+        }
+
+        System.out.println("Intersection: " + intersection);
+    }
+}`
+      },
+      {
+        id: "cj-col-19",
+        topicId: "collections",
+        number: 19,
+        title: "Find the pair of elements whose sum equals a target",
+        isCoding: true,
+        difficulty: "Medium",
+        question: "Given an array of integers and a target sum, find indices or elements that add up to the target in O(N) time using a HashMap.",
+        input: "int[] arr = {2, 7, 11, 15}, target = 9",
+        output: "Pair found: 2 + 7 = 9\\nIndices: [0, 1]",
+        explanation: "For each element arr[i], compute complement = target - arr[i]. Check if complement is in the HashMap in O(1) time before storing the current element.",
+        code: `import java.util.HashMap;
+import java.util.Map;
+
+public class TwoSumHashMap {
+    public static void main(String[] args) {
+        int[] arr = {2, 7, 11, 15};
+        int target = 9;
+
+        // Map stores: element value -> array index
+        Map<Integer, Integer> map = new HashMap<>();
+        boolean found = false;
+
+        for (int i = 0; i < arr.length; i++) {
+            int complement = target - arr[i];
+            if (map.containsKey(complement)) {
+                System.out.println("Pair found: " + complement + " + " + arr[i] + " = " + target);
+                System.out.println("Indices: [" + map.get(complement) + ", " + i + "]");
+                found = true;
+                break;
+            }
+            map.put(arr[i], i);
+        }
+
+        if (!found) {
+            System.out.println("No pair with sum " + target + " exists.");
+        }
+    }
+}`
+      },
+      {
+        id: "cj-col-20",
+        topicId: "collections",
+        number: 20,
+        title: "Find the element that appears more than N/2 times",
+        isCoding: true,
+        difficulty: "Medium",
+        question: "Find the majority element in an array of size N that appears strictly more than N/2 times using a HashMap.",
+        input: "int[] arr = {3, 3, 4, 2, 4, 4, 2, 4, 4} (N = 9)",
+        output: "Majority Element (> N/2): 4",
+        explanation: "Increment the occurrence count of each number in the HashMap. As soon as any element's count surpasses n / 2, return it.",
+        code: `import java.util.HashMap;
+import java.util.Map;
+
+public class MajorityElement {
+    public static void main(String[] args) {
+        int[] arr = {3, 3, 4, 2, 4, 4, 2, 4, 4};
+        int n = arr.length;
+        Map<Integer, Integer> countMap = new HashMap<>();
+
+        Integer majority = null;
+        for (int num : arr) {
+            int count = countMap.getOrDefault(num, 0) + 1;
+            countMap.put(num, count);
+            if (count > n / 2) {
+                majority = num;
+                break;
+            }
+        }
+
+        if (majority != null) {
+            System.out.println("Majority Element (> N/2): " + majority);
+        } else {
+            System.out.println("No majority element found.");
+        }
+    }
+}`
+      },
+      {
+        id: "cj-col-21",
+        topicId: "collections",
+        number: 21,
+        title: "Find the longest consecutive sequence in an array",
+        isCoding: true,
+        difficulty: "Hard",
+        question: "Given an unsorted array of integers, find the length of the longest consecutive elements sequence in O(N) time using HashSet.",
+        input: "int[] arr = {100, 4, 200, 1, 3, 2};",
+        output: "Longest Consecutive Sequence Length: 4",
+        explanation: "Insert all numbers into a HashSet. Only start a streak count if num - 1 is absent, ensuring each number is visited at most twice for a guaranteed O(N) runtime.",
+        code: `import java.util.HashSet;
+import java.util.Set;
+
+public class LongestConsecutiveSequence {
+    public static int longestConsecutive(int[] nums) {
+        Set<Integer> numSet = new HashSet<>();
+        for (int num : nums) {
+            numSet.add(num);
+        }
+
+        int longestStreak = 0;
+
+        for (int num : numSet) {
+            // Only start counting if num is the start of a sequence (num - 1 not in set)
+            if (!numSet.contains(num - 1)) {
+                int currentNum = num;
+                int currentStreak = 1;
+
+                while (numSet.contains(currentNum + 1)) {
+                    currentNum++;
+                    currentStreak++;
+                }
+
+                longestStreak = Math.max(longestStreak, currentStreak);
+            }
+        }
+
+        return longestStreak;
+    }
+
+    public static void main(String[] args) {
+        int[] arr = {100, 4, 200, 1, 3, 2};
+        System.out.println("Longest Consecutive Sequence Length: " + longestConsecutive(arr));
+    }
+}`
+      },
+      {
+        id: "cj-col-22",
+        topicId: "collections",
+        number: 22,
+        title: "Find the K most frequent elements in an array",
+        isCoding: true,
+        difficulty: "Hard",
+        question: "Given an integer array and an integer k, return the k most frequent elements using HashMap and a Min-Heap (PriorityQueue).",
+        input: "int[] arr = {1, 1, 1, 2, 2, 3, 3, 3, 3, 4}, k = 2",
+        output: "Top 2 Most Frequent Elements: [3, 1]",
+        explanation: "Use HashMap to count frequencies, then maintain a Min-Heap (PriorityQueue) of size k. Running time is O(N log K), optimal when k is smaller than N.",
         code: `import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.PriorityQueue;
 
-class Employee {
-    String name;
-    int salary;
-
-    Employee(String name, int salary) {
-        this.name = name;
-        this.salary = salary;
-    }
-}
-
-public class SortEmployees {
-    public static void main(String[] args) {
-        List<Employee> list = new ArrayList<>();
-        list.add(new Employee("Alice", 50000));
-        list.add(new Employee("Bob", 85000));
-        list.add(new Employee("Charlie", 65000));
-
-        // Sort by salary descending
-        Collections.sort(list, (e1, e2) -> e2.salary - e1.salary);
-
-        for (Employee e : list) {
-            System.out.println(e.name + ": " + e.salary);
+public class TopKFrequentElements {
+    public static List<Integer> topKFrequent(int[] nums, int k) {
+        Map<Integer, Integer> freqMap = new HashMap<>();
+        for (int n : nums) {
+            freqMap.put(n, freqMap.getOrDefault(n, 0) + 1);
         }
+
+        // Min-Heap ordered by frequency ascending
+        PriorityQueue<Map.Entry<Integer, Integer>> minHeap =
+            new PriorityQueue<>(Comparator.comparingInt(Map.Entry::getValue));
+
+        for (Map.Entry<Integer, Integer> entry : freqMap.entrySet()) {
+            minHeap.offer(entry);
+            if (minHeap.size() > k) {
+                minHeap.poll(); // Discard element with smaller frequency
+            }
+        }
+
+        List<Integer> result = new ArrayList<>();
+        while (!minHeap.isEmpty()) {
+            result.add(minHeap.poll().getKey());
+        }
+        Collections.reverse(result);
+        return result;
+    }
+
+    public static void main(String[] args) {
+        int[] arr = {1, 1, 1, 2, 2, 3, 3, 3, 3, 4};
+        int k = 2;
+        System.out.println("Top " + k + " Most Frequent Elements: " + topKFrequent(arr, k));
+    }
+}`
+      },
+      {
+        id: "cj-col-23",
+        topicId: "collections",
+        number: 23,
+        title: "Find all pairs with a given difference",
+        isCoding: true,
+        difficulty: "Hard",
+        question: "Given an integer array and a difference value k, find all unique pairs (a, b) such that b - a = diff using HashSet.",
+        input: "int[] arr = {1, 5, 3, 4, 2}, diff = 2",
+        output: "Pairs with difference 2:\\n(1, 3)\\n(2, 4)\\n(3, 5)",
+        explanation: "Load all unique numbers into a HashSet. For every number num in the set, check if num + diff exists in O(1) time.",
+        code: `import java.util.HashSet;
+import java.util.Set;
+
+public class PairsWithDifference {
+    public static void main(String[] args) {
+        int[] arr = {1, 5, 3, 4, 2};
+        int diff = 2;
+
+        Set<Integer> set = new HashSet<>();
+        for (int num : arr) {
+            set.add(num);
+        }
+
+        System.out.println("Pairs with difference " + diff + ":");
+        for (int num : set) {
+            if (set.contains(num + diff)) {
+                System.out.println("(" + num + ", " + (num + diff) + ")");
+            }
+        }
+    }
+}`
+      },
+      {
+        id: "cj-col-24",
+        topicId: "collections",
+        number: 24,
+        title: "Find the character with the highest frequency in a String",
+        isCoding: true,
+        difficulty: "Hard",
+        question: "Find the character that appears the maximum number of times in a string using a HashMap and iterating via entrySet().",
+        input: "String str = \"successes\";",
+        output: "Character with highest frequency: 's' (Occurrences: 4)",
+        explanation: "Count each character's occurrences with HashMap. Iterate over entrySet() to locate the entry with the highest value in O(N) time.",
+        code: `import java.util.HashMap;
+import java.util.Map;
+
+public class HighestFrequencyChar {
+    public static void main(String[] args) {
+        String str = "successes";
+        Map<Character, Integer> charMap = new HashMap<>();
+
+        for (char ch : str.toCharArray()) {
+            charMap.put(ch, charMap.getOrDefault(ch, 0) + 1);
+        }
+
+        char maxChar = ' ';
+        int maxCount = 0;
+
+        // Iterate through entrySet()
+        for (Map.Entry<Character, Integer> entry : charMap.entrySet()) {
+            if (entry.getValue() > maxCount) {
+                maxCount = entry.getValue();
+                maxChar = entry.getKey();
+            }
+        }
+
+        System.out.println("Character with highest frequency: '" + maxChar + "' (Occurrences: " + maxCount + ")");
+    }
+}`
+      },
+      {
+        id: "cj-col-25",
+        topicId: "collections",
+        number: 25,
+        title: "Check whether parentheses are balanced",
+        isCoding: true,
+        difficulty: "Hard",
+        question: "Given a string containing brackets '(', ')', '{', '}', '[' and ']', determine if the brackets are balanced using ArrayDeque as a LIFO Stack from the Java Collections Framework.",
+        input: "String s1 = \"{[()]()}\", String s2 = \"{[(])}\";",
+        output: "{[()]()} -> Balanced\\n{[(])} -> Not Balanced",
+        explanation: "ArrayDeque provides an unsynchronized, highly performant LIFO Stack in the Java Collections Framework. Push opening brackets; pop and match on closing brackets.",
+        code: `import java.util.ArrayDeque;
+import java.util.Deque;
+
+public class BalancedParentheses {
+    public static boolean isBalanced(String s) {
+        // In modern Java, Deque (ArrayDeque) is preferred over legacy java.util.Stack
+        Deque<Character> stack = new ArrayDeque<>();
+
+        for (char ch : s.toCharArray()) {
+            if (ch == '(' || ch == '{' || ch == '[') {
+                stack.push(ch);
+            } else if (ch == ')' || ch == '}' || ch == ']') {
+                if (stack.isEmpty()) return false;
+                char top = stack.pop();
+                if ((ch == ')' && top != '(') ||
+                    (ch == '}' && top != '{') ||
+                    (ch == ']' && top != '[')) {
+                    return false;
+                }
+            }
+        }
+
+        return stack.isEmpty();
+    }
+
+    public static void main(String[] args) {
+        String test1 = "{[()]()}";
+        String test2 = "{[(])}";
+
+        System.out.println(test1 + " -> " + (isBalanced(test1) ? "Balanced" : "Not Balanced"));
+        System.out.println(test2 + " -> " + (isBalanced(test2) ? "Balanced" : "Not Balanced"));
     }
 }`
       }
