@@ -1425,7 +1425,7 @@ public class AnagramCheck {
     public static void main(String[] args) {
         String s1 = "listen";
         String s2 = "silent";
-        System.out.println("Are \"" + s1 + "\" and \"" + s2 + "\" anagrams? " + isAnagram(s1, s2));
+        System.out.println("Are " + s1 + " and " + s2 + " anagrams? " + isAnagram(s1, s2));
     }
 }`
       },

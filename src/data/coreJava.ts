@@ -453,10 +453,10 @@ Definition: Pass by name is a parameter-passing technique in which an argument i
 Each thread has its own JVM stack for method frames and local variables. The heap stores objects and arrays. The JVM also maintains class metadata and runtime data in Metaspace.
 
 WHAT IS GARBAGE COLLECTION?
-Garbage collection is the JVM\'s automatic process of reclaiming heap memory used by objects that are no longer reachable. Developers cannot guarantee exactly when it runs; System.gc() is only a request.
+Garbage collection is the JVM's automatic process of reclaiming heap memory used by objects that are no longer reachable. Developers cannot guarantee exactly when it runs; System.gc() is only a request.
 
 WHAT HAPPENS WHEN A METHOD FINISHES?
-When a method completes, its stack frame is removed from that thread\'s stack. An object on the heap is not removed merely because a method finishes; it can be reclaimed when it becomes unreachable and the garbage collector later processes it.`,
+When a method completes, its stack frame is removed from that thread's stack. An object on the heap is not removed merely because a method finishes; it can be reclaimed when it becomes unreachable and the garbage collector later processes it.`,
           interviewAnswer: 'In Java, stack memory is thread-private and holds method frames and local variables, which are cleared immediately when a method returns. Heap memory stores all objects and arrays. When a method completes, an object on the heap is not removed immediately; it becomes eligible for Garbage Collection once it is no longer reachable. Developers cannot guarantee when GC runs; System.gc() is only a request.',
           explanation: `1. High-Level JVM Memory Areas:
 - JVM Stack: Each thread has its own stack for method frames, local variables, and execution state.
@@ -467,7 +467,7 @@ When a method completes, its stack frame is removed from that thread\'s stack. A
 When a method completes, its stack frame is removed from that thread's stack. An object on the heap is not removed merely because a method finishes; it can be reclaimed when it becomes unreachable and the garbage collector later processes it.
 
 3. Garbage Collection:
-Garbage collection is the JVM\'s automatic process of reclaiming heap memory used by objects that are no longer reachable from any active GC root. System.gc() is merely a request to the JVM, never a guarantee of immediate execution.`,
+Garbage collection is the JVM's automatic process of reclaiming heap memory used by objects that are no longer reachable from any active GC root. System.gc() is merely a request to the JVM, never a guarantee of immediate execution.`,
           realWorldExample: 'Stack is like disposable sticky notes used during a telephone call and discarded when the call ends. Heap is like books stored in a public library: books remain on the shelf until the library inventory staff (Garbage Collector) clears away unread, abandoned books.',
           codeSnippet: {
             code: `public class MemoryGCDemo {
