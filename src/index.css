@@ -1,0 +1,183 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --color-primary: #2563eb;
+  --color-primary-light: #3b82f6;
+  --color-primary-dark: #1d4ed8;
+  --color-accent: #2563eb;
+  --color-surface: #ffffff;
+  --color-surface-hover: #f8fafc;
+  --color-border: #e2e8f0;
+  --color-border-light: #f1f5f9;
+  --color-text-primary: #0f172a;
+  --color-text-secondary: #475569;
+  --color-text-muted: #94a3b8;
+  --color-success: #10b981;
+  --color-warning: #f59e0b;
+  --color-danger: #ef4444;
+  --color-bg-main: #f8fafc;
+  --color-bg-subtle: #f1f5f9;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--color-bg-main);
+  color: var(--color-text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Glass panel styling */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  border-radius: 20px;
+  box-shadow: 0 2px 10px -2px rgba(15, 23, 42, 0.03), 0 8px 24px -4px rgba(15, 23, 42, 0.04);
+}
+
+.glass-panel-sm {
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  border-radius: 16px;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.03), 0 4px 14px -2px rgba(15, 23, 42, 0.03);
+}
+
+/* Smooth surface cards */
+.smooth-surface {
+  background: #ffffff;
+  border: 1px solid rgba(226, 232, 240, 0.85);
+  border-radius: 20px;
+  box-shadow: 0 2px 10px -2px rgba(15, 23, 42, 0.03), 0 8px 24px -4px rgba(15, 23, 42, 0.04);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.smooth-surface:hover {
+  border-color: rgba(203, 213, 225, 0.95);
+  box-shadow: 0 4px 16px -2px rgba(15, 23, 42, 0.06), 0 12px 32px -4px rgba(15, 23, 42, 0.05);
+}
+
+/* Syntax highlight code blocks */
+.code-block {
+  background: #1e293b;
+  color: #e2e8f0;
+  border-radius: 12px;
+  padding: 20px;
+  font-family: 'Fira Code', 'Cascadia Code', 'JetBrains Mono', monospace;
+  font-size: 13.5px;
+  line-height: 1.7;
+  overflow-x: auto;
+  position: relative;
+}
+
+/* Smooth transitions */
+.transition-smooth {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.transition-spring {
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Highlight animation for search */
+@keyframes highlight-pulse {
+  0%, 100% { background-color: transparent; }
+  50% { background-color: rgba(37, 99, 235, 0.08); }
+}
+.highlight-search {
+  animation: highlight-pulse 1.5s ease-in-out 2;
+}
+
+/* Shimmer Animation */
+@keyframes shimmer-sweep {
+  0% { transform: translateX(-150%); }
+  50%, 100% { transform: translateX(180%); }
+}
+
+.shimmer-wrapper {
+  position: relative;
+  overflow: hidden;
+}
+
+.shimmer-wrapper::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  transform: translateX(-150%);
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.45) 50%,
+    transparent 100%
+  );
+  animation: shimmer-sweep 3.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  pointer-events: none;
+}
+
+/* Gentle Floating Animation */
+@keyframes float-subtle {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+.animate-float-subtle {
+  animation: float-subtle 4s ease-in-out infinite;
+}
+
+/* Pulse Glow */
+@keyframes pulse-glow {
+  0%, 100% { opacity: 0.5; transform: scale(1); }
+  50% { opacity: 0.85; transform: scale(1.05); }
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 3s ease-in-out infinite;
+}
+
+/* Interactive Card Hover Classes */
+.card-amber-glow {
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.card-amber-glow:hover {
+  border-color: rgba(245, 158, 11, 0.55);
+  box-shadow: 0 12px 32px -8px rgba(245, 158, 11, 0.18), 0 4px 12px -2px rgba(15, 23, 42, 0.04);
+  transform: translateY(-4px);
+}
+
+.card-blue-glow {
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.card-blue-glow:hover {
+  border-color: rgba(37, 99, 235, 0.55);
+  box-shadow: 0 12px 32px -8px rgba(37, 99, 235, 0.18), 0 4px 12px -2px rgba(15, 23, 42, 0.04);
+  transform: translateY(-4px);
+}
+
+.card-emerald-glow {
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.card-emerald-glow:hover {
+  border-color: rgba(16, 185, 129, 0.55);
+  box-shadow: 0 12px 32px -8px rgba(16, 185, 129, 0.18), 0 4px 12px -2px rgba(15, 23, 42, 0.04);
+  transform: translateY(-4px);
+}
