@@ -1,11 +1,9 @@
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
-  ArrowLeft, Search, CheckCircle2, Circle, 
-  ChevronDown, ChevronUp, ChevronsUpDown,
-  RotateCcw, Eye, EyeOff, Clock, Database,
-  Terminal, Sparkles, Check
+  ArrowLeft, Search, ChevronDown, ChevronUp, ChevronsUpDown,
+  ArrowUpDown, Terminal, Sparkles
 } from 'lucide-react';
 import CodeBlock from '../components/CodeBlock';
 import { 
@@ -32,51 +30,20 @@ export interface UnifiedQuestion {
   sampleTable?: string;
   query?: string;
   expectedOutput?: string;
-  timeComplexity?: string;
-  spaceComplexity?: string;
 }
 
-const STORAGE_KEY = 'prep_completed_questions_v1';
+type SortOption = 'default' | 'easy-to-hard' | 'hard-to-easy';
 
 export default function CodingPracticePage() {
-  // Primary Track Filter: All | Core Java | DSA & Coding | SQL Queries
+  // Track Filter: All | Core Java | DSA & Coding | SQL Queries
   const [selectedTrack, setSelectedTrack] = useState<string>('All');
   const [selectedTopic, setSelectedTopic] = useState<string>('All');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [selectedDifficulty, setSelectedDifficulty] = useState<string>('All');
-  const [selectedStatus, setSelectedStatus] = useState<string>('All');
-  const [practiceMode, setPracticeMode] = useState<boolean>(false);
+  const [sortBy, setSortBy] = useState<SortOption>('default');
 
   // Expanded Accordion Questions
   const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set(['cj-arr-1']));
-  const [revealedSolutions, setRevealedSolutions] = useState<Set<string>>(new Set());
-
-  // Completed Question IDs in LocalStorage
-  const [completedQuestions, setCompletedQuestions] = useState<Set<string>>(() => {
-    try {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      return saved ? new Set(JSON.parse(saved)) : new Set();
-    } catch {
-      return new Set();
-    }
-  });
-
-  useEffect(() => {
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(Array.from(completedQuestions)));
-    } catch {
-      // Ignore
-    }
-  }, [completedQuestions]);
-
-  const toggleCompleted = (id: string) => {
-    setCompletedQuestions(prev => {
-      const next = new Set(prev);
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
-      return next;
-    });
-  };
 
   const toggleExpand = (id: string) => {
     setExpandedIds(prev => {
@@ -85,21 +52,6 @@ export default function CodingPracticePage() {
       else next.add(id);
       return next;
     });
-  };
-
-  const toggleSolutionReveal = (id: string) => {
-    setRevealedSolutions(prev => {
-      const next = new Set(prev);
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
-      return next;
-    });
-  };
-
-  const handleResetProgress = () => {
-    if (window.confirm('Reset all completed question progress?')) {
-      setCompletedQuestions(new Set());
-    }
   };
 
   // Build the complete Unified List of 128 Questions
@@ -144,8 +96,6 @@ export default function CodingPracticePage() {
         input: p.input,
         output: p.output,
         code: p.code,
-        timeComplexity: p.timeComplexity,
-        spaceComplexity: p.spaceComplexity,
       });
     });
 
@@ -193,9 +143,9 @@ export default function CodingPracticePage() {
     return ['All'];
   }, [selectedTrack]);
 
-  // Filter Questions
+  // Filter & Sort Questions
   const filteredQuestions = useMemo(() => {
-    return allQuestions.filter(q => {
+    let result = allQuestions.filter(q => {
       // Track filter
       if (selectedTrack !== 'All' && q.track !== selectedTrack) return false;
 
@@ -204,10 +154,6 @@ export default function CodingPracticePage() {
 
       // Difficulty filter
       if (selectedDifficulty !== 'All' && q.difficulty !== selectedDifficulty) return false;
-
-      // Status filter
-      if (selectedStatus === 'Completed' && !completedQuestions.has(q.id)) return false;
-      if (selectedStatus === 'Pending' && completedQuestions.has(q.id)) return false;
 
       // Search Query
       if (searchQuery.trim()) {
@@ -225,7 +171,19 @@ export default function CodingPracticePage() {
 
       return true;
     });
-  }, [allQuestions, selectedTrack, selectedTopic, selectedDifficulty, selectedStatus, searchQuery, completedQuestions]);
+
+    // Sorting
+    const diffWeights: Record<string, number> = { Easy: 1, Medium: 2, Hard: 3 };
+    if (sortBy === 'easy-to-hard') {
+      result.sort((a, b) => (diffWeights[a.difficulty] || 2) - (diffWeights[b.difficulty] || 2));
+    } else if (sortBy === 'hard-to-easy') {
+      result.sort((a, b) => (diffWeights[b.difficulty] || 2) - (diffWeights[a.difficulty] || 2));
+    } else {
+      result.sort((a, b) => a.globalNumber - b.globalNumber);
+    }
+
+    return result;
+  }, [allQuestions, selectedTrack, selectedTopic, selectedDifficulty, searchQuery, sortBy]);
 
   const allAreExpanded = filteredQuestions.length > 0 && filteredQuestions.every(q => expandedIds.has(q.id));
 
@@ -237,96 +195,62 @@ export default function CodingPracticePage() {
     setExpandedIds(new Set());
   };
 
-  const totalCompleted = completedQuestions.size;
-  const totalCount = allQuestions.length; // 128
-  const completionPercentage = Math.round((totalCompleted / totalCount) * 100);
-
   return (
     <div className="space-y-6 pb-24 animate-fade-in text-slate-800">
       {/* ======================================================== */}
-      {/* 1. TOP HEADER & PROMINENT CLICKABLE BACK BUTTON */}
+      {/* 1. TOP HEADER & PROMINENT BACK BUTTON */}
       {/* ======================================================== */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-200">
-        <div className="flex items-center gap-3">
-          <Link
-            to="/"
-            className="outline-none"
+        <Link
+          to="/"
+          className="outline-none inline-flex"
+        >
+          <motion.div
+            whileHover={{ x: -3 }}
+            whileTap={{ scale: 0.95 }}
+            transition={{ type: 'spring', stiffness: 500, damping: 25 }}
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white hover:bg-slate-50 border border-slate-300 text-slate-800 text-xs sm:text-sm font-semibold shadow-2xs hover:border-slate-400 transition-colors select-none cursor-pointer"
+            title="Return to Concepts Dashboard"
           >
-            <motion.div
-              whileHover={{ x: -3 }}
-              whileTap={{ scale: 0.95 }}
-              transition={{ type: 'spring', stiffness: 500, damping: 25 }}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white hover:bg-slate-50 border border-slate-300 text-slate-800 text-xs sm:text-sm font-semibold shadow-2xs hover:border-slate-400 transition-colors select-none cursor-pointer"
-              title="Return to Concepts Dashboard"
-            >
-              <ArrowLeft className="w-4 h-4 text-slate-700" />
-              <span>Back to Concepts</span>
-            </motion.div>
-          </Link>
-        </div>
+            <ArrowLeft className="w-4 h-4 text-slate-700" />
+            <span>Back to Concepts</span>
+          </motion.div>
+        </Link>
 
-        {/* Global Progress and Controls */}
-        <div className="flex items-center gap-3 self-end sm:self-auto">
-          <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white border border-slate-200 text-xs shadow-2xs">
-            <span className="text-slate-500 font-medium">Completed:</span>
-            <strong className="text-slate-900 font-bold">{totalCompleted} / {totalCount}</strong>
-            <span className="font-bold text-slate-700">({completionPercentage}%)</span>
-          </div>
-
-          <motion.button
-            whileTap={{ scale: 0.93 }}
-            onClick={allAreExpanded ? collapseAll : expandAll}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 text-xs font-semibold shadow-2xs transition-colors cursor-pointer select-none"
-          >
-            {allAreExpanded ? (
-              <>
-                <ChevronUp className="w-3.5 h-3.5 text-slate-500" />
-                <span>Collapse All</span>
-              </>
-            ) : (
-              <>
-                <ChevronsUpDown className="w-3.5 h-3.5 text-slate-500" />
-                <span>Expand All</span>
-              </>
-            )}
-          </motion.button>
-
-          {totalCompleted > 0 && (
-            <motion.button
-              whileTap={{ scale: 0.85, rotate: -180 }}
-              transition={{ type: 'spring', stiffness: 400, damping: 20 }}
-              onClick={handleResetProgress}
-              className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors cursor-pointer"
-              title="Reset progress"
-            >
-              <RotateCcw className="w-4 h-4" />
-            </motion.button>
+        {/* Global Expand / Collapse Control */}
+        <motion.button
+          whileTap={{ scale: 0.93 }}
+          onClick={allAreExpanded ? collapseAll : expandAll}
+          className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 text-xs font-semibold shadow-2xs transition-colors cursor-pointer select-none self-end sm:self-auto"
+        >
+          {allAreExpanded ? (
+            <>
+              <ChevronUp className="w-3.5 h-3.5 text-slate-500" />
+              <span>Collapse All</span>
+            </>
+          ) : (
+            <>
+              <ChevronsUpDown className="w-3.5 h-3.5 text-slate-500" />
+              <span>Expand All</span>
+            </>
           )}
-        </div>
+        </motion.button>
       </div>
 
       {/* ======================================================== */}
-      {/* 2. TITLE & PROGRESS OVERVIEW */}
+      {/* 2. TITLE SECTION */}
       {/* ======================================================== */}
       <div>
         <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
           Core Java, DSA & SQL Coding Preparation
         </h1>
         <p className="text-xs sm:text-sm text-slate-600 mt-1">
-          128 curated interview questions with clean Java code, input/output examples, and MySQL queries. Click any card to expand immediately.
+          128 curated interview questions with clean Java code, input/output examples, and MySQL queries.
         </p>
-
-        {/* Clean Neutral Progress Bar */}
-        <div className="w-full h-1.5 rounded-full bg-slate-200 mt-3 overflow-hidden">
-          <div
-            className="h-full bg-slate-800 transition-all duration-300"
-            style={{ width: `${completionPercentage}%` }}
-          />
-        </div>
       </div>
 
       {/* ======================================================== */}
-      {/* 3. PRIMARY TRACK SWITCHER PILLS (CLICKABLE WITH SPRING) */}
+      {/* 3. PRIMARY TRACK SWITCHER PILLS */}
       {/* ======================================================== */}
       <div className="flex items-center gap-2 p-1.5 bg-slate-100 rounded-2xl border border-slate-200 overflow-x-auto scrollbar-none relative">
         {[
@@ -366,7 +290,7 @@ export default function CodingPracticePage() {
       </div>
 
       {/* ======================================================== */}
-      {/* 4. SUB-TOPIC FILTER CHIPS (CLICKABLE) */}
+      {/* 4. SUB-TOPIC FILTER CHIPS */}
       {/* ======================================================== */}
       {availableTopics.length > 1 && (
         <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none">
@@ -402,7 +326,7 @@ export default function CodingPracticePage() {
       )}
 
       {/* ======================================================== */}
-      {/* 5. SEARCH & DIFFICULTY CONTROLS */}
+      {/* 5. SEARCH & SORT CONTROLS (EASY TO HARD SORTING) */}
       {/* ======================================================== */}
       <div className="p-3.5 bg-white rounded-2xl border border-slate-200 flex flex-col md:flex-row md:items-center justify-between gap-3 shadow-2xs">
         {/* Search */}
@@ -425,7 +349,7 @@ export default function CodingPracticePage() {
                 key={diff}
                 whileTap={{ scale: 0.94 }}
                 onClick={() => setSelectedDifficulty(diff)}
-                className={`px-2.5 py-1 rounded-lg text-xs font-medium transition-all cursor-pointer ${
+                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all cursor-pointer ${
                   selectedDifficulty === diff
                     ? 'bg-white text-slate-900 font-semibold shadow-2xs'
                     : 'text-slate-600 hover:text-slate-900'
@@ -436,44 +360,18 @@ export default function CodingPracticePage() {
             ))}
           </div>
 
-          {/* Status Filter */}
-          <div className="flex items-center gap-1 p-1 bg-slate-100 rounded-xl">
-            {['All', 'Completed', 'Pending'].map(status => (
-              <motion.button
-                key={status}
-                whileTap={{ scale: 0.94 }}
-                onClick={() => setSelectedStatus(status)}
-                className={`px-2.5 py-1 rounded-lg text-xs font-medium transition-all cursor-pointer ${
-                  selectedStatus === status
-                    ? 'bg-white text-slate-900 font-semibold shadow-2xs'
-                    : 'text-slate-600 hover:text-slate-900'
-                }`}
-              >
-                {status}
-              </motion.button>
-            ))}
-          </div>
-
-          {/* Practice Mode Toggle */}
-          <div className="flex items-center gap-1 p-1 bg-slate-100 rounded-xl">
-            <motion.button
-              whileTap={{ scale: 0.94 }}
-              onClick={() => setPracticeMode(false)}
-              className={`px-2.5 py-1 rounded-lg text-xs font-medium transition-all cursor-pointer ${
-                !practiceMode ? 'bg-white text-slate-900 font-semibold shadow-2xs' : 'text-slate-600'
-              }`}
+          {/* Easy to Hard Sorting Dropdown */}
+          <div className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 rounded-xl text-xs text-slate-700">
+            <ArrowUpDown className="w-3.5 h-3.5 text-slate-500" />
+            <select
+              value={sortBy}
+              onChange={e => setSortBy(e.target.value as SortOption)}
+              className="bg-transparent text-xs font-semibold text-slate-800 outline-none cursor-pointer"
             >
-              Learn
-            </motion.button>
-            <motion.button
-              whileTap={{ scale: 0.94 }}
-              onClick={() => setPracticeMode(true)}
-              className={`px-2.5 py-1 rounded-lg text-xs font-medium transition-all cursor-pointer ${
-                practiceMode ? 'bg-slate-800 text-white font-semibold shadow-2xs' : 'text-slate-600'
-              }`}
-            >
-              Practice
-            </motion.button>
+              <option value="default">Default Order</option>
+              <option value="easy-to-hard">Easy to Hard</option>
+              <option value="hard-to-easy">Hard to Easy</option>
+            </select>
           </div>
         </div>
       </div>
@@ -492,7 +390,7 @@ export default function CodingPracticePage() {
       </div>
 
       {/* ======================================================== */}
-      {/* 6. CLICKABLE ACCORDION LIST WITH FLUID SPRING ANIMATIONS */}
+      {/* 6. CLEAN ACCORDION LIST (JUST QUESTION, INPUT, OUTPUT, CODE) */}
       {/* ======================================================== */}
       <div className="space-y-3">
         {filteredQuestions.length === 0 ? (
@@ -504,7 +402,6 @@ export default function CodingPracticePage() {
         ) : (
           filteredQuestions.map(prob => {
             const isExpanded = expandedIds.has(prob.id);
-            const isDone = completedQuestions.has(prob.id);
 
             return (
               <motion.div
@@ -517,59 +414,33 @@ export default function CodingPracticePage() {
                     : 'border-slate-200 hover:border-slate-300 hover:shadow-2xs'
                 }`}
               >
-                {/* Accordion Header (Fully Clickable Card) */}
+                {/* Accordion Header */}
                 <motion.div
                   whileTap={{ scale: 0.995 }}
                   onClick={() => toggleExpand(prob.id)}
                   className="p-4 sm:p-5 flex items-center justify-between gap-3 cursor-pointer hover:bg-slate-50/70 transition-colors select-none"
                 >
-                  <div className="flex items-start gap-3 flex-1 min-w-0">
-                    {/* Mark Completed Checkbox */}
-                    <motion.button
-                      whileHover={{ scale: 1.15 }}
-                      whileTap={{ scale: 0.85 }}
-                      transition={{ type: 'spring', stiffness: 500, damping: 20 }}
-                      onClick={e => {
-                        e.stopPropagation();
-                        toggleCompleted(prob.id);
-                      }}
-                      className="p-1 rounded-lg hover:bg-slate-200 text-slate-400 hover:text-slate-800 transition-colors shrink-0 mt-0.5 cursor-pointer"
-                      title={isDone ? 'Mark as Incomplete' : 'Mark as Completed'}
-                    >
-                      {isDone ? (
-                        <CheckCircle2 className="w-5 h-5 text-slate-900 fill-slate-100" />
-                      ) : (
-                        <Circle className="w-5 h-5 text-slate-300 hover:text-slate-500" />
-                      )}
-                    </motion.button>
-
-                    <div className="min-w-0 flex-1">
-                      {/* Meta Badges */}
-                      <div className="flex flex-wrap items-center gap-2 mb-1.5">
-                        <span className="text-[11px] font-mono font-bold px-2 py-0.5 rounded-md bg-slate-100 text-slate-700 border border-slate-200">
-                          Q{prob.number < 10 ? `0${prob.number}` : prob.number}
-                        </span>
-                        <span className="text-[10px] font-semibold px-2 py-0.5 rounded-md bg-slate-100 text-slate-700 border border-slate-200">
-                          {prob.track}
-                        </span>
-                        <span className="text-[10px] font-medium px-2 py-0.5 rounded-md bg-slate-50 text-slate-600 border border-slate-200">
-                          {prob.topic}
-                        </span>
-                        <span className="text-[10px] font-semibold px-2 py-0.5 rounded-md bg-slate-100 text-slate-700 border border-slate-200">
-                          {prob.difficulty}
-                        </span>
-                        {isDone && (
-                          <span className="text-[10px] font-semibold px-2 py-0.5 rounded-md bg-slate-900 text-white">
-                            Completed
-                          </span>
-                        )}
-                      </div>
-
-                      {/* Question Title */}
-                      <h3 className="text-sm sm:text-base font-bold text-slate-900">
-                        {prob.title}
-                      </h3>
+                  <div className="min-w-0 flex-1">
+                    {/* Meta Badges */}
+                    <div className="flex flex-wrap items-center gap-2 mb-1.5">
+                      <span className="text-[11px] font-mono font-bold px-2 py-0.5 rounded-md bg-slate-100 text-slate-700 border border-slate-200">
+                        Q{prob.number < 10 ? `0${prob.number}` : prob.number}
+                      </span>
+                      <span className="text-[10px] font-semibold px-2 py-0.5 rounded-md bg-slate-100 text-slate-700 border border-slate-200">
+                        {prob.track}
+                      </span>
+                      <span className="text-[10px] font-medium px-2 py-0.5 rounded-md bg-slate-50 text-slate-600 border border-slate-200">
+                        {prob.topic}
+                      </span>
+                      <span className="text-[10px] font-semibold px-2 py-0.5 rounded-md bg-slate-100 text-slate-700 border border-slate-200">
+                        {prob.difficulty}
+                      </span>
                     </div>
+
+                    {/* Question Title */}
+                    <h3 className="text-sm sm:text-base font-bold text-slate-900">
+                      {prob.title}
+                    </h3>
                   </div>
 
                   {/* Toggle Button with Rotating Chevron */}
@@ -601,7 +472,7 @@ export default function CodingPracticePage() {
                   </div>
                 </motion.div>
 
-                {/* Accordion Expanded Content */}
+                {/* Accordion Expanded Content: strictly question, input, output, code */}
                 <AnimatePresence initial={false}>
                   {isExpanded && (
                     <motion.div
@@ -681,98 +552,25 @@ export default function CodingPracticePage() {
                           </div>
                         )}
 
-                        {/* 5. CODE / SQL QUERY (PRACTICE MODE SUPPORT) */}
-                        {(prob.code || prob.query) && (
-                          <div>
-                            {practiceMode && !revealedSolutions.has(prob.id) ? (
-                              <div className="p-6 bg-white rounded-xl border border-dashed border-slate-300 text-center space-y-2">
-                                <EyeOff className="w-6 h-6 text-slate-400 mx-auto" />
-                                <h4 className="text-xs font-bold text-slate-700">Practice Mode</h4>
-                                <p className="text-xs text-slate-500">Try formulating your logic before viewing the complete code!</p>
-                                <motion.button
-                                  whileHover={{ scale: 1.03 }}
-                                  whileTap={{ scale: 0.94 }}
-                                  onClick={() => toggleSolutionReveal(prob.id)}
-                                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-900 text-white text-xs font-semibold shadow-xs transition-colors cursor-pointer"
-                                >
-                                  <Eye className="w-3.5 h-3.5" />
-                                  <span>Reveal Solution</span>
-                                </motion.button>
-                              </div>
-                            ) : (
-                              <div>
-                                {prob.code && (
-                                  <CodeBlock
-                                    code={prob.code}
-                                    language="java"
-                                    title="Complete Runnable Java Code"
-                                  />
-                                )}
-                                {prob.query && (
-                                  <CodeBlock
-                                    code={prob.query}
-                                    language="sql"
-                                    title="Tested MySQL Query"
-                                  />
-                                )}
-                                {practiceMode && (
-                                  <div className="mt-2 text-right">
-                                    <button
-                                      onClick={() => toggleSolutionReveal(prob.id)}
-                                      className="text-xs text-slate-500 hover:text-slate-800 font-medium inline-flex items-center gap-1 cursor-pointer"
-                                    >
-                                      <EyeOff className="w-3.5 h-3.5" />
-                                      <span>Hide Solution</span>
-                                    </button>
-                                  </div>
-                                )}
-                              </div>
-                            )}
-                          </div>
+                        {/* 5. CODE / SQL QUERY (ALWAYS VISIBLE DIRECTLY) */}
+                        {prob.code && (
+                          <CodeBlock
+                            code={prob.code}
+                            language="java"
+                            title="Complete Runnable Java Code"
+                          />
                         )}
 
-                        {/* 6. COMPLEXITY BADGES */}
-                        {prob.timeComplexity && (
-                          <div className="flex flex-wrap items-center gap-3 text-xs pt-1">
-                            <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white border border-slate-200 shadow-2xs">
-                              <Clock className="w-3.5 h-3.5 text-slate-500" />
-                              <span className="text-slate-500">Time:</span>
-                              <strong className="font-mono text-slate-800">{prob.timeComplexity}</strong>
-                            </div>
-                            {prob.spaceComplexity && (
-                              <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white border border-slate-200 shadow-2xs">
-                                <Database className="w-3.5 h-3.5 text-slate-500" />
-                                <span className="text-slate-500">Space:</span>
-                                <strong className="font-mono text-slate-800">{prob.spaceComplexity}</strong>
-                              </div>
-                            )}
-                          </div>
+                        {prob.query && (
+                          <CodeBlock
+                            code={prob.query}
+                            language="sql"
+                            title="Tested MySQL Query"
+                          />
                         )}
 
-                        {/* Bottom Item Actions */}
-                        <div className="flex items-center justify-between pt-2 border-t border-slate-200 text-xs">
-                          <motion.button
-                            whileTap={{ scale: 0.94 }}
-                            onClick={() => toggleCompleted(prob.id)}
-                            className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl font-semibold transition-all cursor-pointer ${
-                              isDone
-                                ? 'bg-slate-900 text-white'
-                                : 'bg-white hover:bg-slate-100 border border-slate-300 text-slate-700'
-                            }`}
-                          >
-                            {isDone ? (
-                              <>
-                                <Check className="w-3.5 h-3.5" />
-                                <span>Completed</span>
-                              </>
-                            ) : (
-                              <>
-                                <Circle className="w-3.5 h-3.5 text-slate-400" />
-                                <span>Mark as Completed</span>
-                              </>
-                            )}
-                          </motion.button>
-
+                        {/* Close Panel Button */}
+                        <div className="text-right pt-1">
                           <button
                             onClick={() => toggleExpand(prob.id)}
                             className="text-slate-500 hover:text-slate-800 font-medium text-xs cursor-pointer"
