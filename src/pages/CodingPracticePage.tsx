@@ -2,7 +2,7 @@ import { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
-  ArrowLeft, Search, ChevronDown, ChevronUp, ChevronsUpDown,
+  ArrowLeft, Search, ChevronDown,
   ArrowUpDown, Terminal, Sparkles
 } from 'lucide-react';
 import CodeBlock from '../components/CodeBlock';
@@ -185,22 +185,12 @@ export default function CodingPracticePage() {
     return result;
   }, [allQuestions, selectedTrack, selectedTopic, selectedDifficulty, searchQuery, sortBy]);
 
-  const allAreExpanded = filteredQuestions.length > 0 && filteredQuestions.every(q => expandedIds.has(q.id));
-
-  const expandAll = () => {
-    setExpandedIds(new Set(filteredQuestions.map(q => q.id)));
-  };
-
-  const collapseAll = () => {
-    setExpandedIds(new Set());
-  };
-
   return (
     <div className="space-y-6 pb-24 animate-fade-in text-slate-800">
       {/* ======================================================== */}
       {/* 1. TOP HEADER & PROMINENT BACK BUTTON */}
       {/* ======================================================== */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-200">
+      <div className="flex items-center justify-between pb-3 border-b border-slate-200">
         <Link
           to="/"
           className="outline-none inline-flex"
@@ -216,25 +206,6 @@ export default function CodingPracticePage() {
             <span>Back to Concepts</span>
           </motion.div>
         </Link>
-
-        {/* Global Expand / Collapse Control */}
-        <motion.button
-          whileTap={{ scale: 0.93 }}
-          onClick={allAreExpanded ? collapseAll : expandAll}
-          className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 text-xs font-semibold shadow-2xs transition-colors cursor-pointer select-none self-end sm:self-auto"
-        >
-          {allAreExpanded ? (
-            <>
-              <ChevronUp className="w-3.5 h-3.5 text-slate-500" />
-              <span>Collapse All</span>
-            </>
-          ) : (
-            <>
-              <ChevronsUpDown className="w-3.5 h-3.5 text-slate-500" />
-              <span>Expand All</span>
-            </>
-          )}
-        </motion.button>
       </div>
 
       {/* ======================================================== */}
