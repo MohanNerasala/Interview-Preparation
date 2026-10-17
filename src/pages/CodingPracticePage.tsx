@@ -1,9 +1,9 @@
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, useRef } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   ArrowLeft, Search, ChevronDown, 
-  ArrowUpDown, Terminal, Sparkles, Code2
+  ArrowUpDown, Terminal, Sparkles, Code2, Check
 } from 'lucide-react';
 import CodeBlock from '../components/CodeBlock';
 import { 
@@ -43,6 +43,25 @@ export default function CodingPracticePage() {
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [selectedDifficulty, setSelectedDifficulty] = useState<string>('All');
   const [sortBy, setSortBy] = useState<SortOption>('default');
+  const [isSortDropdownOpen, setIsSortDropdownOpen] = useState(false);
+  const sortDropdownRef = useRef<HTMLDivElement>(null);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (sortDropdownRef.current && !sortDropdownRef.current.contains(e.target as Node)) {
+        setIsSortDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const sortLabels: Record<SortOption, string> = {
+    'default': 'Default Order',
+    'easy-to-hard': 'Easy to Hard',
+    'hard-to-easy': 'Hard to Easy',
+  };
 
   // Expanded Accordion Questions
   const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set(['cj-arr-1']));
@@ -354,18 +373,59 @@ export default function CodingPracticePage() {
             ))}
           </div>
 
-          {/* Easy to Hard Sorting Dropdown */}
-          <div className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-100/90 rounded-xl text-xs text-slate-700 border border-slate-200/60">
-            <ArrowUpDown className="w-3.5 h-3.5 text-primary" />
-            <select
-              value={sortBy}
-              onChange={e => setSortBy(e.target.value as SortOption)}
-              className="bg-transparent text-xs font-semibold text-slate-800 outline-none cursor-pointer"
+          {/* Custom Modern CSS Sort Dropdown */}
+          <div className="relative" ref={sortDropdownRef}>
+            <motion.button
+              whileTap={{ scale: 0.96 }}
+              onClick={() => setIsSortDropdownOpen(prev => !prev)}
+              className={`flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all cursor-pointer select-none ${
+                isSortDropdownOpen
+                  ? 'bg-white text-primary border-primary shadow-xs ring-2 ring-primary/10'
+                  : 'bg-slate-100 hover:bg-white text-slate-700 hover:text-slate-900 border-slate-200/80 shadow-2xs'
+              }`}
             >
-              <option value="default">Default Order</option>
-              <option value="easy-to-hard">Easy to Hard</option>
-              <option value="hard-to-easy">Hard to Easy</option>
-            </select>
+              <ArrowUpDown className="w-3.5 h-3.5 text-primary shrink-0" />
+              <span>{sortLabels[sortBy]}</span>
+              <ChevronDown
+                className={`w-3.5 h-3.5 text-slate-400 transition-transform duration-200 shrink-0 ${
+                  isSortDropdownOpen ? 'rotate-180 text-primary' : ''
+                }`}
+              />
+            </motion.button>
+
+            {/* Custom Animated Popup Menu */}
+            <AnimatePresence>
+              {isSortDropdownOpen && (
+                <motion.div
+                  initial={{ opacity: 0, y: -6, scale: 0.96 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: -6, scale: 0.96 }}
+                  transition={{ duration: 0.15, ease: 'easeOut' }}
+                  className="absolute right-0 top-full mt-1.5 z-40 w-44 bg-white/98 backdrop-blur-xl border border-slate-200/90 rounded-2xl p-1.5 shadow-xl shadow-slate-900/10 space-y-0.5"
+                >
+                  {(['default', 'easy-to-hard', 'hard-to-easy'] as SortOption[]).map(opt => {
+                    const isSelected = sortBy === opt;
+                    return (
+                      <button
+                        key={opt}
+                        onClick={() => {
+                          setSortBy(opt);
+                          setIsSortDropdownOpen(false);
+                        }}
+                        className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs transition-colors cursor-pointer select-none text-left ${
+                          isSelected
+                            ? 'bg-blue-50 text-primary font-bold shadow-2xs'
+                            : 'text-slate-700 hover:bg-slate-50 hover:text-slate-900 font-medium'
+                        }`}
+                      >
+                        <span>{sortLabels[opt]}</span>
+                        {isSelected && <Check className="w-3.5 h-3.5 text-primary shrink-0" />}
+                      </button>
+                    );
+                  })}
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
         </div>
       </div>
