@@ -18,7 +18,7 @@ export default function Header({ onMenuClick, onSearchClick }: HeaderProps) {
         </button>
         <div className="lg:hidden flex items-center gap-2">
           <GraduationCap className="w-6 h-6 text-primary" strokeWidth={1.8} />
-          <span className="font-semibold text-text-primary">Interview Prep</span>
+          <span className="font-semibold text-text-primary">N.M Interview Preparation</span>
         </div>
       </div>
 

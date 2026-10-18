@@ -39,7 +39,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
           </motion.div>
           <div>
             <span className="text-base font-extrabold text-slate-900 tracking-tight block">
-              Interview Prep
+              N.M Interview Preparation
             </span>
             <span className="text-[10px] text-slate-400 font-medium block">
               Full-Stack Edition
@@ -126,7 +126,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                 </div>
                 <div>
                   <span className="text-base font-extrabold text-slate-900 tracking-tight block">
-                    Interview Prep
+                    N.M Interview Preparation
                   </span>
                   <span className="text-[10px] text-slate-400 font-medium block">
                     Full-Stack Edition
