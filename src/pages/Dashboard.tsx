@@ -33,25 +33,25 @@ const categoryMap: Record<Exclude<FilterCategory, 'all'>, string[]> = {
 };
 
 // Self-Introduction divided paragraph-wise exactly as requested
-// Self-Introduction in separate paragraphs inside a single box
+// Self-Introduction in separate paragraphs (Max 200 words, 60-90s)
 const selfIntroParagraphs = [
   "Good morning, sir/madam. My name is Mohan, and I completed my Bachelor's degree in Computer Science and Engineering in 2026 from Audisankara College of Engineering and Technology.",
   "I have a strong interest in full-stack web development. My technical skills include Java, HTML, CSS, JavaScript, and SQL. I enjoy learning new technologies and building real-world applications.",
-  "To gain practical experience, I have developed multiple full-stack projects from development to deployment. One of my major projects is Menvy, a full-stack e-commerce application. It includes features such as user authentication, product management, shopping cart, and database integration. One of its key highlights is an AI-powered Outfit Preview feature that allows users to combine shirts and pants to visualize complete outfit combinations before purchasing, with a smooth and responsive experience across both desktop and mobile devices.",
-  "Currently, I am strengthening my Java and Data Structures & Algorithms skills to improve my coding and problem-solving abilities.",
-  "I am a quick learner, adaptable to new technologies, and passionate about building software that solves real-world problems. As a fresher, I am excited to start my career where I can contribute, learn from experienced professionals, and continue growing as a software developer.",
+  "To gain practical experience, I developed Menvy, a full-stack e-commerce application. It includes user authentication, product management, shopping cart, and database integration. A key highlight is an AI-powered Outfit Preview feature that allows users to combine shirts and pants to visualize complete outfit combinations before purchasing.",
+  "Currently, I am strengthening my Core Java and Data Structures & Algorithms to improve my problem-solving abilities.",
+  "I am a quick learner, adaptable to new technologies, and passionate about building software that solves real-world problems. As a fresher, I am eager to contribute, learn from experienced mentors, and grow as a software developer.",
   "Thank you, sir."
 ];
 
-// Menvy Project — Best Interview Answer in separate paragraphs inside a single box
+// Menvy Project — Best Interview Answer in separate paragraphs (Max 200 words, 60-90s)
 const menvyProjectParagraphs = [
   "Sir, my project name is Menvy – AI-Powered Men's Fashion E-Commerce Platform.",
-  "The main objective of this project is to provide users with a better online shopping experience for men's fashion.",
+  "The main objective of this project is to provide users with a better, more interactive online shopping experience for men's fashion.",
   "I developed the frontend using React.js and TypeScript, the backend using Java and Spring Boot, and used Supabase PostgreSQL for database management.",
-  "The main features include product browsing, product search, product details, shopping cart functionality, user authentication, and Google OAuth2 login.",
-  "The most interesting feature is AI Outfit Preview, which helps users visualize outfit combinations and make better fashion choices.",
-  "In this project, the frontend communicates with the backend through REST APIs, and Spring Boot handles business logic and database operations.",
-  "This project helped me improve my understanding of full-stack development, REST API integration, authentication, and database connectivity.",
+  "Key features include product browsing, search, product details, shopping cart functionality, user authentication, and Google OAuth2 login.",
+  "The standout feature is AI Outfit Preview, which helps users visualize complete outfit combinations and make confident fashion choices.",
+  "In this project, the frontend communicates with the backend through REST APIs, and Spring Boot handles business logic, security, and database operations.",
+  "This project gave me valuable practical experience in full-stack development, REST API integration, authentication, and database connectivity.",
   "Thank you, sir."
 ];
 
@@ -544,9 +544,9 @@ export default function Dashboard() {
 
                       return (
                         <div key={concept.id} className="space-y-2">
-                          {/* Quick Action ABOVE Self-Introduction Card — Clean Action Only */}
+                          {/* Quick Action ABOVE Self-Introduction Card — Simple Clean Neutral CSS */}
                           {isSelfIntro && (
-                            <div className="flex items-center justify-end gap-2.5 pt-1 pb-0.5">
+                            <div className="flex items-center justify-end gap-2 pt-1 pb-1">
                               {Boolean(customSelfIntro) && (
                                 <button
                                   type="button"
@@ -562,18 +562,18 @@ export default function Dashboard() {
                               <button
                                 type="button"
                                 onClick={openSelfIntroModal}
-                                className="inline-flex items-center gap-2 px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs sm:text-sm font-semibold transition-all shadow-2xs hover:shadow-xs shrink-0 cursor-pointer active:scale-95"
+                                className="inline-flex items-center gap-2 px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-xl border border-slate-300 bg-white hover:bg-slate-50 hover:border-slate-400 text-slate-700 hover:text-slate-900 text-xs sm:text-sm font-semibold transition-all shadow-2xs shrink-0 cursor-pointer active:scale-95"
                                 title="Add your self-introduction"
                               >
-                                <Edit3 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white" />
+                                <Edit3 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-slate-500" />
                                 <span>{customSelfIntro ? 'Edit Your Self Intro' : 'Add Your Self Intro'}</span>
                               </button>
                             </div>
                           )}
 
-                          {/* Quick Action ABOVE Project Explanation Card — Clean Action Only */}
+                          {/* Quick Action ABOVE Project Explanation Card — Simple Clean Neutral CSS */}
                           {isMenvyProject && (
-                            <div className="flex items-center justify-end gap-2.5 pt-1 pb-0.5">
+                            <div className="flex items-center justify-end gap-2 pt-1 pb-1">
                               {Boolean(customProjectExplanation) && (
                                 <button
                                   type="button"
@@ -589,10 +589,10 @@ export default function Dashboard() {
                               <button
                                 type="button"
                                 onClick={openProjectModal}
-                                className="inline-flex items-center gap-2 px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs sm:text-sm font-semibold transition-all shadow-2xs hover:shadow-xs shrink-0 cursor-pointer active:scale-95"
+                                className="inline-flex items-center gap-2 px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-xl border border-slate-300 bg-white hover:bg-slate-50 hover:border-slate-400 text-slate-700 hover:text-slate-900 text-xs sm:text-sm font-semibold transition-all shadow-2xs shrink-0 cursor-pointer active:scale-95"
                                 title="Add your project explanation"
                               >
-                                <Edit3 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white" />
+                                <Edit3 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-slate-500" />
                                 <span>{customProjectExplanation ? 'Edit Your Project Explanation' : 'Add Your Project Explanation'}</span>
                               </button>
                             </div>
@@ -693,73 +693,76 @@ export default function Dashboard() {
                               <div className="p-5 sm:p-7 bg-gradient-to-b from-slate-50/50 via-white/50 to-white space-y-6 sm:space-y-7">
                               
                               {isSelfIntro ? (
-                                <div className="bg-white rounded-2xl p-5 sm:p-7 border border-slate-200/80 shadow-[0_4px_20px_-4px_rgba(15,23,42,0.04)] space-y-5">
-                                  {/* Clean 2-Line Header with Perfect Alignment */}
-                                  <div className="pb-3 border-b border-slate-100 space-y-1">
-                                    <div className="flex flex-wrap items-center justify-between gap-3">
-                                      <div className="flex items-center gap-2">
+                                <div className="bg-white rounded-2xl p-4 sm:p-6 border border-slate-200/90 shadow-2xs space-y-4">
+                                  {/* Clean Header with Structured Alignment */}
+                                  <div className="pb-3 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                                    <div className="space-y-1 min-w-0">
+                                      <div className="flex items-center gap-2 flex-wrap">
                                         <h4 className="text-sm sm:text-base font-bold text-slate-900">
                                           Tell me about yourself.
                                         </h4>
+                                        <span className="text-[10.5px] font-semibold text-slate-600 bg-slate-100 px-2.5 py-0.5 rounded-md border border-slate-200/80 shrink-0">
+                                          Max 200 Words (60–90s)
+                                        </span>
                                         {Boolean(customSelfIntro) && (
-                                          <span className="text-[10px] font-bold uppercase tracking-wider bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-0.5 rounded-full inline-flex items-center gap-1">
+                                          <span className="text-[10px] font-bold uppercase tracking-wider bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-0.5 rounded-full inline-flex items-center gap-1 shrink-0">
                                             <Check className="w-2.5 h-2.5" />
-                                            Custom Pitch Active
+                                            Custom
                                           </span>
                                         )}
                                       </div>
-
-                                      <div className="flex items-center gap-2 shrink-0 flex-wrap">
-                                        {Boolean(customSelfIntro) && (
-                                          <button
-                                            type="button"
-                                            onClick={handleResetSelfIntro}
-                                            className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg border border-rose-200 bg-rose-50/60 hover:bg-rose-50 text-rose-600 text-xs font-semibold transition-all shadow-2xs shrink-0 cursor-pointer active:scale-95"
-                                            title="Back to default self-introduction"
-                                          >
-                                            <RotateCcw className="w-3.5 h-3.5 text-rose-500" />
-                                            <span>Back to Default</span>
-                                          </button>
-                                        )}
-
-                                        <button
-                                          type="button"
-                                          onClick={openSelfIntroModal}
-                                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-primary/30 bg-primary/5 hover:bg-primary/10 text-primary text-xs font-semibold transition-all shadow-2xs shrink-0 cursor-pointer"
-                                          title="Add or edit your personal self-introduction"
-                                        >
-                                          <Edit3 className="w-3.5 h-3.5" />
-                                          <span>{customSelfIntro ? 'Edit Intro' : 'Add Your Self Intro'}</span>
-                                        </button>
-
-                                        <button
-                                          type="button"
-                                          onClick={copyFullIntro}
-                                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs font-medium transition-all shadow-2xs shrink-0 cursor-pointer"
-                                          title="Copy full speech to clipboard"
-                                        >
-                                          {copiedIntro ? (
-                                            <>
-                                              <Check className="w-3.5 h-3.5 text-emerald-600" />
-                                              <span className="text-emerald-700 font-semibold">Copied!</span>
-                                            </>
-                                          ) : (
-                                            <>
-                                              <Copy className="w-3.5 h-3.5 text-slate-500" />
-                                              <span>Copy Pitch</span>
-                                            </>
-                                          )}
-                                        </button>
-                                      </div>
+                                      <p className="text-xs text-slate-500">
+                                        Say this in the interview with confidence:
+                                      </p>
                                     </div>
 
-                                    <p className="text-xs text-slate-500">
-                                      Say this in the interview (60–90 seconds):
-                                    </p>
+                                    {/* Neutral Action Buttons — Simple clean CSS, no blue color */}
+                                    <div className="flex items-center gap-2 shrink-0 flex-wrap">
+                                      {Boolean(customSelfIntro) && (
+                                        <button
+                                          type="button"
+                                          onClick={handleResetSelfIntro}
+                                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-rose-200 bg-white hover:bg-rose-50 text-rose-600 text-xs font-medium transition-all shadow-2xs shrink-0 cursor-pointer active:scale-95"
+                                          title="Back to default self-introduction"
+                                        >
+                                          <RotateCcw className="w-3.5 h-3.5 text-rose-500" />
+                                          <span>Back to Default</span>
+                                        </button>
+                                      )}
+
+                                      <button
+                                        type="button"
+                                        onClick={openSelfIntroModal}
+                                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-300 bg-white hover:bg-slate-50 hover:border-slate-400 text-slate-700 hover:text-slate-900 text-xs font-medium transition-all shadow-2xs shrink-0 cursor-pointer active:scale-95"
+                                        title="Add or edit your personal self-introduction"
+                                      >
+                                        <Edit3 className="w-3.5 h-3.5 text-slate-500" />
+                                        <span>{customSelfIntro ? 'Edit Your Self Intro' : 'Add Your Self Intro'}</span>
+                                      </button>
+
+                                      <button
+                                        type="button"
+                                        onClick={copyFullIntro}
+                                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-300 bg-white hover:bg-slate-50 hover:border-slate-400 text-slate-700 hover:text-slate-900 text-xs font-medium transition-all shadow-2xs shrink-0 cursor-pointer active:scale-95"
+                                        title="Copy full speech to clipboard"
+                                      >
+                                        {copiedIntro ? (
+                                          <>
+                                            <Check className="w-3.5 h-3.5 text-emerald-600" />
+                                            <span className="text-emerald-700 font-semibold">Copied!</span>
+                                          </>
+                                        ) : (
+                                          <>
+                                            <Copy className="w-3.5 h-3.5 text-slate-500" />
+                                            <span>Copy Pitch</span>
+                                          </>
+                                        )}
+                                      </button>
+                                    </div>
                                   </div>
 
                                   {/* Single box with separate paragraphs */}
-                                  <div className="space-y-4 text-xs sm:text-sm text-slate-800 leading-relaxed sm:leading-7 font-sans bg-slate-50/60 p-5 sm:p-6 rounded-xl border border-slate-100">
+                                  <div className="space-y-3.5 text-xs sm:text-sm text-slate-800 leading-relaxed sm:leading-7 font-sans bg-slate-50/70 p-4 sm:p-6 rounded-xl border border-slate-200/70">
                                     {activeSelfIntroParagraphs.map((para, idx) => (
                                       <p
                                         key={idx}
@@ -772,72 +775,76 @@ export default function Dashboard() {
                                 </div>
                               ) : isMenvyProject ? (
                                 /* SPECIAL SINGLE BOX WITH SEPARATE PARAGRAPHS FOR MENVY PROJECT */
-                                <div className="bg-white rounded-2xl p-5 sm:p-7 border border-slate-200/80 shadow-[0_4px_20px_-4px_rgba(15,23,42,0.04)] space-y-5">
-                                  {/* Clean 2-Line Header with Perfect Alignment */}
-                                  <div className="pb-3 border-b border-slate-100 space-y-1">
-                                    <div className="flex flex-wrap items-center justify-between gap-3">
-                                      <div className="flex items-center gap-2">
-                                        <h4 className="text-sm sm:text-base font-bold text-slate-900 truncate">
+                                <div className="bg-white rounded-2xl p-4 sm:p-6 border border-slate-200/90 shadow-2xs space-y-4">
+                                  {/* Clean Header with Structured Alignment */}
+                                  <div className="pb-3 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                                    <div className="space-y-1 min-w-0">
+                                      <div className="flex items-center gap-2 flex-wrap">
+                                        <h4 className="text-sm sm:text-base font-bold text-slate-900">
                                           Q1. Tell me about your project.
                                         </h4>
+                                        <span className="text-[10.5px] font-semibold text-slate-600 bg-slate-100 px-2.5 py-0.5 rounded-md border border-slate-200/80 shrink-0">
+                                          Max 200 Words (60–90s)
+                                        </span>
                                         {Boolean(customProjectExplanation) && (
-                                          <span className="text-[10px] font-bold uppercase tracking-wider bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-0.5 rounded-full inline-flex items-center gap-1">
+                                          <span className="text-[10px] font-bold uppercase tracking-wider bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-0.5 rounded-full inline-flex items-center gap-1 shrink-0">
                                             <Check className="w-2.5 h-2.5" />
-                                            Custom Answer Active
+                                            Custom
                                           </span>
                                         )}
                                       </div>
-
-                                      <div className="flex items-center gap-2 shrink-0 flex-wrap">
-                                        {Boolean(customProjectExplanation) && (
-                                          <button
-                                            type="button"
-                                            onClick={handleResetProject}
-                                            className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg border border-rose-200 bg-rose-50/60 hover:bg-rose-50 text-rose-600 text-xs font-semibold transition-all shadow-2xs shrink-0 cursor-pointer active:scale-95"
-                                            title="Back to default project explanation"
-                                          >
-                                            <RotateCcw className="w-3.5 h-3.5 text-rose-500" />
-                                            <span>Back to Default</span>
-                                          </button>
-                                        )}
-
-                                        <button
-                                          type="button"
-                                          onClick={openProjectModal}
-                                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-primary/30 bg-primary/5 hover:bg-primary/10 text-primary text-xs font-semibold transition-all shadow-2xs shrink-0 cursor-pointer"
-                                          title="Add or edit your personal project explanation"
-                                        >
-                                          <Edit3 className="w-3.5 h-3.5" />
-                                          <span>{customProjectExplanation ? 'Edit Explanation' : 'Add Your Project Explanation'}</span>
-                                        </button>
-
-                                        <button
-                                          onClick={copyMenvySpeech}
-                                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs font-medium transition-all shadow-2xs shrink-0 cursor-pointer"
-                                          title="Copy answer to clipboard"
-                                        >
-                                          {copiedMenvy ? (
-                                            <>
-                                              <Check className="w-3.5 h-3.5 text-emerald-600" />
-                                              <span className="text-emerald-700 font-semibold">Copied!</span>
-                                            </>
-                                          ) : (
-                                            <>
-                                              <Copy className="w-3.5 h-3.5 text-slate-500" />
-                                              <span>Copy Answer</span>
-                                            </>
-                                          )}
-                                        </button>
-                                      </div>
+                                      <p className="text-xs text-slate-500">
+                                        Say this in the interview with confidence:
+                                      </p>
                                     </div>
 
-                                    <p className="text-xs text-slate-500">
-                                      Say this in the interview (60–90 seconds):
-                                    </p>
+                                    {/* Neutral Action Buttons — Simple clean CSS, no blue color */}
+                                    <div className="flex items-center gap-2 shrink-0 flex-wrap">
+                                      {Boolean(customProjectExplanation) && (
+                                        <button
+                                          type="button"
+                                          onClick={handleResetProject}
+                                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-rose-200 bg-white hover:bg-rose-50 text-rose-600 text-xs font-medium transition-all shadow-2xs shrink-0 cursor-pointer active:scale-95"
+                                          title="Back to default project explanation"
+                                        >
+                                          <RotateCcw className="w-3.5 h-3.5 text-rose-500" />
+                                          <span>Back to Default</span>
+                                        </button>
+                                      )}
+
+                                      <button
+                                        type="button"
+                                        onClick={openProjectModal}
+                                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-300 bg-white hover:bg-slate-50 hover:border-slate-400 text-slate-700 hover:text-slate-900 text-xs font-medium transition-all shadow-2xs shrink-0 cursor-pointer active:scale-95"
+                                        title="Add or edit your personal project explanation"
+                                      >
+                                        <Edit3 className="w-3.5 h-3.5 text-slate-500" />
+                                        <span>{customProjectExplanation ? 'Edit Your Project Explanation' : 'Add Your Project Explanation'}</span>
+                                      </button>
+
+                                      <button
+                                        type="button"
+                                        onClick={copyMenvySpeech}
+                                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-300 bg-white hover:bg-slate-50 hover:border-slate-400 text-slate-700 hover:text-slate-900 text-xs font-medium transition-all shadow-2xs shrink-0 cursor-pointer active:scale-95"
+                                        title="Copy answer to clipboard"
+                                      >
+                                        {copiedMenvy ? (
+                                          <>
+                                            <Check className="w-3.5 h-3.5 text-emerald-600" />
+                                            <span className="text-emerald-700 font-semibold">Copied!</span>
+                                          </>
+                                        ) : (
+                                          <>
+                                            <Copy className="w-3.5 h-3.5 text-slate-500" />
+                                            <span>Copy Answer</span>
+                                          </>
+                                        )}
+                                      </button>
+                                    </div>
                                   </div>
 
                                   {/* Single box with separate paragraphs */}
-                                  <div className="space-y-4 text-xs sm:text-sm text-slate-800 leading-relaxed sm:leading-7 font-sans bg-slate-50/60 p-5 sm:p-6 rounded-xl border border-slate-100">
+                                  <div className="space-y-3.5 text-xs sm:text-sm text-slate-800 leading-relaxed sm:leading-7 font-sans bg-slate-50/70 p-4 sm:p-6 rounded-xl border border-slate-200/70">
                                     {activeProjectParagraphs.map((para, idx) => (
                                       <p
                                         key={idx}
@@ -1267,18 +1274,18 @@ export default function Dashboard() {
               className="bg-white rounded-2xl max-w-2xl w-full max-h-[92vh] flex flex-col shadow-2xl border border-slate-200 overflow-hidden"
               onClick={e => e.stopPropagation()}
             >
-              {/* Modal Header */}
-              <div className="px-5 py-4 bg-gradient-to-r from-blue-50/90 via-indigo-50/50 to-white border-b border-slate-200 flex items-center justify-between shrink-0">
+              {/* Modal Header — Clean Neutral CSS */}
+              <div className="px-5 py-4 bg-slate-50/90 border-b border-slate-200 flex items-center justify-between shrink-0">
                 <div className="flex items-center gap-2.5">
-                  <div className="w-8 h-8 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0">
-                    <Sparkles className="w-4 h-4" />
+                  <div className="w-8 h-8 rounded-xl bg-slate-100 border border-slate-200 text-slate-700 flex items-center justify-center shrink-0">
+                    <Sparkles className="w-4 h-4 text-slate-600" />
                   </div>
                   <div>
                     <h3 className="text-sm sm:text-base font-bold text-slate-900">
                       {customSelfIntro ? 'Edit Your Self-Introduction' : 'Add Your Self-Introduction'}
                     </h3>
                     <p className="text-[11px] sm:text-xs text-slate-500">
-                      Personalize your 60–90 second interview speech. Tap "Back to Default" anytime to restore.
+                      Personalize your 60–90 second interview speech (max 200 words). Tap "Back to Default" anytime.
                     </p>
                   </div>
                 </div>
@@ -1298,23 +1305,27 @@ export default function Dashboard() {
                   <label className="font-semibold text-slate-800">
                     Your Self-Introduction:
                   </label>
-                  <span className="text-[11px] text-slate-500 font-mono bg-slate-100 px-2 py-0.5 rounded">
-                    {selfIntroEditText.trim() ? selfIntroEditText.trim().split(/\s+/).filter(Boolean).length : 0} words
+                  <span className={`text-[11px] font-mono px-2 py-0.5 rounded font-medium border ${
+                    (selfIntroEditText.trim() ? selfIntroEditText.trim().split(/\s+/).filter(Boolean).length : 0) > 200 
+                      ? 'bg-rose-50 text-rose-600 border-rose-200 font-bold' 
+                      : 'bg-slate-100 text-slate-700 border-slate-200'
+                  }`}>
+                    {selfIntroEditText.trim() ? selfIntroEditText.trim().split(/\s+/).filter(Boolean).length : 0} / 200 words max
                   </span>
                 </div>
 
                 <textarea
                   value={selfIntroEditText}
                   onChange={e => setSelfIntroEditText(e.target.value)}
-                  placeholder="Good morning sir/madam. My name is... Type or paste your self-introduction here..."
+                  placeholder="Good morning sir/madam. My name is... Type or paste your self-introduction here (max 200 words)..."
                   rows={10}
-                  className="w-full rounded-xl border border-slate-300 p-3.5 sm:p-4 text-xs sm:text-sm leading-relaxed text-slate-800 placeholder:text-slate-400 focus:outline-hidden focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all font-sans resize-y min-h-[220px]"
+                  className="w-full rounded-xl border border-slate-300 p-3.5 sm:p-4 text-xs sm:text-sm leading-relaxed text-slate-800 placeholder:text-slate-400 focus:outline-hidden focus:border-slate-500 focus:ring-2 focus:ring-slate-200 transition-all font-sans resize-y min-h-[220px]"
                 />
 
-                <div className="bg-blue-50/80 border border-blue-200/90 rounded-xl p-3 flex items-start gap-2.5 text-[11px] sm:text-xs text-blue-900 leading-relaxed">
-                  <Lightbulb className="w-4 h-4 text-blue-600 shrink-0 mt-0.5" />
+                <div className="bg-slate-50 border border-slate-200 rounded-xl p-3 flex items-start gap-2.5 text-[11px] sm:text-xs text-slate-700 leading-relaxed">
+                  <Lightbulb className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
                   <div>
-                    <strong>Tip:</strong> Separate paragraphs with empty lines (press Enter twice) so each part appears cleanly organized for your rehearsal.
+                    <strong>Max 200 Words:</strong> Keep your speech concise (under 200 words) so you can deliver it smoothly within 60–90 seconds. Separate paragraphs with empty lines.
                   </div>
                 </div>
               </div>
@@ -1345,10 +1356,10 @@ export default function Dashboard() {
                   <button
                     type="button"
                     onClick={handleSaveSelfIntro}
-                    className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-xl bg-primary hover:bg-primary-dark text-white text-xs font-semibold shadow-xs hover:shadow transition-all cursor-pointer"
+                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs sm:text-sm font-semibold transition-all shadow-xs cursor-pointer active:scale-95"
                   >
-                    <Save className="w-3.5 h-3.5" />
-                    <span>Save Introduction</span>
+                    <Save className="w-4 h-4" />
+                    <span>Save Self Intro</span>
                   </button>
                 </div>
               </div>
@@ -1372,18 +1383,18 @@ export default function Dashboard() {
               className="bg-white rounded-2xl max-w-2xl w-full max-h-[92vh] flex flex-col shadow-2xl border border-slate-200 overflow-hidden"
               onClick={e => e.stopPropagation()}
             >
-              {/* Modal Header */}
-              <div className="px-5 py-4 bg-gradient-to-r from-blue-50/90 via-indigo-50/50 to-white border-b border-slate-200 flex items-center justify-between shrink-0">
+              {/* Modal Header — Clean Neutral CSS */}
+              <div className="px-5 py-4 bg-slate-50/90 border-b border-slate-200 flex items-center justify-between shrink-0">
                 <div className="flex items-center gap-2.5">
-                  <div className="w-8 h-8 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0">
-                    <Sparkles className="w-4 h-4" />
+                  <div className="w-8 h-8 rounded-xl bg-slate-100 border border-slate-200 text-slate-700 flex items-center justify-center shrink-0">
+                    <Sparkles className="w-4 h-4 text-slate-600" />
                   </div>
                   <div>
                     <h3 className="text-sm sm:text-base font-bold text-slate-900">
                       {customProjectExplanation ? 'Edit Your Project Explanation' : 'Add Your Project Explanation'}
                     </h3>
                     <p className="text-[11px] sm:text-xs text-slate-500">
-                      Personalize your 60–90 second project answer. Tap "Back to Default" anytime to restore.
+                      Personalize your 60–90 second project answer (max 200 words). Tap "Back to Default" anytime.
                     </p>
                   </div>
                 </div>
@@ -1403,23 +1414,27 @@ export default function Dashboard() {
                   <label className="font-semibold text-slate-800">
                     Your Project Explanation:
                   </label>
-                  <span className="text-[11px] text-slate-500 font-mono bg-slate-100 px-2 py-0.5 rounded">
-                    {projectEditText.trim() ? projectEditText.trim().split(/\s+/).filter(Boolean).length : 0} words
+                  <span className={`text-[11px] font-mono px-2 py-0.5 rounded font-medium border ${
+                    (projectEditText.trim() ? projectEditText.trim().split(/\s+/).filter(Boolean).length : 0) > 200 
+                      ? 'bg-rose-50 text-rose-600 border-rose-200 font-bold' 
+                      : 'bg-slate-100 text-slate-700 border-slate-200'
+                  }`}>
+                    {projectEditText.trim() ? projectEditText.trim().split(/\s+/).filter(Boolean).length : 0} / 200 words max
                   </span>
                 </div>
 
                 <textarea
                   value={projectEditText}
                   onChange={e => setProjectEditText(e.target.value)}
-                  placeholder="Sir, my project name is... Type or paste your project explanation here..."
+                  placeholder="Sir, my project name is... Type or paste your project explanation here (max 200 words)..."
                   rows={10}
-                  className="w-full rounded-xl border border-slate-300 p-3.5 sm:p-4 text-xs sm:text-sm leading-relaxed text-slate-800 placeholder:text-slate-400 focus:outline-hidden focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all font-sans resize-y min-h-[220px]"
+                  className="w-full rounded-xl border border-slate-300 p-3.5 sm:p-4 text-xs sm:text-sm leading-relaxed text-slate-800 placeholder:text-slate-400 focus:outline-hidden focus:border-slate-500 focus:ring-2 focus:ring-slate-200 transition-all font-sans resize-y min-h-[220px]"
                 />
 
-                <div className="bg-blue-50/80 border border-blue-200/90 rounded-xl p-3 flex items-start gap-2.5 text-[11px] sm:text-xs text-blue-900 leading-relaxed">
-                  <Lightbulb className="w-4 h-4 text-blue-600 shrink-0 mt-0.5" />
+                <div className="bg-slate-50 border border-slate-200 rounded-xl p-3 flex items-start gap-2.5 text-[11px] sm:text-xs text-slate-700 leading-relaxed">
+                  <Lightbulb className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
                   <div>
-                    <strong>Tip:</strong> Separate paragraphs with empty lines (press Enter twice) so each part appears cleanly organized for your rehearsal.
+                    <strong>Max 200 Words:</strong> Keep your explanation concise (under 200 words) so you can deliver it smoothly within 60–90 seconds. Separate paragraphs with empty lines.
                   </div>
                 </div>
               </div>
@@ -1450,9 +1465,9 @@ export default function Dashboard() {
                   <button
                     type="button"
                     onClick={handleSaveProject}
-                    className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-xl bg-primary hover:bg-primary-dark text-white text-xs font-semibold shadow-xs hover:shadow transition-all cursor-pointer"
+                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs sm:text-sm font-semibold transition-all shadow-xs cursor-pointer active:scale-95"
                   >
-                    <Save className="w-3.5 h-3.5" />
+                    <Save className="w-4 h-4" />
                     <span>Save Explanation</span>
                   </button>
                 </div>
