@@ -1,9 +1,9 @@
-import { useState, useMemo, useEffect, useRef } from 'react';
+import { useState, useMemo, useEffect, useRef, startTransition } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
-  Code, Search, ChevronDown, ChevronRight, ChevronUp, 
-  ChevronsUpDown, Clock, HelpCircle, Copy, Check,
+  Code, Search, ChevronDown, ChevronRight, 
+  ChevronsUpDown, ChevronsDownUp, Clock, HelpCircle, Copy, Check,
   Lightbulb, X, ExternalLink,
   Edit3, Save, RotateCcw, Sparkles
 } from 'lucide-react';
@@ -259,27 +259,31 @@ export default function Dashboard() {
 
   // Toggle individual concept expansion (preserves other open concepts to prevent page jumping to the top)
   const toggleConcept = (conceptId: string) => {
-    setExpandedConceptIds(prev => {
-      const next = new Set(prev);
-      if (next.has(conceptId)) {
-        next.delete(conceptId);
-      } else {
-        next.add(conceptId);
-      }
-      return next;
+    startTransition(() => {
+      setExpandedConceptIds(prev => {
+        const next = new Set(prev);
+        if (next.has(conceptId)) {
+          next.delete(conceptId);
+        } else {
+          next.add(conceptId);
+        }
+        return next;
+      });
     });
   };
 
   // Toggle individual question answer expansion (preserves other open questions)
   const toggleQuestion = (questionId: string) => {
-    setExpandedQuestionIds(prev => {
-      const next = new Set(prev);
-      if (next.has(questionId)) {
-        next.delete(questionId);
-      } else {
-        next.add(questionId);
-      }
-      return next;
+    startTransition(() => {
+      setExpandedQuestionIds(prev => {
+        const next = new Set(prev);
+        if (next.has(questionId)) {
+          next.delete(questionId);
+        } else {
+          next.add(questionId);
+        }
+        return next;
+      });
     });
   };
 
@@ -367,11 +371,13 @@ export default function Dashboard() {
     allFilteredConceptIds.every(id => expandedConceptIds.has(id));
 
   const toggleExpandAll = () => {
-    if (allAreExpanded) {
-      setExpandedConceptIds(new Set());
-    } else {
-      setExpandedConceptIds(new Set(allFilteredConceptIds));
-    }
+    startTransition(() => {
+      if (allAreExpanded) {
+        setExpandedConceptIds(new Set());
+      } else {
+        setExpandedConceptIds(new Set(allFilteredConceptIds));
+      }
+    });
   };
 
   const difficultyColors = {
@@ -381,7 +387,7 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="space-y-6 animate-fade-in pb-16">
+    <div className="space-y-6 animate-smooth-fade pb-16">
       {/* Top Banner — Centered Title in Perfect Middle, ONE Single Box Below */}
       <div className="bg-white rounded-2xl border border-slate-200/90 p-4 sm:p-5 shadow-2xs flex flex-col items-center justify-center text-center space-y-3">
         {/* Title strictly in ONE single line in the perfect middle */}
@@ -484,17 +490,18 @@ export default function Dashboard() {
           <button
             type="button"
             onClick={toggleExpandAll}
-            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 hover:border-slate-300 active:bg-slate-100 text-slate-700 text-xs font-semibold shadow-2xs hover:shadow-xs transition-all duration-150 shrink-0 cursor-pointer active:scale-95 select-none"
+            className="inline-flex items-center justify-center gap-1.5 h-10 px-3.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 hover:border-slate-300 active:bg-slate-100 text-slate-700 text-xs font-semibold shadow-2xs hover:shadow-xs transition-transform duration-100 shrink-0 cursor-pointer active:scale-95 select-none"
             title={allAreExpanded ? 'Collapse all concepts' : 'Expand all concepts'}
+            aria-label={allAreExpanded ? 'Collapse all concepts' : 'Expand all concepts'}
           >
             {allAreExpanded ? (
               <>
-                <ChevronUp className="w-3.5 h-3.5 text-slate-500" />
+                <ChevronsDownUp className="w-4 h-4 text-slate-600 shrink-0" />
                 <span className="hidden sm:inline">Collapse All</span>
               </>
             ) : (
               <>
-                <ChevronsUpDown className="w-3.5 h-3.5 text-slate-500" />
+                <ChevronsUpDown className="w-4 h-4 text-slate-600 shrink-0" />
                 <span className="hidden sm:inline">Expand All</span>
               </>
             )}
@@ -599,7 +606,7 @@ export default function Dashboard() {
                           )}
 
                           <div
-                            className={`bg-white rounded-2xl border transition-[border-color,box-shadow] duration-200 overflow-hidden ${
+                            className={`concept-card-wrapper bg-white rounded-2xl border transition-[border-color,box-shadow] duration-150 overflow-hidden ${
                               isExpanded
                                 ? 'border-slate-300 shadow-[0_6px_20px_-4px_rgba(15,23,42,0.06)]'
                                 : 'border-slate-200/80 hover:border-slate-300 shadow-[0_2px_8px_-2px_rgba(15,23,42,0.03)] hover:shadow-[0_6px_18px_-3px_rgba(15,23,42,0.06)]'
@@ -689,7 +696,7 @@ export default function Dashboard() {
 
                           {/* Expanded Content — Directly shown right here, spacious & smooth! */}
                           {isExpanded && (
-                            <div className="border-t border-slate-100 animate-fade-in">
+                            <div className="border-t border-slate-100 animate-smooth-fade">
                               <div className="p-5 sm:p-7 bg-gradient-to-b from-slate-50/50 via-white/50 to-white space-y-6 sm:space-y-7">
                               
                               {isSelfIntro ? (
