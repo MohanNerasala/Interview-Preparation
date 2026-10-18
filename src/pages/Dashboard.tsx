@@ -544,17 +544,17 @@ export default function Dashboard() {
 
                       return (
                         <div key={concept.id} className="space-y-2">
-                          {/* Quick Action ABOVE Self-Introduction Card — Simple Clean Neutral CSS */}
+                          {/* Quick Action ABOVE Self-Introduction Card — Tactile Clickable UI */}
                           {isSelfIntro && (
                             <div className="flex items-center justify-end gap-2 pt-1 pb-1">
                               {Boolean(customSelfIntro) && (
                                 <button
                                   type="button"
                                   onClick={handleResetSelfIntro}
-                                  className="inline-flex items-center gap-1.5 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl border border-rose-200 bg-white hover:bg-rose-50 text-rose-600 text-xs sm:text-sm font-semibold transition-all shadow-2xs shrink-0 cursor-pointer active:scale-95"
+                                  className="btn-action-danger shrink-0"
                                   title="Back to default self-introduction"
                                 >
-                                  <RotateCcw className="w-3.5 h-3.5 text-rose-500" />
+                                  <RotateCcw className="w-3.5 h-3.5 text-rose-500" strokeWidth={2.2} />
                                   <span>Back to Default</span>
                                 </button>
                               )}
@@ -562,26 +562,26 @@ export default function Dashboard() {
                               <button
                                 type="button"
                                 onClick={openSelfIntroModal}
-                                className="inline-flex items-center gap-2 px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-xl border border-slate-300 bg-white hover:bg-slate-50 hover:border-slate-400 text-slate-700 hover:text-slate-900 text-xs sm:text-sm font-semibold transition-all shadow-2xs shrink-0 cursor-pointer active:scale-95"
+                                className="btn-action-lg shrink-0"
                                 title="Add your self-introduction"
                               >
-                                <Edit3 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-slate-500" />
+                                <Edit3 className="w-3.5 h-3.5 text-slate-600" strokeWidth={2.2} />
                                 <span>{customSelfIntro ? 'Edit Your Self Intro' : 'Add Your Self Intro'}</span>
                               </button>
                             </div>
                           )}
 
-                          {/* Quick Action ABOVE Project Explanation Card — Simple Clean Neutral CSS */}
+                          {/* Quick Action ABOVE Project Explanation Card — Tactile Clickable UI */}
                           {isMenvyProject && (
                             <div className="flex items-center justify-end gap-2 pt-1 pb-1">
                               {Boolean(customProjectExplanation) && (
                                 <button
                                   type="button"
                                   onClick={handleResetProject}
-                                  className="inline-flex items-center gap-1.5 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl border border-rose-200 bg-white hover:bg-rose-50 text-rose-600 text-xs sm:text-sm font-semibold transition-all shadow-2xs shrink-0 cursor-pointer active:scale-95"
+                                  className="btn-action-danger shrink-0"
                                   title="Back to default project explanation"
                                 >
-                                  <RotateCcw className="w-3.5 h-3.5 text-rose-500" />
+                                  <RotateCcw className="w-3.5 h-3.5 text-rose-500" strokeWidth={2.2} />
                                   <span>Back to Default</span>
                                 </button>
                               )}
@@ -589,10 +589,10 @@ export default function Dashboard() {
                               <button
                                 type="button"
                                 onClick={openProjectModal}
-                                className="inline-flex items-center gap-2 px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-xl border border-slate-300 bg-white hover:bg-slate-50 hover:border-slate-400 text-slate-700 hover:text-slate-900 text-xs sm:text-sm font-semibold transition-all shadow-2xs shrink-0 cursor-pointer active:scale-95"
+                                className="btn-action-lg shrink-0"
                                 title="Add your project explanation"
                               >
-                                <Edit3 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-slate-500" />
+                                <Edit3 className="w-3.5 h-3.5 text-slate-600" strokeWidth={2.2} />
                                 <span>{customProjectExplanation ? 'Edit Your Project Explanation' : 'Add Your Project Explanation'}</span>
                               </button>
                             </div>
@@ -716,16 +716,16 @@ export default function Dashboard() {
                                       </p>
                                     </div>
 
-                                    {/* Neutral Action Buttons — Simple clean CSS, no blue color */}
+                                    {/* Action Buttons — Tactile Clickable UI */}
                                     <div className="flex items-center gap-2 shrink-0 flex-wrap">
                                       {Boolean(customSelfIntro) && (
                                         <button
                                           type="button"
                                           onClick={handleResetSelfIntro}
-                                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-rose-200 bg-white hover:bg-rose-50 text-rose-600 text-xs font-medium transition-all shadow-2xs shrink-0 cursor-pointer active:scale-95"
+                                          className="btn-action-danger"
                                           title="Back to default self-introduction"
                                         >
-                                          <RotateCcw className="w-3.5 h-3.5 text-rose-500" />
+                                          <RotateCcw className="w-3.5 h-3.5 text-rose-500" strokeWidth={2.2} />
                                           <span>Back to Default</span>
                                         </button>
                                       )}
@@ -733,27 +733,27 @@ export default function Dashboard() {
                                       <button
                                         type="button"
                                         onClick={openSelfIntroModal}
-                                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-300 bg-white hover:bg-slate-50 hover:border-slate-400 text-slate-700 hover:text-slate-900 text-xs font-medium transition-all shadow-2xs shrink-0 cursor-pointer active:scale-95"
+                                        className="btn-action"
                                         title="Add or edit your personal self-introduction"
                                       >
-                                        <Edit3 className="w-3.5 h-3.5 text-slate-500" />
+                                        <Edit3 className="w-3.5 h-3.5 text-slate-600" strokeWidth={2.2} />
                                         <span>{customSelfIntro ? 'Edit Your Self Intro' : 'Add Your Self Intro'}</span>
                                       </button>
 
                                       <button
                                         type="button"
                                         onClick={copyFullIntro}
-                                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-300 bg-white hover:bg-slate-50 hover:border-slate-400 text-slate-700 hover:text-slate-900 text-xs font-medium transition-all shadow-2xs shrink-0 cursor-pointer active:scale-95"
+                                        className="btn-action"
                                         title="Copy full speech to clipboard"
                                       >
                                         {copiedIntro ? (
                                           <>
-                                            <Check className="w-3.5 h-3.5 text-emerald-600" />
-                                            <span className="text-emerald-700 font-semibold">Copied!</span>
+                                            <Check className="w-3.5 h-3.5 text-emerald-600" strokeWidth={2.5} />
+                                            <span className="text-emerald-700 font-bold">Copied!</span>
                                           </>
                                         ) : (
                                           <>
-                                            <Copy className="w-3.5 h-3.5 text-slate-500" />
+                                            <Copy className="w-3.5 h-3.5 text-slate-600" strokeWidth={2.2} />
                                             <span>Copy Pitch</span>
                                           </>
                                         )}
@@ -762,7 +762,7 @@ export default function Dashboard() {
                                   </div>
 
                                   {/* Single box with separate paragraphs */}
-                                  <div className="space-y-3.5 text-xs sm:text-sm text-slate-800 leading-relaxed sm:leading-7 font-sans bg-slate-50/70 p-4 sm:p-6 rounded-xl border border-slate-200/70">
+                                  <div className="space-y-3.5 text-xs sm:text-sm text-slate-800 leading-relaxed sm:leading-7 font-sans bg-slate-50/70 p-4 sm:p-6 rounded-xl border border-slate-200/80 border-l-4 border-l-slate-400/80 shadow-2xs">
                                     {activeSelfIntroParagraphs.map((para, idx) => (
                                       <p
                                         key={idx}
@@ -798,16 +798,16 @@ export default function Dashboard() {
                                       </p>
                                     </div>
 
-                                    {/* Neutral Action Buttons — Simple clean CSS, no blue color */}
+                                    {/* Action Buttons — Tactile Clickable UI */}
                                     <div className="flex items-center gap-2 shrink-0 flex-wrap">
                                       {Boolean(customProjectExplanation) && (
                                         <button
                                           type="button"
                                           onClick={handleResetProject}
-                                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-rose-200 bg-white hover:bg-rose-50 text-rose-600 text-xs font-medium transition-all shadow-2xs shrink-0 cursor-pointer active:scale-95"
+                                          className="btn-action-danger"
                                           title="Back to default project explanation"
                                         >
-                                          <RotateCcw className="w-3.5 h-3.5 text-rose-500" />
+                                          <RotateCcw className="w-3.5 h-3.5 text-rose-500" strokeWidth={2.2} />
                                           <span>Back to Default</span>
                                         </button>
                                       )}
@@ -815,27 +815,27 @@ export default function Dashboard() {
                                       <button
                                         type="button"
                                         onClick={openProjectModal}
-                                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-300 bg-white hover:bg-slate-50 hover:border-slate-400 text-slate-700 hover:text-slate-900 text-xs font-medium transition-all shadow-2xs shrink-0 cursor-pointer active:scale-95"
+                                        className="btn-action"
                                         title="Add or edit your personal project explanation"
                                       >
-                                        <Edit3 className="w-3.5 h-3.5 text-slate-500" />
+                                        <Edit3 className="w-3.5 h-3.5 text-slate-600" strokeWidth={2.2} />
                                         <span>{customProjectExplanation ? 'Edit Your Project Explanation' : 'Add Your Project Explanation'}</span>
                                       </button>
 
                                       <button
                                         type="button"
                                         onClick={copyMenvySpeech}
-                                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-300 bg-white hover:bg-slate-50 hover:border-slate-400 text-slate-700 hover:text-slate-900 text-xs font-medium transition-all shadow-2xs shrink-0 cursor-pointer active:scale-95"
+                                        className="btn-action"
                                         title="Copy answer to clipboard"
                                       >
                                         {copiedMenvy ? (
                                           <>
-                                            <Check className="w-3.5 h-3.5 text-emerald-600" />
-                                            <span className="text-emerald-700 font-semibold">Copied!</span>
+                                            <Check className="w-3.5 h-3.5 text-emerald-600" strokeWidth={2.5} />
+                                            <span className="text-emerald-700 font-bold">Copied!</span>
                                           </>
                                         ) : (
                                           <>
-                                            <Copy className="w-3.5 h-3.5 text-slate-500" />
+                                            <Copy className="w-3.5 h-3.5 text-slate-600" strokeWidth={2.2} />
                                             <span>Copy Answer</span>
                                           </>
                                         )}
@@ -844,7 +844,7 @@ export default function Dashboard() {
                                   </div>
 
                                   {/* Single box with separate paragraphs */}
-                                  <div className="space-y-3.5 text-xs sm:text-sm text-slate-800 leading-relaxed sm:leading-7 font-sans bg-slate-50/70 p-4 sm:p-6 rounded-xl border border-slate-200/70">
+                                  <div className="space-y-3.5 text-xs sm:text-sm text-slate-800 leading-relaxed sm:leading-7 font-sans bg-slate-50/70 p-4 sm:p-6 rounded-xl border border-slate-200/80 border-l-4 border-l-slate-400/80 shadow-2xs">
                                     {activeProjectParagraphs.map((para, idx) => (
                                       <p
                                         key={idx}
