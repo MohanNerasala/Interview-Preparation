@@ -97,7 +97,7 @@ export default function Dashboard() {
   });
   const [showSelfIntroModal, setShowSelfIntroModal] = useState(false);
   const [selfIntroEditText, setSelfIntroEditText] = useState('');
-  const [savedToast, setSavedToast] = useState(false);
+  const [savedToast, setSavedToast] = useState<string | null>(null);
 
   const activeSelfIntroParagraphs = useMemo(() => {
     if (customSelfIntro && customSelfIntro.trim()) {
@@ -126,6 +126,7 @@ export default function Dashboard() {
         console.error('Failed to save to localStorage:', err);
       }
       setCustomSelfIntro(trimmed);
+      setSavedToast('Your custom self-introduction has been saved!');
     } else {
       try {
         localStorage.removeItem(SELF_INTRO_STORAGE_KEY);
@@ -133,14 +134,15 @@ export default function Dashboard() {
         console.error('Failed to remove from localStorage:', err);
       }
       setCustomSelfIntro('');
+      setSavedToast('Back to default self-introduction!');
     }
     setShowSelfIntroModal(false);
-    setSavedToast(true);
-    setTimeout(() => setSavedToast(false), 3000);
+    setTimeout(() => setSavedToast(null), 3000);
     setExpandedConceptIds(prev => new Set([...prev, 'self-intro-speech']));
   };
 
-  const handleResetSelfIntro = () => {
+  const handleResetSelfIntro = (e?: React.MouseEvent) => {
+    if (e) e.stopPropagation();
     try {
       localStorage.removeItem(SELF_INTRO_STORAGE_KEY);
     } catch (err) {
@@ -149,8 +151,8 @@ export default function Dashboard() {
     setCustomSelfIntro('');
     setSelfIntroEditText(fullSelfIntroSpeech);
     setShowSelfIntroModal(false);
-    setSavedToast(true);
-    setTimeout(() => setSavedToast(false), 3000);
+    setSavedToast('Back to default self-introduction!');
+    setTimeout(() => setSavedToast(null), 3000);
   };
 
   // Track expanded concepts
@@ -479,29 +481,46 @@ export default function Dashboard() {
                         <div key={concept.id} className="space-y-2">
                           {/* Quick Action Banner ABOVE Self-Introduction Card */}
                           {isSelfIntro && (
-                            <div className="p-3 sm:p-3.5 bg-gradient-to-r from-blue-50/90 via-indigo-50/70 to-blue-50/90 border border-blue-200/80 rounded-2xl flex items-center justify-between gap-3 shadow-2xs">
+                            <div className="p-3 sm:p-3.5 bg-gradient-to-r from-blue-50/90 via-indigo-50/70 to-blue-50/90 border border-blue-200/80 rounded-2xl flex flex-wrap sm:flex-nowrap items-center justify-between gap-3 shadow-2xs">
                               <div className="flex items-center gap-2.5 min-w-0">
                                 <div className="w-7 h-7 rounded-lg bg-blue-600 text-white flex items-center justify-center shrink-0 shadow-2xs">
                                   <Sparkles className="w-3.5 h-3.5" />
                                 </div>
                                 <div className="min-w-0">
                                   <h4 className="text-xs sm:text-sm font-bold text-slate-900 leading-tight">
-                                    Self-Introduction Speech
+                                    Self-Introduction
                                   </h4>
                                   <p className="text-[11px] text-slate-500 truncate">
-                                    {customSelfIntro ? 'Your personalized speech is active' : 'Click to paste your custom 60–90 sec pitch'}
+                                    {customSelfIntro
+                                      ? 'Custom intro active'
+                                      : 'Default intro shown below • Add your own intro anytime'}
                                   </p>
                                 </div>
                               </div>
-                              <button
-                                type="button"
-                                onClick={openSelfIntroModal}
-                                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold transition-all shrink-0 cursor-pointer shadow-2xs active:scale-95"
-                                title="Paste or customize your self-introduction speech"
-                              >
-                                <Edit3 className="w-3.5 h-3.5" />
-                                <span>{customSelfIntro ? 'Edit Pitch' : 'Paste Pitch'}</span>
-                              </button>
+
+                              <div className="flex items-center gap-2 shrink-0">
+                                {Boolean(customSelfIntro) && (
+                                  <button
+                                    type="button"
+                                    onClick={handleResetSelfIntro}
+                                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-rose-200 bg-white hover:bg-rose-50 text-rose-600 text-xs font-semibold transition-all shrink-0 cursor-pointer shadow-2xs active:scale-95"
+                                    title="Back to default self-introduction"
+                                  >
+                                    <RotateCcw className="w-3.5 h-3.5 text-rose-500" />
+                                    <span>Back to Default</span>
+                                  </button>
+                                )}
+
+                                <button
+                                  type="button"
+                                  onClick={openSelfIntroModal}
+                                  className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold transition-all shrink-0 cursor-pointer shadow-2xs active:scale-95"
+                                  title="Add or edit your own self-introduction"
+                                >
+                                  <Edit3 className="w-3.5 h-3.5" />
+                                  <span>{customSelfIntro ? 'Edit Intro' : 'Add Your Self Intro'}</span>
+                                </button>
+                              </div>
                             </div>
                           )}
 
@@ -610,15 +629,27 @@ export default function Dashboard() {
                                         )}
                                       </div>
 
-                                      <div className="flex items-center gap-2 shrink-0">
+                                      <div className="flex items-center gap-2 shrink-0 flex-wrap">
+                                        {Boolean(customSelfIntro) && (
+                                          <button
+                                            type="button"
+                                            onClick={handleResetSelfIntro}
+                                            className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg border border-rose-200 bg-rose-50/60 hover:bg-rose-50 text-rose-600 text-xs font-semibold transition-all shadow-2xs shrink-0 cursor-pointer active:scale-95"
+                                            title="Back to default self-introduction"
+                                          >
+                                            <RotateCcw className="w-3.5 h-3.5 text-rose-500" />
+                                            <span>Back to Default</span>
+                                          </button>
+                                        )}
+
                                         <button
                                           type="button"
                                           onClick={openSelfIntroModal}
                                           className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-primary/30 bg-primary/5 hover:bg-primary/10 text-primary text-xs font-semibold transition-all shadow-2xs shrink-0 cursor-pointer"
-                                          title="Paste or edit your personal self-introduction"
+                                          title="Add or edit your personal self-introduction"
                                         >
                                           <Edit3 className="w-3.5 h-3.5" />
-                                          <span>{customSelfIntro ? 'Edit My Intro' : 'Paste My Intro'}</span>
+                                          <span>{customSelfIntro ? 'Edit Intro' : 'Add Your Self Intro'}</span>
                                         </button>
 
                                         <button
@@ -1132,10 +1163,10 @@ export default function Dashboard() {
                   </div>
                   <div>
                     <h3 className="text-sm sm:text-base font-bold text-slate-900">
-                      Customize Your Self-Introduction
+                      {customSelfIntro ? 'Edit Your Self-Introduction' : 'Add Your Self-Introduction'}
                     </h3>
                     <p className="text-[11px] sm:text-xs text-slate-500">
-                      Paste your text here. Saved permanently on this device.
+                      Personalize your 60–90 second interview speech. Tap "Back to Default" anytime to restore.
                     </p>
                   </div>
                 </div>
@@ -1153,7 +1184,7 @@ export default function Dashboard() {
               <div className="p-4 sm:p-6 overflow-y-auto space-y-3.5 flex-1">
                 <div className="flex items-center justify-between text-xs text-slate-600">
                   <label className="font-semibold text-slate-800">
-                    Paste or Type Your Introduction Speech:
+                    Your Self-Introduction:
                   </label>
                   <span className="text-[11px] text-slate-500 font-mono bg-slate-100 px-2 py-0.5 rounded">
                     {selfIntroEditText.trim() ? selfIntroEditText.trim().split(/\s+/).filter(Boolean).length : 0} words
@@ -1163,7 +1194,7 @@ export default function Dashboard() {
                 <textarea
                   value={selfIntroEditText}
                   onChange={e => setSelfIntroEditText(e.target.value)}
-                  placeholder="Good morning sir/madam. My name is... Paste your customized introduction here..."
+                  placeholder="Good morning sir/madam. My name is... Type or paste your self-introduction here..."
                   rows={10}
                   className="w-full rounded-xl border border-slate-300 p-3.5 sm:p-4 text-xs sm:text-sm leading-relaxed text-slate-800 placeholder:text-slate-400 focus:outline-hidden focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all font-sans resize-y min-h-[220px]"
                 />
@@ -1182,10 +1213,10 @@ export default function Dashboard() {
                   <button
                     type="button"
                     onClick={handleResetSelfIntro}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-rose-200 text-rose-600 hover:bg-rose-50 text-xs font-semibold transition-colors cursor-pointer"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-rose-200 bg-white hover:bg-rose-50 text-rose-600 text-xs font-semibold transition-colors cursor-pointer active:scale-95 shadow-2xs"
                   >
                     <RotateCcw className="w-3.5 h-3.5" />
-                    <span>Reset to Default</span>
+                    <span>Back to Default</span>
                   </button>
                 ) : (
                   <div />
@@ -1216,7 +1247,7 @@ export default function Dashboard() {
 
       {/* Floating Save Toast Notification */}
       <AnimatePresence>
-        {savedToast && (
+        {Boolean(savedToast) && (
           <motion.div
             initial={{ opacity: 0, y: 30, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -1226,7 +1257,7 @@ export default function Dashboard() {
             <div className="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0">
               <Check className="w-3.5 h-3.5" />
             </div>
-            <span>Self-Introduction saved! Always active on this device.</span>
+            <span>{savedToast}</span>
           </motion.div>
         )}
       </AnimatePresence>
