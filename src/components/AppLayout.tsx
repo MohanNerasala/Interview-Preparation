@@ -28,14 +28,6 @@ export default function AppLayout() {
 
       {/* Search Dialog */}
       <SearchDialog isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
-
-      {/* Mobile overlay */}
-      {sidebarOpen && (
-        <div 
-          className="fixed inset-0 bg-black/20 backdrop-blur-sm z-30 lg:hidden" 
-          onClick={() => setSidebarOpen(false)} 
-        />
-      )}
     </div>
   );
 }

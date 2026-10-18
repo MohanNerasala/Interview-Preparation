@@ -503,13 +503,7 @@ export default function Dashboard() {
       </div>
 
       {/* Concepts Flow Down One by One */}
-      <motion.div
-        key={activeFilter}
-        initial={{ opacity: 0, y: 6 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.18, ease: 'easeOut' }}
-        className="space-y-8 sm:space-y-10"
-      >
+      <div className="space-y-8 sm:space-y-10">
         {filteredTopics.length === 0 ? (
           <div className="bg-white rounded-2xl border border-slate-200 p-12 text-center space-y-3 shadow-2xs">
             <Search className="w-8 h-8 text-slate-300 mx-auto" />
@@ -1140,7 +1134,7 @@ export default function Dashboard() {
             );
           })
         )}
-      </motion.div>
+      </div>
 
       {/* 3-BOX POP-UP CODE MODAL (CODE • INPUT • OUTPUT) */}
       {activeCodeModal && (

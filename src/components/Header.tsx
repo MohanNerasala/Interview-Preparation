@@ -20,9 +20,9 @@ export default function Header({ onMenuClick, onSearchClick }: HeaderProps) {
         </button>
 
         {/* Brand Title (Mobile only, on Desktop sidebar shows it) */}
-        <div className="lg:hidden flex items-center gap-2 min-w-0">
-          <div className="w-8 h-8 rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center shrink-0 shadow-2xs">
-            <GraduationCap className="w-4.5 h-4.5 text-primary" strokeWidth={2} />
+        <div className="lg:hidden flex items-center gap-2.5 min-w-0">
+          <div className="w-8.5 h-8.5 rounded-xl bg-linear-to-br from-blue-600 to-indigo-600 flex items-center justify-center shrink-0 shadow-2xs text-white">
+            <GraduationCap className="w-4.5 h-4.5 text-white" strokeWidth={2.2} />
           </div>
           <span className="font-extrabold text-slate-900 text-sm sm:text-base tracking-tight truncate">
             N.M Interview Preparation

@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Search, X, BookOpen, Code2, Database, HelpCircle, ArrowRight, Sparkles } from 'lucide-react';
 import { allTopics } from '../data';
 import { coreJavaTopics } from '../data/codingPrep/coreJavaPrep';
@@ -193,8 +194,6 @@ export default function SearchDialog({ isOpen, onClose }: SearchDialogProps) {
     return matches.slice(0, 35); // Top 35 matches
   }, [query]);
 
-  if (!isOpen) return null;
-
   // STRICT RULE: Only navigate to either "/" (Concepts) or "/coding" (Coding Prep)!
   // Never navigate to any other sub-page.
   const handleSelect = (item: SearchDialogItem) => {
@@ -229,14 +228,24 @@ export default function SearchDialog({ isOpen, onClose }: SearchDialogProps) {
   };
 
   return (
-    <div 
-      className="fixed inset-0 z-50 flex items-start justify-center pt-16 sm:pt-24 px-4 bg-slate-900/40 backdrop-blur-sm animate-fade-in"
-      onClick={handleClose}
-    >
-      <div 
-        className="w-full max-w-2xl bg-white rounded-2xl shadow-2xl border border-slate-200/90 overflow-hidden flex flex-col max-h-[75vh]"
-        onClick={e => e.stopPropagation()}
-      >
+    <AnimatePresence>
+      {isOpen && (
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.18, ease: 'easeOut' }}
+          className="fixed inset-0 z-50 flex items-start justify-center pt-16 sm:pt-24 px-4 bg-slate-900/40 backdrop-blur-xs"
+          onClick={handleClose}
+        >
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.96, y: -8 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.96, y: -8 }}
+            transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
+            className="w-full max-w-2xl bg-white rounded-2xl shadow-2xl border border-slate-200/90 overflow-hidden flex flex-col max-h-[75vh]"
+            onClick={e => e.stopPropagation()}
+          >
         {/* Search Input Bar */}
         <div className="flex items-center gap-3 px-4 py-3.5 border-b border-slate-200">
           <Search className="w-5 h-5 text-slate-400 shrink-0" />
@@ -317,7 +326,9 @@ export default function SearchDialog({ isOpen, onClose }: SearchDialogProps) {
           <span>{results.length} result{results.length === 1 ? '' : 's'} (opens directly on {results.length > 0 ? (results[0].targetPage === 'coding' ? 'Coding page' : 'Concepts page') : 'page'})</span>
           <span>Press <kbd className="font-semibold text-slate-500 bg-white px-1.5 py-0.5 rounded border border-slate-200">Esc</kbd> to exit</span>
         </div>
-      </div>
-    </div>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 }
