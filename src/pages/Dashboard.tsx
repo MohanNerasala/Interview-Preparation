@@ -479,48 +479,30 @@ export default function Dashboard() {
 
                       return (
                         <div key={concept.id} className="space-y-2">
-                          {/* Quick Action Banner ABOVE Self-Introduction Card */}
+                          {/* Quick Action ABOVE Self-Introduction Card — Clean Action Only */}
                           {isSelfIntro && (
-                            <div className="p-3 sm:p-3.5 bg-gradient-to-r from-blue-50/90 via-indigo-50/70 to-blue-50/90 border border-blue-200/80 rounded-2xl flex flex-wrap sm:flex-nowrap items-center justify-between gap-3 shadow-2xs">
-                              <div className="flex items-center gap-2.5 min-w-0">
-                                <div className="w-7 h-7 rounded-lg bg-blue-600 text-white flex items-center justify-center shrink-0 shadow-2xs">
-                                  <Sparkles className="w-3.5 h-3.5" />
-                                </div>
-                                <div className="min-w-0">
-                                  <h4 className="text-xs sm:text-sm font-bold text-slate-900 leading-tight">
-                                    Self-Introduction
-                                  </h4>
-                                  <p className="text-[11px] text-slate-500 truncate">
-                                    {customSelfIntro
-                                      ? 'Custom intro active'
-                                      : 'Default intro shown below • Add your own intro anytime'}
-                                  </p>
-                                </div>
-                              </div>
-
-                              <div className="flex items-center gap-2 shrink-0">
-                                {Boolean(customSelfIntro) && (
-                                  <button
-                                    type="button"
-                                    onClick={handleResetSelfIntro}
-                                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-rose-200 bg-white hover:bg-rose-50 text-rose-600 text-xs font-semibold transition-all shrink-0 cursor-pointer shadow-2xs active:scale-95"
-                                    title="Back to default self-introduction"
-                                  >
-                                    <RotateCcw className="w-3.5 h-3.5 text-rose-500" />
-                                    <span>Back to Default</span>
-                                  </button>
-                                )}
-
+                            <div className="flex items-center justify-end gap-2.5 pt-1 pb-0.5">
+                              {Boolean(customSelfIntro) && (
                                 <button
                                   type="button"
-                                  onClick={openSelfIntroModal}
-                                  className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold transition-all shrink-0 cursor-pointer shadow-2xs active:scale-95"
-                                  title="Add or edit your own self-introduction"
+                                  onClick={handleResetSelfIntro}
+                                  className="inline-flex items-center gap-1.5 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl border border-rose-200 bg-white hover:bg-rose-50 text-rose-600 text-xs sm:text-sm font-semibold transition-all shadow-2xs shrink-0 cursor-pointer active:scale-95"
+                                  title="Back to default self-introduction"
                                 >
-                                  <Edit3 className="w-3.5 h-3.5" />
-                                  <span>{customSelfIntro ? 'Edit Intro' : 'Add Your Self Intro'}</span>
+                                  <RotateCcw className="w-3.5 h-3.5 text-rose-500" />
+                                  <span>Back to Default</span>
                                 </button>
-                              </div>
+                              )}
+
+                              <button
+                                type="button"
+                                onClick={openSelfIntroModal}
+                                className="inline-flex items-center gap-2 px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs sm:text-sm font-semibold transition-all shadow-2xs hover:shadow-xs shrink-0 cursor-pointer active:scale-95"
+                                title="Add your self-introduction"
+                              >
+                                <Edit3 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white" />
+                                <span>{customSelfIntro ? 'Edit Your Self Intro' : 'Add Your Self Intro'}</span>
+                              </button>
                             </div>
                           )}
 
