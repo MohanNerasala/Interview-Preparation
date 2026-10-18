@@ -1,15 +1,17 @@
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, useRef } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Code, Search, ChevronDown, ChevronRight, ChevronUp, 
   ChevronsUpDown, Clock, HelpCircle, Copy, Check,
-  Lightbulb, X, Terminal, CheckCircle2, ExternalLink
+  Lightbulb, X, ExternalLink,
+  Edit3, Save, RotateCcw, Sparkles
 } from 'lucide-react';
 import { allTopics, getTotalConcepts, getTotalQuestions } from '../data';
 import type { CodeProgram } from '../types';
 import FormattedDefinitionBox from '../components/FormattedDefinitionBox';
 import CodeBlock from '../components/CodeBlock';
+import TerminalBox from '../components/TerminalBox';
 
 type FilterCategory = 'all' | 'core-java' | 'sql' | 'frontend' | 'backend' | 'hr-round';
 
@@ -55,6 +57,7 @@ const menvyProjectParagraphs = [
 
 const fullSelfIntroSpeech = selfIntroParagraphs.join('\n\n');
 const fullMenvySpeech = menvyProjectParagraphs.join('\n\n');
+const SELF_INTRO_STORAGE_KEY = 'chakri_custom_self_intro';
 
 // Clean code viewer with Big fullscreen view, line numbers, and copy button
 function CleanCodeViewer({ code, title }: { code: string; title?: string }) {
@@ -65,9 +68,91 @@ export default function Dashboard() {
   const [searchParams] = useSearchParams();
   const [activeFilter, setActiveFilter] = useState<FilterCategory>('all');
   const [searchQuery, setSearchQuery] = useState('');
+  const searchInputRef = useRef<HTMLInputElement>(null);
   const [copiedIntro, setCopiedIntro] = useState(false);
   const [copiedMenvy, setCopiedMenvy] = useState(false);
+
+  // Global Escape key listener to smoothly clear and close search
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && searchQuery) {
+        setSearchQuery('');
+        searchInputRef.current?.blur();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [searchQuery]);
   
+  // Custom Self-Introduction stored locally on this device/mobile
+  const [customSelfIntro, setCustomSelfIntro] = useState<string>(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        return localStorage.getItem(SELF_INTRO_STORAGE_KEY) || '';
+      } catch {
+        return '';
+      }
+    }
+    return '';
+  });
+  const [showSelfIntroModal, setShowSelfIntroModal] = useState(false);
+  const [selfIntroEditText, setSelfIntroEditText] = useState('');
+  const [savedToast, setSavedToast] = useState(false);
+
+  const activeSelfIntroParagraphs = useMemo(() => {
+    if (customSelfIntro && customSelfIntro.trim()) {
+      const blocks = customSelfIntro.split(/\n\s*\n/).map(p => p.trim()).filter(Boolean);
+      if (blocks.length > 0) return blocks;
+      return customSelfIntro.split('\n').map(p => p.trim()).filter(Boolean);
+    }
+    return selfIntroParagraphs;
+  }, [customSelfIntro]);
+
+  const fullActiveSelfIntroSpeech = useMemo(() => {
+    return activeSelfIntroParagraphs.join('\n\n');
+  }, [activeSelfIntroParagraphs]);
+
+  const openSelfIntroModal = () => {
+    setSelfIntroEditText(customSelfIntro || fullSelfIntroSpeech);
+    setShowSelfIntroModal(true);
+  };
+
+  const handleSaveSelfIntro = () => {
+    const trimmed = selfIntroEditText.trim();
+    if (trimmed) {
+      try {
+        localStorage.setItem(SELF_INTRO_STORAGE_KEY, trimmed);
+      } catch (err) {
+        console.error('Failed to save to localStorage:', err);
+      }
+      setCustomSelfIntro(trimmed);
+    } else {
+      try {
+        localStorage.removeItem(SELF_INTRO_STORAGE_KEY);
+      } catch (err) {
+        console.error('Failed to remove from localStorage:', err);
+      }
+      setCustomSelfIntro('');
+    }
+    setShowSelfIntroModal(false);
+    setSavedToast(true);
+    setTimeout(() => setSavedToast(false), 3000);
+    setExpandedConceptIds(prev => new Set([...prev, 'self-intro-speech']));
+  };
+
+  const handleResetSelfIntro = () => {
+    try {
+      localStorage.removeItem(SELF_INTRO_STORAGE_KEY);
+    } catch (err) {
+      console.error('Failed to remove from localStorage:', err);
+    }
+    setCustomSelfIntro('');
+    setSelfIntroEditText(fullSelfIntroSpeech);
+    setShowSelfIntroModal(false);
+    setSavedToast(true);
+    setTimeout(() => setSavedToast(false), 3000);
+  };
+
   // Track expanded concepts
   const [expandedConceptIds, setExpandedConceptIds] = useState<Set<string>>(new Set());
 
@@ -125,9 +210,9 @@ export default function Dashboard() {
     });
   };
 
-  const copyFullIntro = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    navigator.clipboard.writeText(fullSelfIntroSpeech);
+  const copyFullIntro = (e?: React.MouseEvent) => {
+    e?.stopPropagation();
+    navigator.clipboard.writeText(fullActiveSelfIntroSpeech);
     setCopiedIntro(true);
     setTimeout(() => setCopiedIntro(false), 2000);
   };
@@ -280,20 +365,53 @@ export default function Dashboard() {
 
         {/* Right Controls: Search & Expand All */}
         <div className="flex items-center gap-2.5">
-          <div className="relative flex-1 sm:w-64">
-            <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+          {/* Smooth Search Bar with Clear 'X' and Esc Key shortcut */}
+          <div className="relative flex-1 sm:w-72">
+            <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
             <input
+              ref={searchInputRef}
               type="text"
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
+              onKeyDown={e => {
+                if (e.key === 'Escape') {
+                  setSearchQuery('');
+                  searchInputRef.current?.blur();
+                }
+              }}
               placeholder="Search concepts or questions..."
-              className="w-full pl-9 pr-3 py-1.5 bg-slate-50 hover:bg-white focus:bg-white rounded-xl border border-slate-200 text-xs sm:text-sm outline-none focus:border-primary transition-colors"
+              className="w-full pl-9 pr-14 py-2 bg-white hover:bg-slate-50/70 focus:bg-white rounded-xl border border-slate-200 hover:border-slate-300 focus:border-primary focus:ring-2 focus:ring-primary/15 text-xs sm:text-sm outline-none transition-all duration-200 shadow-2xs font-normal"
             />
+            {searchQuery ? (
+              <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSearchQuery('');
+                    searchInputRef.current?.focus();
+                  }}
+                  className="p-1 rounded-md text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors cursor-pointer flex items-center justify-center active:scale-95"
+                  title="Clear search (Esc)"
+                  aria-label="Clear search"
+                >
+                  <X className="w-3.5 h-3.5" />
+                </button>
+                <kbd className="hidden sm:inline-block px-1.5 py-0.5 text-[9px] font-mono text-slate-400 bg-slate-100 border border-slate-200 rounded font-semibold select-none">
+                  Esc
+                </kbd>
+              </div>
+            ) : (
+              <kbd className="hidden sm:inline-block absolute right-2.5 top-1/2 -translate-y-1/2 px-1.5 py-0.5 text-[10px] font-mono text-slate-400 bg-slate-100 border border-slate-200 rounded select-none pointer-events-none">
+                /
+              </kbd>
+            )}
           </div>
 
+          {/* Smooth Collapse / Expand All Button with Hand Cursor */}
           <button
+            type="button"
             onClick={toggleExpandAll}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-700 text-xs font-semibold transition-colors shrink-0"
+            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 hover:border-slate-300 active:bg-slate-100 text-slate-700 text-xs font-semibold shadow-2xs hover:shadow-xs transition-all duration-150 shrink-0 cursor-pointer active:scale-95 select-none"
             title={allAreExpanded ? 'Collapse all concepts' : 'Expand all concepts'}
           >
             {allAreExpanded ? (
@@ -358,117 +476,170 @@ export default function Dashboard() {
                       const isMenvyProject = concept.id === 'pe-project-name';
 
                       return (
-                        <div
-                          key={concept.id}
-                          className={`bg-white rounded-2xl border transition-[border-color,box-shadow] duration-200 overflow-hidden ${
-                            isExpanded
-                              ? 'border-slate-300 shadow-[0_6px_20px_-4px_rgba(15,23,42,0.06)]'
-                              : 'border-slate-200/80 hover:border-slate-300 shadow-[0_2px_8px_-2px_rgba(15,23,42,0.03)] hover:shadow-[0_6px_18px_-3px_rgba(15,23,42,0.06)]'
-                          }`}
-                        >
-                          {/* Concept Header Row — Tap here to expand directly right in place! */}
-                          <div
-                            onClick={() => toggleConcept(concept.id)}
-                            className="p-4 sm:p-5 flex items-center justify-between gap-3 cursor-pointer hover:bg-slate-50/70 transition-colors select-none"
-                          >
-                            <div className="flex items-center gap-3 flex-1 min-w-0">
-                              <div className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 transition-colors ${
-                                isExpanded ? 'bg-primary text-white shadow-xs' : 'bg-blue-50 text-primary'
-                              }`}>
-                                {isExpanded ? (
-                                  <ChevronDown className="w-4 h-4" />
-                                ) : (
-                                  <ChevronRight className="w-4 h-4" />
-                                )}
+                        <div key={concept.id} className="space-y-2">
+                          {/* Quick Action Banner ABOVE Self-Introduction Card */}
+                          {isSelfIntro && (
+                            <div className="p-3 sm:p-3.5 bg-gradient-to-r from-blue-50/90 via-indigo-50/70 to-blue-50/90 border border-blue-200/80 rounded-2xl flex items-center justify-between gap-3 shadow-2xs">
+                              <div className="flex items-center gap-2.5 min-w-0">
+                                <div className="w-7 h-7 rounded-lg bg-blue-600 text-white flex items-center justify-center shrink-0 shadow-2xs">
+                                  <Sparkles className="w-3.5 h-3.5" />
+                                </div>
+                                <div className="min-w-0">
+                                  <h4 className="text-xs sm:text-sm font-bold text-slate-900 leading-tight">
+                                    Self-Introduction Speech
+                                  </h4>
+                                  <p className="text-[11px] text-slate-500 truncate">
+                                    {customSelfIntro ? 'Your personalized speech is active' : 'Click to paste your custom 60–90 sec pitch'}
+                                  </p>
+                                </div>
                               </div>
+                              <button
+                                type="button"
+                                onClick={openSelfIntroModal}
+                                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold transition-all shrink-0 cursor-pointer shadow-2xs active:scale-95"
+                                title="Paste or customize your self-introduction speech"
+                              >
+                                <Edit3 className="w-3.5 h-3.5" />
+                                <span>{customSelfIntro ? 'Edit Pitch' : 'Paste Pitch'}</span>
+                              </button>
+                            </div>
+                          )}
 
-                              <div className="min-w-0 flex-1">
-                                <div className="flex items-center gap-2 mb-1.5 flex-wrap">
-                                  <span
-                                    className={`text-[10px] sm:text-[11px] font-semibold px-2 py-0.5 rounded-md border shrink-0 ${
-                                      difficultyColors[concept.difficulty]
-                                    }`}
-                                  >
-                                    {concept.difficulty}
-                                  </span>
-                                  <span className="text-[11px] text-slate-400 flex items-center gap-1 shrink-0">
-                                    <Clock className="w-3 h-3" />
-                                    {concept.studyTime.replace(' minutes', 'm').replace(' minute', 'm')}
-                                  </span>
-                                  <span className="text-[11px] text-slate-400 flex items-center gap-1 shrink-0">
-                                    <HelpCircle className="w-3 h-3" />
-                                    {concept.questions.length} Qs
-                                  </span>
+                          <div
+                            className={`bg-white rounded-2xl border transition-[border-color,box-shadow] duration-200 overflow-hidden ${
+                              isExpanded
+                                ? 'border-slate-300 shadow-[0_6px_20px_-4px_rgba(15,23,42,0.06)]'
+                                : 'border-slate-200/80 hover:border-slate-300 shadow-[0_2px_8px_-2px_rgba(15,23,42,0.03)] hover:shadow-[0_6px_18px_-3px_rgba(15,23,42,0.06)]'
+                            }`}
+                          >
+                            {/* Concept Header Row — Tap here to expand directly right in place! */}
+                            <div
+                              onClick={() => toggleConcept(concept.id)}
+                              className="p-3.5 sm:p-5 flex items-center justify-between gap-2.5 sm:gap-3 cursor-pointer hover:bg-slate-50/70 transition-colors select-none"
+                            >
+                              <div className="flex items-center gap-2.5 sm:gap-3 flex-1 min-w-0">
+                                <div className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 transition-colors ${
+                                  isExpanded ? 'bg-primary text-white shadow-xs' : 'bg-blue-50 text-primary'
+                                }`}>
+                                  {isExpanded ? (
+                                    <ChevronDown className="w-4 h-4" />
+                                  ) : (
+                                    <ChevronRight className="w-4 h-4" />
+                                  )}
                                 </div>
 
-                                <h3 className="text-sm sm:text-base font-bold text-slate-900 group-hover:text-primary transition-colors leading-snug">
-                                  {isSelfIntro ? 'Self-Introduction' : isMenvyProject ? 'Menvy Project Overview' : concept.title}
-                                </h3>
+                                <div className="min-w-0 flex-1">
+                                  <div className="flex items-center gap-1.5 sm:gap-2 mb-1 sm:mb-1.5 flex-wrap">
+                                    <span
+                                      className={`text-[10px] sm:text-[11px] font-semibold px-2 py-0.5 rounded-md border shrink-0 ${
+                                        difficultyColors[concept.difficulty]
+                                      }`}
+                                    >
+                                      {concept.difficulty}
+                                    </span>
+                                    <span className="text-[10px] sm:text-[11px] text-slate-400 flex items-center gap-1 shrink-0">
+                                      <Clock className="w-3 h-3" />
+                                      {concept.studyTime.replace(' minutes', 'm').replace(' minute', 'm')}
+                                    </span>
+                                    <span className="text-[10px] sm:text-[11px] text-slate-400 flex items-center gap-1 shrink-0">
+                                      <HelpCircle className="w-3 h-3" />
+                                      {concept.questions.length} Qs
+                                    </span>
+                                  </div>
+
+                                  <div className="flex items-center gap-2 min-w-0">
+                                    <h3 className="text-sm sm:text-base font-bold text-slate-900 group-hover:text-primary transition-colors leading-snug truncate">
+                                      {isSelfIntro ? 'Self-Introduction' : isMenvyProject ? 'Menvy Project Overview' : concept.title}
+                                    </h3>
+                                    {isSelfIntro && Boolean(customSelfIntro) && (
+                                      <span className="text-[9px] sm:text-[10px] font-bold uppercase tracking-wider bg-emerald-50 text-emerald-700 border border-emerald-200 px-1.5 sm:px-2 py-0.5 rounded-full inline-flex items-center gap-1 shrink-0">
+                                        <Check className="w-2.5 h-2.5" />
+                                        Custom
+                                      </span>
+                                    )}
+                                  </div>
+                                </div>
+                              </div>
+
+                              <div className="flex items-center shrink-0">
+                                <button
+                                  type="button"
+                                  onClick={e => {
+                                    e.stopPropagation();
+                                    toggleConcept(concept.id);
+                                  }}
+                                  className={`px-3 py-1.5 sm:px-4 sm:py-2 rounded-xl text-xs font-semibold transition-all shrink-0 cursor-pointer ${
+                                    isExpanded
+                                      ? 'bg-slate-800 text-white hover:bg-slate-900 shadow-xs'
+                                      : 'bg-primary text-white hover:bg-primary-dark shadow-xs hover:shadow'
+                                  }`}
+                                >
+                                  {isExpanded ? (
+                                    'Hide'
+                                  ) : (
+                                    <>
+                                      <span>View</span>
+                                      <span className="hidden sm:inline">
+                                        {isSelfIntro ? ' Pitch' : isMenvyProject ? ' Answer' : ' Questions'}
+                                      </span>
+                                    </>
+                                  )}
+                                </button>
                               </div>
                             </div>
 
-                            <button
-                              onClick={e => {
-                                e.stopPropagation();
-                                toggleConcept(concept.id);
-                              }}
-                              className={`px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-xl text-xs font-semibold transition-all shrink-0 cursor-pointer ${
-                                isExpanded
-                                  ? 'bg-slate-800 text-white hover:bg-slate-900 shadow-xs'
-                                  : 'bg-primary text-white hover:bg-primary-dark shadow-xs hover:shadow'
-                              }`}
-                            >
-                              {isExpanded ? (
-                                'Hide'
-                              ) : (
-                                <>
-                                  <span>View</span>
-                                  <span className="hidden sm:inline">
-                                    {isSelfIntro ? ' Pitch' : isMenvyProject ? ' Answer' : ' Questions'}
-                                  </span>
-                                </>
-                              )}
-                            </button>
-                          </div>
-
                           {/* Expanded Content — Directly shown right here, spacious & smooth! */}
-                          <AnimatePresence initial={false}>
-                            {isExpanded && (
-                              <motion.div
-                                initial={{ opacity: 0, height: 0 }}
-                                animate={{ opacity: 1, height: 'auto' }}
-                                exit={{ opacity: 0, height: 0 }}
-                                transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
-                                className="overflow-hidden border-t border-slate-100"
-                              >
-                                <div className="p-5 sm:p-7 bg-gradient-to-b from-slate-50/50 via-white/50 to-white space-y-6 sm:space-y-7">
+                          {isExpanded && (
+                            <div className="border-t border-slate-100 animate-fade-in">
+                              <div className="p-5 sm:p-7 bg-gradient-to-b from-slate-50/50 via-white/50 to-white space-y-6 sm:space-y-7">
                               
                               {isSelfIntro ? (
                                 <div className="bg-white rounded-2xl p-5 sm:p-7 border border-slate-200/80 shadow-[0_4px_20px_-4px_rgba(15,23,42,0.04)] space-y-5">
                                   {/* Clean 2-Line Header with Perfect Alignment */}
                                   <div className="pb-3 border-b border-slate-100 space-y-1">
-                                    <div className="flex items-center justify-between gap-3">
-                                      <h4 className="text-sm sm:text-base font-bold text-slate-900 truncate">
-                                        Tell me about yourself.
-                                      </h4>
-
-                                      <button
-                                        onClick={copyFullIntro}
-                                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs font-medium transition-all shadow-2xs shrink-0 cursor-pointer"
-                                        title="Copy full speech to clipboard"
-                                      >
-                                        {copiedIntro ? (
-                                          <>
-                                            <Check className="w-3.5 h-3.5 text-emerald-600" />
-                                            <span className="text-emerald-700 font-semibold">Copied!</span>
-                                          </>
-                                        ) : (
-                                          <>
-                                            <Copy className="w-3.5 h-3.5 text-slate-500" />
-                                            <span>Copy Pitch</span>
-                                          </>
+                                    <div className="flex flex-wrap items-center justify-between gap-3">
+                                      <div className="flex items-center gap-2">
+                                        <h4 className="text-sm sm:text-base font-bold text-slate-900">
+                                          Tell me about yourself.
+                                        </h4>
+                                        {Boolean(customSelfIntro) && (
+                                          <span className="text-[10px] font-bold uppercase tracking-wider bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-0.5 rounded-full inline-flex items-center gap-1">
+                                            <Check className="w-2.5 h-2.5" />
+                                            Custom Pitch Active
+                                          </span>
                                         )}
-                                      </button>
+                                      </div>
+
+                                      <div className="flex items-center gap-2 shrink-0">
+                                        <button
+                                          type="button"
+                                          onClick={openSelfIntroModal}
+                                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-primary/30 bg-primary/5 hover:bg-primary/10 text-primary text-xs font-semibold transition-all shadow-2xs shrink-0 cursor-pointer"
+                                          title="Paste or edit your personal self-introduction"
+                                        >
+                                          <Edit3 className="w-3.5 h-3.5" />
+                                          <span>{customSelfIntro ? 'Edit My Intro' : 'Paste My Intro'}</span>
+                                        </button>
+
+                                        <button
+                                          type="button"
+                                          onClick={copyFullIntro}
+                                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs font-medium transition-all shadow-2xs shrink-0 cursor-pointer"
+                                          title="Copy full speech to clipboard"
+                                        >
+                                          {copiedIntro ? (
+                                            <>
+                                              <Check className="w-3.5 h-3.5 text-emerald-600" />
+                                              <span className="text-emerald-700 font-semibold">Copied!</span>
+                                            </>
+                                          ) : (
+                                            <>
+                                              <Copy className="w-3.5 h-3.5 text-slate-500" />
+                                              <span>Copy Pitch</span>
+                                            </>
+                                          )}
+                                        </button>
+                                      </div>
                                     </div>
 
                                     <p className="text-xs text-slate-500">
@@ -478,10 +649,10 @@ export default function Dashboard() {
 
                                   {/* Single box with separate paragraphs */}
                                   <div className="space-y-4 text-xs sm:text-sm text-slate-800 leading-relaxed sm:leading-7 font-sans bg-slate-50/60 p-5 sm:p-6 rounded-xl border border-slate-100">
-                                    {selfIntroParagraphs.map((para, idx) => (
+                                    {activeSelfIntroParagraphs.map((para, idx) => (
                                       <p
                                         key={idx}
-                                        className={idx === selfIntroParagraphs.length - 1 ? "font-semibold text-slate-900 pt-1" : ""}
+                                        className={idx === activeSelfIntroParagraphs.length - 1 ? "font-semibold text-slate-900 pt-1" : ""}
                                       >
                                         {para}
                                       </p>
@@ -604,29 +775,20 @@ export default function Dashboard() {
                                     const currentProg = concept.codePrograms[currentIdx];
                                     return (
                                       <div className="space-y-3">
-                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                                          {/* Input */}
-                                          <div className="space-y-1">
-                                            <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1">
-                                              <Terminal className="w-3.5 h-3.5 text-blue-400" />
-                                              1. Input / Parameters
-                                            </span>
-                                            <div className="bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-xs font-mono text-slate-200 break-words min-h-[46px]">
-                                              {currentProg.input || "None (Standard JVM execution)"}
-                                            </div>
-                                          </div>
+                                        {/* Input Box over Output Box — Full Width & Perfect Font */}
+                                        <TerminalBox
+                                          title="1. Input / Parameters"
+                                          badge="Input"
+                                          content={currentProg.input}
+                                          placeholder="None (Standard JVM execution)"
+                                        />
 
-                                          {/* Output */}
-                                          <div className="space-y-1">
-                                            <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1">
-                                              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
-                                              2. Console Output
-                                            </span>
-                                            <div className="bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-xs font-mono text-emerald-400 whitespace-pre-line overflow-x-auto min-h-[46px]">
-                                              {currentProg.output || "Program executed successfully"}
-                                            </div>
-                                          </div>
-                                        </div>
+                                        <TerminalBox
+                                          title="2. Console Output"
+                                          badge="Output"
+                                          content={currentProg.output}
+                                          placeholder="Program executed successfully with no errors."
+                                        />
 
                                         {/* Code */}
                                         <div className="space-y-1 pt-1">
@@ -817,9 +979,9 @@ export default function Dashboard() {
                                 );
                               })()}
                                 </div>
-                              </motion.div>
+                              </div>
                             )}
-                          </AnimatePresence>
+                          </div>
                         </div>
                       );
                     })
@@ -907,39 +1069,21 @@ export default function Dashboard() {
 
             {/* Modal Scrollable Body — Input & Output ABOVE, Code BELOW */}
             <div className="p-3.5 sm:p-5 overflow-y-auto space-y-3 max-h-[calc(88vh-110px)] overflow-x-hidden">
-              {/* TOP: Input & Output Boxes */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                {/* BOX 1: Input */}
-                <div className="space-y-1">
-                  <div className="flex items-center justify-between">
-                    <span className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-slate-700 flex items-center gap-1.5">
-                      <Terminal className="w-3.5 h-3.5 text-blue-600 shrink-0" />
-                      1. Input / Parameters
-                    </span>
-                    <span className="text-[9px] font-mono font-semibold px-1.5 py-0.2 rounded bg-blue-100 text-blue-700">
-                      Input
-                    </span>
-                  </div>
-                  <div className="bg-blue-50/70 border border-blue-200/90 rounded-xl p-2.5 sm:p-3 text-[11px] sm:text-xs font-mono text-slate-800 leading-relaxed break-words min-h-[50px]">
-                    {activeCodeModal.input || "None (Standard JVM execution)"}
-                  </div>
-                </div>
+              {/* TOP: Input Box & Output Box (Stacked One Over the Other — Full Width & Perfect Font) */}
+              <div className="space-y-3">
+                <TerminalBox
+                  title="1. Input / Parameters"
+                  badge="Input"
+                  content={activeCodeModal.input}
+                  placeholder="None (Standard JVM execution)"
+                />
 
-                {/* BOX 2: Output */}
-                <div className="space-y-1">
-                  <div className="flex items-center justify-between">
-                    <span className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-slate-700 flex items-center gap-1.5">
-                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                      2. Console Output
-                    </span>
-                    <span className="text-[9px] font-mono font-semibold px-1.5 py-0.2 rounded bg-slate-800 text-emerald-400">
-                      Output
-                    </span>
-                  </div>
-                  <div className="bg-slate-950 border border-slate-800 rounded-xl p-2.5 sm:p-3 text-[11px] sm:text-xs font-mono text-emerald-400 whitespace-pre-line leading-relaxed shadow-inner overflow-x-auto min-h-[50px]">
-                    {activeCodeModal.output || "Execution completed successfully with no output."}
-                  </div>
-                </div>
+                <TerminalBox
+                  title="2. Console Output"
+                  badge="Output"
+                  content={activeCodeModal.output}
+                  placeholder="Execution completed successfully with no output."
+                />
               </div>
 
               {/* BOX 3: Code (Below Input & Output, with reduced font size) */}
@@ -964,6 +1108,128 @@ export default function Dashboard() {
           </div>
         </div>
       )}
+
+      {/* Self-Introduction Customization Modal Popup */}
+      <AnimatePresence>
+        {showSelfIntroModal && (
+          <div 
+            className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-3 sm:p-5"
+            onClick={() => setShowSelfIntroModal(false)}
+          >
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.95, y: 15 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 15 }}
+              transition={{ duration: 0.18, ease: "easeOut" }}
+              className="bg-white rounded-2xl max-w-2xl w-full max-h-[92vh] flex flex-col shadow-2xl border border-slate-200 overflow-hidden"
+              onClick={e => e.stopPropagation()}
+            >
+              {/* Modal Header */}
+              <div className="px-5 py-4 bg-gradient-to-r from-blue-50/90 via-indigo-50/50 to-white border-b border-slate-200 flex items-center justify-between shrink-0">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-8 h-8 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0">
+                    <Sparkles className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <h3 className="text-sm sm:text-base font-bold text-slate-900">
+                      Customize Your Self-Introduction
+                    </h3>
+                    <p className="text-[11px] sm:text-xs text-slate-500">
+                      Paste your text here. Saved permanently on this device.
+                    </p>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setShowSelfIntroModal(false)}
+                  className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors cursor-pointer"
+                  aria-label="Close"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              {/* Modal Body */}
+              <div className="p-4 sm:p-6 overflow-y-auto space-y-3.5 flex-1">
+                <div className="flex items-center justify-between text-xs text-slate-600">
+                  <label className="font-semibold text-slate-800">
+                    Paste or Type Your Introduction Speech:
+                  </label>
+                  <span className="text-[11px] text-slate-500 font-mono bg-slate-100 px-2 py-0.5 rounded">
+                    {selfIntroEditText.trim() ? selfIntroEditText.trim().split(/\s+/).filter(Boolean).length : 0} words
+                  </span>
+                </div>
+
+                <textarea
+                  value={selfIntroEditText}
+                  onChange={e => setSelfIntroEditText(e.target.value)}
+                  placeholder="Good morning sir/madam. My name is... Paste your customized introduction here..."
+                  rows={10}
+                  className="w-full rounded-xl border border-slate-300 p-3.5 sm:p-4 text-xs sm:text-sm leading-relaxed text-slate-800 placeholder:text-slate-400 focus:outline-hidden focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all font-sans resize-y min-h-[220px]"
+                />
+
+                <div className="bg-blue-50/80 border border-blue-200/90 rounded-xl p-3 flex items-start gap-2.5 text-[11px] sm:text-xs text-blue-900 leading-relaxed">
+                  <Lightbulb className="w-4 h-4 text-blue-600 shrink-0 mt-0.5" />
+                  <div>
+                    <strong>Tip:</strong> Separate paragraphs with empty lines (press Enter twice) so each part appears cleanly organized for your rehearsal.
+                  </div>
+                </div>
+              </div>
+
+              {/* Modal Footer */}
+              <div className="px-5 py-3.5 bg-slate-50 border-t border-slate-200 flex flex-wrap items-center justify-between gap-2 shrink-0">
+                {Boolean(customSelfIntro) ? (
+                  <button
+                    type="button"
+                    onClick={handleResetSelfIntro}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-rose-200 text-rose-600 hover:bg-rose-50 text-xs font-semibold transition-colors cursor-pointer"
+                  >
+                    <RotateCcw className="w-3.5 h-3.5" />
+                    <span>Reset to Default</span>
+                  </button>
+                ) : (
+                  <div />
+                )}
+
+                <div className="flex items-center gap-2 ml-auto">
+                  <button
+                    type="button"
+                    onClick={() => setShowSelfIntroModal(false)}
+                    className="px-3.5 py-1.5 rounded-xl border border-slate-200 hover:bg-slate-100 text-slate-600 text-xs font-semibold transition-colors cursor-pointer"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleSaveSelfIntro}
+                    className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-xl bg-primary hover:bg-primary-dark text-white text-xs font-semibold shadow-xs hover:shadow transition-all cursor-pointer"
+                  >
+                    <Save className="w-3.5 h-3.5" />
+                    <span>Save Introduction</span>
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* Floating Save Toast Notification */}
+      <AnimatePresence>
+        {savedToast && (
+          <motion.div
+            initial={{ opacity: 0, y: 30, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 20, scale: 0.95 }}
+            className="fixed bottom-6 right-6 z-50 bg-slate-900 text-white px-4 py-3 rounded-2xl shadow-2xl border border-slate-700 flex items-center gap-3 text-xs sm:text-sm font-medium"
+          >
+            <div className="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0">
+              <Check className="w-3.5 h-3.5" />
+            </div>
+            <span>Self-Introduction saved! Always active on this device.</span>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

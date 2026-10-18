@@ -6,6 +6,7 @@ import {
   ArrowUpDown, Terminal, Sparkles, Code2, Check
 } from 'lucide-react';
 import CodeBlock from '../components/CodeBlock';
+import TerminalBox from '../components/TerminalBox';
 import { 
   coreJavaTopics,
   dsaProblems,
@@ -177,27 +178,21 @@ const QuestionCard = React.memo(function QuestionCard({
                   <h4 className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">
                     Input & Expected Output
                   </h4>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                  <div className="space-y-3">
                     {prob.input && (
-                      <div className="p-3.5 bg-white rounded-xl border border-slate-200 shadow-2xs">
-                        <span className="font-semibold text-slate-500 block mb-1 text-[11px] uppercase tracking-wider">
-                          Sample Input:
-                        </span>
-                        <code className="text-slate-800 font-mono text-xs sm:text-sm font-semibold block break-all">
-                          {prob.input}
-                        </code>
-                      </div>
+                      <TerminalBox
+                        title="Sample Input"
+                        badge="Input"
+                        content={prob.input}
+                      />
                     )}
 
                     {(prob.output || prob.expectedOutput) && (
-                      <div className="p-3.5 bg-white rounded-xl border border-emerald-200/90 shadow-2xs">
-                        <span className="font-semibold text-emerald-700 block mb-1 text-[11px] uppercase tracking-wider">
-                          Expected Output:
-                        </span>
-                        <code className="text-emerald-800 font-mono text-xs sm:text-sm font-semibold block break-all whitespace-pre-line">
-                          {prob.output || prob.expectedOutput}
-                        </code>
-                      </div>
+                      <TerminalBox
+                        title="Expected Output"
+                        badge="Output"
+                        content={prob.output || prob.expectedOutput}
+                      />
                     )}
                   </div>
                 </div>

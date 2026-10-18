@@ -92,13 +92,13 @@ Bytecode runs anywhere JVM is installed!`
           definition: `WHAT IS A DATA TYPE?
 A data type specifies what kind of value a variable can store and which operations can be performed on that value.
 
-PRIMITIVE DATA TYPES:
+PRIMITIVE DATA TYPES
 Java has eight primitive data types: byte, short, int, long, float, double, char, and boolean. The first six store numeric values, char stores a UTF-16 code unit, and boolean stores true or false.
 
-REFERENCE TYPES:
+REFERENCE TYPES
 Reference types include classes, arrays, interfaces, enums, and types such as String. A reference variable holds a reference to an object, or null; it does not directly store the complete object.
 
-ASCII VS UNICODE:
+ASCII VS UNICODE
 ASCII is a character-encoding standard with 128 basic characters, including English letters, digits, and control characters (e.g. ASCII 'A' has value 65). Unicode is a universal character standard intended to represent characters from writing systems around the world.`,
           interviewAnswer: 'Java has eight primitive data types: byte, short, int, long, float, double, char, and boolean. The first six store numeric values, char stores a UTF-16 code unit, and boolean stores true or false. Reference types include classes, arrays, interfaces, enums, and types such as String; a reference variable holds a reference to an object, or null, and does not directly store the complete object.',
           explanation: `1. Primitive Data Types:
@@ -108,7 +108,7 @@ ASCII is a character-encoding standard with 128 basic characters, including Engl
 - long: 8 bytes (64 bits), range -2^63 to 2^63-1
 - float: 4 bytes (32-bit IEEE 754 floating point)
 - double: 8 bytes (64-bit IEEE 754 floating point)
-- char: 2 bytes (16 bits, UTF-16 code unit, range '\u0000' to '\uffff')
+- char: 2 bytes (16 bits, UTF-16 code unit, range '\\u0000' to '\\uffff')
 - boolean: 1 bit logical value (true or false)
 
 2. Reference Types:
@@ -144,14 +144,50 @@ Reference String: Chakri`
           questions: [
             {
               id: 'dt-q1',
-              question: 'What is the difference between Primitive types and Reference types in Java?',
-              answer: 'Primitive types store raw values directly on the stack and have fixed sizes (byte, short, int, long, float, double, char, boolean). Reference types store the memory address of an object created on the heap (classes, interfaces, arrays, String); uninitialized reference variables hold null.',
+              question: 'What is a Data Type?',
+              answer: 'A data type tells the computer what kind of data a variable can store, such as numbers, characters, decimal values, or true/false values.',
               difficulty: 'Essential'
             },
             {
               id: 'dt-q2',
-              question: 'What is ASCII vs Unicode in Java?',
-              answer: 'ASCII is a 7-bit encoding standard supporting 128 basic English characters and digits (e.g. ASCII "A" is 65). Unicode is a universal international character standard designed to represent characters from writing systems worldwide. Java char uses 2 bytes (16 bits) to support Unicode.',
+              question: 'What are the types of Data Types in Java?',
+              answer: 'Java data types are classified into two categories: primitive data types and reference data types.',
+              difficulty: 'Essential'
+            },
+            {
+              id: 'dt-q3',
+              question: 'What are Primitive Data Types?',
+              answer: 'Primitive data types are predefined data types in Java that store simple values. Java has eight primitive data types: byte, short, int, long, float, double, char, and boolean.',
+              difficulty: 'Essential'
+            },
+            {
+              id: 'dt-q4',
+              question: 'What are Reference Data Types?',
+              answer: 'Reference data types refer to objects rather than directly storing the complete object. Examples include classes, arrays, interfaces, and String.',
+              difficulty: 'Essential'
+            },
+            {
+              id: 'dt-q5',
+              question: 'What is the difference between Primitive and Reference Data Types?',
+              answer: 'Primitive types store simple values, whereas reference types hold references to objects or null.',
+              difficulty: 'Essential'
+            },
+            {
+              id: 'dt-q6',
+              question: 'What is ASCII?',
+              answer: 'ASCII is a character-encoding standard that represents 128 basic characters, including English letters, digits, and control characters.',
+              difficulty: 'Common'
+            },
+            {
+              id: 'dt-q7',
+              question: 'What is Unicode?',
+              answer: 'Unicode is a universal character standard designed to represent characters from writing systems around the world.',
+              difficulty: 'Common'
+            },
+            {
+              id: 'dt-q8',
+              question: 'What is the difference between ASCII and Unicode?',
+              answer: 'ASCII represents 128 basic characters, whereas Unicode supports characters from many languages and writing systems.',
               difficulty: 'Common'
             }
           ]
@@ -165,10 +201,10 @@ Reference String: Chakri`
           definition: `WHAT IS TYPE CASTING?
 Type casting is converting a value from one data type to another.
 
-WIDENING (IMPLICIT) CASTING:
+WIDENING (IMPLICIT) CASTING
 Widening converts a value to a compatible type with a wider range, such as int to long or int to double. It is automatic and safe, though some numeric conversions (such as long to float) can still lose precision.
 
-NARROWING (EXPLICIT) CASTING:
+NARROWING (EXPLICIT) CASTING
 Narrowing converts a value to a type with a smaller range or precision. It generally requires an explicit cast (e.g. double x = 10.8; int y = (int) x;) and may lose information or truncate fractional values.`,
           interviewAnswer: 'Widening converts a value to a compatible type with a wider range, such as int to long or double. It is usually automatic, though some numeric conversions (such as long to float) can still lose precision. Narrowing converts a value to a type with a smaller range or precision; it generally requires an explicit cast and may lose information.',
           explanation: `1. Widening (Implicit / Automatic) Casting:
@@ -210,8 +246,28 @@ Narrowed int: 99`
           questions: [
             {
               id: 'tc-q1',
-              question: 'What is type casting and what are its two main types in Java?',
-              answer: 'Type casting is converting a value from one data type to another. The two types are:\n1. Widening (Implicit): Converts a smaller type to a larger compatible type automatically without data loss (e.g. int to double).\n2. Narrowing (Explicit): Converts a larger type to a smaller type requiring a cast operator (int) and can result in truncation or loss of precision (e.g. double to int).',
+              question: 'What is Type Casting?',
+              answer: 'Type casting is the process of converting a value from one data type to another.',
+              difficulty: 'Essential'
+            },
+            {
+              id: 'tc-q2',
+              question: 'What is Widening Casting?',
+              answer: 'Widening casting means converting a smaller data type into a larger data type. It happens automatically in Java.\n\nExample: int → long\nint a = 10;\nlong b = a;',
+              codeExample: `int a = 10;\nlong b = a; // Automatically widened from int to long`,
+              difficulty: 'Essential'
+            },
+            {
+              id: 'tc-q3',
+              question: 'What is Narrowing Casting?',
+              answer: 'Narrowing casting means converting a larger data type into a smaller data type. It requires explicit casting and may lose data.\n\nExample: double → int\ndouble a = 10.5;\nint b = (int) a;\n\nOutput: 10',
+              codeExample: `double a = 10.5;\nint b = (int) a; // Explicit cast (truncates decimal)\nSystem.out.println(b); // Output: 10`,
+              difficulty: 'Essential'
+            },
+            {
+              id: 'tc-q4',
+              question: 'What is the Difference Between Widening and Narrowing Casting?',
+              answer: 'Widening converts a smaller-range type into a larger-range type automatically, whereas narrowing converts a larger-range type into a smaller-range type using explicit casting and may lose data.',
               difficulty: 'Essential'
             }
           ]
@@ -225,10 +281,10 @@ Narrowed int: 99`
           definition: `WHAT IS AN OPERATOR?
 An operator is a symbol that performs an operation on one or more values or variables. The values it acts on are called operands.
 
-TYPES OF OPERATORS:
+TYPES OF OPERATORS
 Arithmetic (+, -, *, /, %), Relational (<, >, <=, >=, ==, !=), Logical (&&, ||, !), Assignment (=, +=, -=, *=, /=), Unary (++, --, +, -, !, ~), Conditional/ternary (condition ? value1 : value2), Bitwise (&, |, ^, ~), and Shift (<<, >>, >>>).
 
-PRE/POST INCREMENT AND DECREMENT:
+PRE/POST INCREMENT AND DECREMENT
 Pre-increment (++x) increases x first and then produces the new value. Post-increment (x++) produces the current value first and then increases x. Pre-decrement (--x) decreases first; post-decrement (x--) uses the current value first and decreases afterward.`,
           interviewAnswer: 'Java supports Arithmetic (+, -, *, /, %), Relational (<, >, <=, >=, ==, !=), Logical (&&, ||, !), Assignment (=, +=, -=), Unary (++, --, +, -, !, ~), Conditional/ternary (? :), Bitwise (&, |, ^, ~), and Shift (<<, >>, >>>) operators. Pre-increment (++x) increases x first and produces the new value; post-increment (x++) produces the current value first and increases x afterward.',
           explanation: `1. Types of Operators:
@@ -272,8 +328,49 @@ Final value of b: 6`
           questions: [
             {
               id: 'op-q1',
-              question: 'Explain pre-increment (++x) vs post-increment (x++) in Java.',
-              answer: 'Pre-increment (++x) increases the value of x first and then returns the new value for expression evaluation. Post-increment (x++) returns the current value of x for expression evaluation first, and increments x only after the expression is evaluated.',
+              question: 'What is an Operator?',
+              answer: 'An operator is a symbol that performs an operation on values or variables.',
+              difficulty: 'Essential'
+            },
+            {
+              id: 'op-q2',
+              question: 'What are the Types of Operators in Java?',
+              answer: 'Java supports the following types of operators:\n\n• Arithmetic Operators: Perform mathematical operations like addition, subtraction, multiplication, division, and modulus.\n• Relational Operators: Compare two values and return true or false.\n• Logical Operators: Combine or reverse conditions.\n• Assignment Operators: Assign values to variables.\n• Unary Operators: Operate on a single operand, such as increment and decrement.\n• Conditional (Ternary) Operator: Checks a condition and selects one of two values.\n• Bitwise Operators: Perform operations on individual bits.\n• Shift Operators: Shift the bits of a value to the left or right.',
+              difficulty: 'Essential'
+            },
+            {
+              id: 'op-q3',
+              question: 'What is Pre-Increment?',
+              answer: 'Pre-increment (++x) increases the value by one first and then uses the updated value.',
+              codeExample: `int x = 5;\nint y = ++x; // x becomes 6 first, then y receives 6\nSystem.out.println("x: " + x + ", y: " + y); // x: 6, y: 6`,
+              difficulty: 'Essential'
+            },
+            {
+              id: 'op-q4',
+              question: 'What is Post-Increment?',
+              answer: 'Post-increment (x++) uses the current value first and then increases it by one.',
+              codeExample: `int x = 5;\nint y = x++; // y receives 5 first, then x becomes 6\nSystem.out.println("x: " + x + ", y: " + y); // x: 6, y: 5`,
+              difficulty: 'Essential'
+            },
+            {
+              id: 'op-q5',
+              question: 'What is Pre-Decrement?',
+              answer: 'Pre-decrement (--x) decreases the value by one first and then uses the updated value.',
+              codeExample: `int x = 5;\nint y = --x; // x becomes 4 first, then y receives 4\nSystem.out.println("x: " + x + ", y: " + y); // x: 4, y: 4`,
+              difficulty: 'Essential'
+            },
+            {
+              id: 'op-q6',
+              question: 'What is Post-Decrement?',
+              answer: 'Post-decrement (x--) uses the current value first and then decreases it by one.',
+              codeExample: `int x = 5;\nint y = x--; // y receives 5 first, then x becomes 4\nSystem.out.println("x: " + x + ", y: " + y); // x: 4, y: 5`,
+              difficulty: 'Essential'
+            },
+            {
+              id: 'op-q7',
+              question: 'What is the Difference Between Pre-Increment and Post-Increment?',
+              answer: 'Pre-increment increases the value before using it, whereas post-increment uses the current value before increasing it.',
+              codeExample: `int a = 5, b = 5;\nSystem.out.println(++a); // Output: 6 (increments first, then prints)\nSystem.out.println(b++); // Output: 5 (prints current value, then increments to 6)`,
               difficulty: 'Essential'
             }
           ]
@@ -287,16 +384,16 @@ Final value of b: 6`
           definition: `WHAT IS A VARIABLE?
 A variable is a named storage location used by a program to hold a value. The value of a variable may change while the program runs.
 
-LOCAL VARIABLE:
+LOCAL VARIABLE
 A local variable is declared inside a method, constructor, or block. Its scope is limited to that method or block. Java does not automatically assign a default value to local variables; they must be assigned before use.
 
-INSTANCE VARIABLE:
+INSTANCE VARIABLE
 An instance variable is declared in a class but outside methods, constructors, and blocks, without static. Each object has its own copy on the heap. Instance fields receive default values when an object is created.
 
-STATIC VARIABLE:
+STATIC VARIABLE
 A static variable is declared with static. It belongs to the class and is shared by all instances of that class. It receives a default value if no explicit value is assigned.
 
-LOCAL VS INSTANCE VARIABLE:
+LOCAL VS INSTANCE VARIABLE
 A local variable belongs to a method or block, is usable only within its scope, and has no automatic default value. An instance variable belongs to an object, is declared at class level, and receives a default value.`,
           interviewAnswer: 'A local variable is declared inside a method, constructor, or block, has scope limited to that block, and Java does NOT automatically assign default values (it must be assigned before use). An instance variable is declared in a class without static; each object has its own copy receiving default values. A static variable is declared with static, belongs to the class, is shared by all instances, and receives default values.',
           explanation: `1. Local Variable:
@@ -310,7 +407,7 @@ Declared with static. It belongs to the class and is shared identically by all i
 
 4. Local vs Instance Variable:
 A local variable belongs to a method or block, is usable only within its scope, and has no automatic default value. An instance variable belongs to an object, is declared at class level, and receives a default value.`,
-          realWorldExample: 'In an office: An employee\'s employeeId and deskNumber are instance variables (unique to each employee). The companyName and buildingAddress are static variables (shared by all employees). A paper memo written during a 10-minute meeting is a local variable (exists only during the meeting).',
+          realWorldExample: "In an office: An employee's employeeId and deskNumber are instance variables (unique to each employee). The companyName and buildingAddress are static variables (shared by all employees). A paper memo written during a 10-minute meeting is a local variable (exists only during the meeting).",
           codeSnippet: {
             code: `public class VariableDemo {
     // Static variable (shared class state)
@@ -344,8 +441,43 @@ A local variable belongs to a method or block, is usable only within its scope, 
           questions: [
             {
               id: 'var-q1',
-              question: 'What is the difference between Local variables and Instance variables?',
-              answer: 'A local variable belongs to a method or block, is usable only within its scope, and has no automatic default value (must be initialized before reading). An instance variable belongs to an object, is declared at class level, and receives an automatic default value (0, null, false) upon object instantiation.',
+              question: 'What is a Variable?',
+              answer: 'A variable is a named storage location used to store data, and its value can change during program execution.',
+              difficulty: 'Essential'
+            },
+            {
+              id: 'var-q2',
+              question: 'What is a Local Variable?',
+              answer: 'A local variable is declared inside a method, constructor, or block. It can be accessed only within that scope and must be initialized before use.',
+              codeExample: `public void display() {\n    int count = 10; // Local variable: must be initialized\n    System.out.println(count);\n}`,
+              difficulty: 'Essential'
+            },
+            {
+              id: 'var-q3',
+              question: 'What is an Instance Variable?',
+              answer: 'An instance variable is declared inside a class but outside methods, constructors, and blocks, without the static keyword. Each object has its own copy, and it receives a default value if not explicitly initialized.',
+              codeExample: `public class Student {\n    String name; // Instance variable (defaults to null)\n    int age;     // Instance variable (defaults to 0)\n}`,
+              difficulty: 'Essential'
+            },
+            {
+              id: 'var-q4',
+              question: 'What is a Static Variable?',
+              answer: 'A static variable is declared using the static keyword. It belongs to the class and is shared among all objects of that class.',
+              codeExample: `public class Student {\n    static String college = "ABC University"; // Shared across all Student objects\n}`,
+              difficulty: 'Essential'
+            },
+            {
+              id: 'var-q5',
+              question: 'What is the Difference Between Local, Instance, and Static Variables?',
+              answer: '• Local Variable: Declared inside a method, constructor, or block. It must be initialized before use.\n• Instance Variable: Declared at the class level without static. Each object has its own copy.\n• Static Variable: Declared at the class level using static. It is shared among all objects of the class.',
+              codeExample: `public class Demo {\n    static int staticVar = 100; // Static: shared across class\n    int instanceVar = 10;       // Instance: unique to each object\n\n    void calculate() {\n        int localVar = 5;       // Local: inside method\n    }\n}`,
+              difficulty: 'Essential'
+            },
+            {
+              id: 'var-q6',
+              question: 'What is the Real-World Example of Variables?',
+              answer: "In a company, an employee's ID is an instance variable because each employee has a different ID. The company name is a static variable because all employees share it. A temporary variable used inside a method is a local variable.",
+              example: "Company Office Scenario: Employee ID (Instance), Company Name (Static), 10-Minute Meeting Notepad Notes (Local).",
               difficulty: 'Essential'
             }
           ]
@@ -449,7 +581,7 @@ Definition: Pass by name is a parameter-passing technique in which an argument i
           description: 'Comprehensive interview definitions, examples, and rules for JVM Memory Areas & Garbage Collection.',
           difficulty: 'Essential',
           studyTime: '10 minutes',
-          definition: `HIGH-LEVEL JVM MEMORY AREAS:
+          definition: `HIGH-LEVEL JVM MEMORY AREAS
 Each thread has its own JVM stack for method frames and local variables. The heap stores objects and arrays. The JVM also maintains class metadata and runtime data in Metaspace.
 
 WHAT IS GARBAGE COLLECTION?
@@ -498,15 +630,85 @@ System.gc() requested. Memory will be reclaimed asynchronously.`
           questions: [
             {
               id: 'gc-q1',
-              question: 'What happens to objects on the heap when a method completes execution?',
-              answer: 'When a method completes, its stack frame is popped from the thread stack. Objects created by that method on the heap are NOT immediately deleted; they simply become eligible for garbage collection if no other active references point to them.',
+              question: 'What Is JVM Memory?',
+              answer: 'JVM memory is the memory used by the Java Virtual Machine to store objects, method calls, local variables, and class information while a Java program runs.',
               difficulty: 'Essential'
             },
             {
               id: 'gc-q2',
-              question: 'Does calling System.gc() force the JVM to run garbage collection immediately?',
-              answer: 'No. System.gc() is only a request or suggestion to the JVM. The JVM decides whether and when to execute garbage collection based on heap memory pressure and GC algorithms.',
-              difficulty: 'Common'
+              question: 'What Is Stack Memory?',
+              answer: "Stack memory stores method calls and local variables. Each thread has its own stack, and a method's stack frame is removed when the method finishes.",
+              difficulty: 'Essential'
+            },
+            {
+              id: 'gc-q3',
+              question: 'What Is Heap Memory?',
+              answer: 'Heap memory stores objects and arrays created during program execution. It is shared among threads, and objects can be removed by Garbage Collection when they are no longer reachable.',
+              difficulty: 'Essential'
+            },
+            {
+              id: 'gc-q4',
+              question: 'What Is Static Memory?',
+              answer: 'Static variables belong to the class rather than individual objects. They are associated with class-level data, and each class has its own static fields. In JVM memory discussions, static fields are commonly associated with class metadata and runtime structures, while objects they reference are stored on the heap.',
+              difficulty: 'Essential'
+            },
+            {
+              id: 'gc-q5',
+              question: 'What Is the Method Area?',
+              answer: 'The method area is a JVM memory area that stores class-level information, such as class structure, method information, and runtime constant pools. In HotSpot JVM, class metadata is stored in Metaspace.',
+              difficulty: 'Essential'
+            },
+            {
+              id: 'gc-q6',
+              question: 'What Is Garbage Collection?',
+              answer: "Garbage Collection (GC) is the JVM's automatic process of reclaiming heap memory used by objects that are no longer reachable.",
+              difficulty: 'Essential'
+            },
+            {
+              id: 'gc-q7',
+              question: 'What Happens When a Method Finishes?',
+              answer: 'When a method finishes, its stack frame is removed from the stack. Objects created by that method can remain in heap memory until they become unreachable and are reclaimed by Garbage Collection.',
+              codeExample: `void process() {\n    int temp = 42;          // Stack variable: cleared on method exit\n    User u = new User();   // 'u' is on stack; new User() object remains on heap\n}`,
+              difficulty: 'Essential'
+            },
+            {
+              id: 'gc-q8',
+              question: 'What Is the Difference Between Stack and Heap Memory?',
+              answer: '• Stack: Stores method calls and local variables. Each thread has its own stack.\n• Heap: Stores objects and arrays. It is shared among threads.',
+              difficulty: 'Essential'
+            },
+            {
+              id: 'gc-q9',
+              question: 'When Does an Object Become Eligible for Garbage Collection?',
+              answer: 'An object becomes eligible for Garbage Collection when it is no longer reachable through any live reference.',
+              codeExample: `User user = new User("Chakri");\nuser = null; // Reference severed -> Object on heap is now eligible for GC`,
+              difficulty: 'Essential'
+            },
+            {
+              id: 'gc-q10',
+              question: 'Can We Force Garbage Collection in Java?',
+              answer: 'No. We cannot guarantee when Garbage Collection runs. Calling System.gc() only requests the JVM to perform Garbage Collection.',
+              codeExample: `System.gc(); // Only a request/hint to the JVM; execution is not guaranteed`,
+              difficulty: 'Essential'
+            },
+            {
+              id: 'gc-q11',
+              question: 'What Is Metaspace?',
+              answer: 'Metaspace is the memory area used by the HotSpot JVM to store class metadata, such as information about loaded classes and methods.',
+              difficulty: 'Essential'
+            },
+            {
+              id: 'gc-q12',
+              question: 'What Is the Difference Between Stack, Heap, and Metaspace?',
+              answer: '• Stack: Stores method frames and local variables.\n• Heap: Stores objects and arrays.\n• Metaspace: Stores class metadata.',
+              difficulty: 'Essential'
+            },
+            {
+              id: 'gc-q13',
+              question: 'Give a Real-World Example of Stack and Heap Memory.',
+              answer: 'Think of the stack as a temporary notebook used while completing a task. When the task finishes, its notes are cleared. The heap is like a storage room where objects remain until they are no longer needed and can be removed by Garbage Collection.',
+              example: 'Sticky Notes (Stack) are discarded when call ends; Public Library Books (Heap) remain until inventory staff (Garbage Collector) clears unread books.',
+              difficulty: 'Essential'
             }
           ]
         }
@@ -532,7 +734,7 @@ A class is a blueprint or template that defines the fields (state) and methods (
 WHAT IS AN OBJECT?
 An object is a runtime instance of a class. It has state (field values), behavior (methods), and identity. The new keyword commonly creates class objects.
 
-FOUR PILLARS OF OOP:
+FOUR PILLARS OF OOP
 1. Encapsulation: Bundling data and methods into a single unit while restricting direct access to internal state.
 2. Inheritance: Mechanism where a child class acquires fields and methods of a parent class for code reuse.
 3. Polymorphism: Ability of an object or method to take many forms (method overloading and overriding).
@@ -587,14 +789,42 @@ Employee e = new Employee();`,
           questions: [
             {
               id: 'oop-q1',
-              question: 'What is the difference between a Class and an Object?',
-              answer: 'A class is a compile-time blueprint or template defining fields and methods. An object is a runtime instance of a class allocated on the heap that possesses state (field values), behavior (methods), and identity.',
+              question: 'What is OOP?',
+              answer: 'OOP (Object-Oriented Programming) is a programming approach that organizes code using classes and objects. It makes code reusable, organized, and easier to maintain.',
               difficulty: 'Essential'
             },
             {
               id: 'oop-q2',
-              question: 'What are the four core pillars of Object-Oriented Programming (OOP)?',
-              answer: 'The four fundamental pillars of OOP in Java are: 1) Encapsulation (data hiding and bundling data with methods), 2) Inheritance (code reuse via parent-child class hierarchy), 3) Polymorphism (ability to take many forms via method overloading and overriding), and 4) Abstraction (hiding implementation details and showing only essential features via abstract classes and interfaces).',
+              question: 'What is a Class?',
+              answer: 'A class is a blueprint or template used to create objects. It defines the properties (variables) and behaviors (methods) of objects.',
+              codeExample: `class Car {\n    String brand;\n    void drive() {\n        System.out.println(brand + " is driving.");\n    }\n}`,
+              difficulty: 'Essential'
+            },
+            {
+              id: 'oop-q3',
+              question: 'What is an Object?',
+              answer: 'An object is an instance of a class. It has state (data), behavior (methods), and identity. Objects are commonly created using the new keyword in Java.',
+              codeExample: `Car myCar = new Car(); // 'myCar' is a runtime object instance\nmyCar.brand = "Tesla";\nmyCar.drive();`,
+              difficulty: 'Essential'
+            },
+            {
+              id: 'oop-q4',
+              question: 'What are the Four Pillars of OOP?',
+              answer: 'The four pillars of OOP are:\n\n• Encapsulation: Wrapping data and methods into a single unit and restricting direct access to data.\n• Inheritance: Allowing one class to acquire the properties and methods of another class for code reusability.\n• Polymorphism: Allowing the same method name or interface to behave differently in different situations.\n• Abstraction: Hiding implementation details and showing only essential functionality.',
+              difficulty: 'Essential'
+            },
+            {
+              id: 'oop-q5',
+              question: 'What is the Difference Between a Class and an Object?',
+              answer: 'A class is a blueprint used to create objects, whereas an object is an instance of a class that has its own state and can perform actions.',
+              codeExample: `// Blueprint (Class)\nclass Car { String model; }\n\n// Real instances (Objects)\nCar car1 = new Car();\nCar car2 = new Car();`,
+              difficulty: 'Essential'
+            },
+            {
+              id: 'oop-q6',
+              question: 'Give a Real-World Example of OOP.',
+              answer: 'A building blueprint is a class, and the actual buildings constructed from that blueprint are objects. The buildings have properties, such as color and number of floors, and behaviors, such as opening doors and operating elevators.',
+              example: 'Blueprint (Class) defines structure; 5 constructed towers (Objects) have unique colors and occupied rooms.',
               difficulty: 'Essential'
             }
           ]
@@ -608,20 +838,24 @@ Employee e = new Employee();`,
           definition: `WHAT IS ENCAPSULATION?
 Encapsulation bundles data and the methods that operate on it within a class and restricts direct access to internal state. It is commonly implemented with private fields and public methods that control access.
 
-GETTER AND SETTER:
+GETTER AND SETTER
 A getter returns or reads a field's value. A setter assigns or updates a field's value and can validate the value before changing the field.
 
-ADVANTAGES OF ENCAPSULATION:
-Encapsulation supports data hiding, controlled access, validation, lower coupling, and easier maintenance.
+ADVANTAGES OF ENCAPSULATION
+Data Hiding: Protects data from direct access.
+Controlled Access: Allows access through methods.
+Validation: Checks values before updating data.
+Maintainability: Makes code easier to modify and maintain.
+Security: Helps protect an object's internal state.
 
-VARIABLE SHADOWING:
-Shadowing occurs when a variable in a more local scope (such as a method parameter or local variable) has the same name as a variable in an outer scope (instance variable). Without "this", the local variable shadows (hides) the instance variable.
+VARIABLE SHADOWING
+Variable shadowing occurs when a local variable or parameter has the same name as an instance variable, hiding the instance variable within that scope.
 
 WHAT IS "this" KEYWORD?
-"this" is a reference keyword in Java that refers to the current object (current class instance). It is primarily used to solve the variable shadowing problem by distinguishing instance variables from local parameters when both have the same name (e.g., this.id = id;). It can also pass or return the current instance.
+The this keyword refers to the current object. It is commonly used to distinguish instance variables from local variables or parameters with the same name (e.g. this.id = id;).
 
 WHAT IS "this()" CONSTRUCTOR CALL?
-"this()" is a constructor call statement used for constructor chaining to invoke another constructor within the same class. A this(...) constructor call must always be the very first statement inside that constructor.`,
+The this() statement is used to call another constructor within the same class (constructor chaining). It must be the first statement in the constructor.`,
           interviewAnswer: 'Encapsulation bundles data and methods while restricting direct access using private fields and public getters/setters with validation. "this" keyword refers to the current object and is used to solve the variable shadowing problem (this.id = id). "this()" constructor call is used for constructor chaining to call another constructor within the same class and must be the first statement.',
           explanation: `1. Encapsulation:
 Bundles data and methods that operate on it within a class while restricting direct access to internal state using private fields and public methods.
@@ -636,7 +870,7 @@ Supports data hiding, controlled access, validation, lower coupling, and easier 
 4. "this" Keyword vs "this()" Constructor Call:
 - "this" Keyword: A reference variable pointing to the current object instance. It solves the variable shadowing problem (differentiating instance variables from local parameters: this.balance = balance).
 - "this()" Call: A constructor invocation statement used for constructor chaining to call another constructor within the same class. It must be the very first statement inside the constructor.`,
-          realWorldExample: 'A bank ATM or bank account: Your account balance is private. You cannot directly write a new number in the bank vault; you must use deposit() or withdraw() setters that validate sufficient funds.',
+          realWorldExample: 'A bank account is an example of encapsulation. The account balance is private, and users access or modify it through methods like deposit() and withdraw(), which can validate transactions before updating the balance.',
           codeSnippet: {
             code: `class BankAccount {
     private String owner;
@@ -685,14 +919,56 @@ public class EncapsulationDemo {
           questions: [
             {
               id: 'enc-q1',
-              question: 'What is encapsulation and what are its advantages?',
-              answer: 'Encapsulation is bundling data and methods into a single class while restricting direct access through private fields and public methods. Advantages: 1) Data hiding, 2) Input validation, 3) Loose coupling, 4) Ease of maintenance and refactoring.',
+              question: 'What is Encapsulation?',
+              answer: 'Encapsulation is the process of wrapping data and methods into a single class and restricting direct access to data using access modifiers like private.',
               difficulty: 'Essential'
             },
             {
               id: 'enc-q2',
-              question: 'What is the difference between "this" keyword and "this()" constructor call?',
-              answer: '1) "this" keyword: A reference keyword pointing to the current object instance. It is used to solve the variable shadowing problem (e.g., this.id = id;) and distinguish instance fields from local parameters. 2) "this()" constructor call: Used for constructor chaining to invoke another constructor within the same class. It can only be used inside a constructor and must be the very first statement.',
+              question: 'What are Getters and Setters?',
+              answer: "A getter is a method used to read a variable's value, whereas a setter is a method used to update a variable's value and validate it if necessary.",
+              codeExample: `public class Account {\n    private double balance;\n    public double getBalance() { return balance; } // Getter\n    public void setBalance(double b) {             // Setter with validation\n        if (b >= 0) this.balance = b;\n    }\n}`,
+              difficulty: 'Essential'
+            },
+            {
+              id: 'enc-q3',
+              question: 'What are the Advantages of Encapsulation?',
+              answer: "• Data Hiding: Protects data from direct access.\n• Controlled Access: Allows access through methods.\n• Validation: Checks values before updating data.\n• Maintainability: Makes code easier to modify and maintain.\n• Security: Helps protect an object's internal state.",
+              difficulty: 'Essential'
+            },
+            {
+              id: 'enc-q4',
+              question: 'What is Variable Shadowing?',
+              answer: 'Variable shadowing occurs when a local variable or parameter has the same name as an instance variable, hiding the instance variable within that scope.',
+              codeExample: `class Student {\n    int id = 10; // Instance variable\n    void setId(int id) { // Local parameter shadows instance 'id'\n        this.id = id;    // 'this.id' avoids shadowing\n    }\n}`,
+              difficulty: 'Essential'
+            },
+            {
+              id: 'enc-q5',
+              question: 'What is the this Keyword in Java?',
+              answer: 'The this keyword refers to the current object. It is commonly used to distinguish instance variables from local variables or parameters with the same name.\n\nExample: this.id = id;',
+              codeExample: `class Student {\n    int id;\n    Student(int id) {\n        this.id = id; // 'this.id' refers to instance variable\n    }\n}`,
+              difficulty: 'Essential'
+            },
+            {
+              id: 'enc-q6',
+              question: 'What is this() in Java?',
+              answer: 'The this() statement is used to call another constructor within the same class. It is called constructor chaining, and it must be the first statement in the constructor.',
+              codeExample: `class Employee {\n    String name;\n    int age;\n    Employee(String name) {\n        this(name, 25); // Constructor chaining using this()\n    }\n    Employee(String name, int age) {\n        this.name = name;\n        this.age = age;\n    }\n}`,
+              difficulty: 'Essential'
+            },
+            {
+              id: 'enc-q7',
+              question: 'What is the Difference Between this and this()?',
+              answer: '• this: Refers to the current object.\n• this(): Calls another constructor in the same class.',
+              codeExample: `class Demo {\n    int x;\n    Demo() {\n        this(10);   // this(): calls parameterized constructor\n    }\n    Demo(int x) {\n        this.x = x; // this: refers to current object instance field\n    }\n}`,
+              difficulty: 'Essential'
+            },
+            {
+              id: 'enc-q8',
+              question: 'Give a Real-World Example of Encapsulation.',
+              answer: 'A bank account is an example of encapsulation. The account balance is private, and users access or modify it through methods like deposit() and withdraw(), which can validate transactions before updating the balance.',
+              example: 'ATM / Banking: You cannot modify balance directly in the vault; deposit(amount) and withdraw(amount) validate positive amounts and sufficient funds.',
               difficulty: 'Essential'
             }
           ]
@@ -761,15 +1037,84 @@ Total instances created: 2`
           questions: [
             {
               id: 'st-q1',
-              question: 'Why can a static method not access non-static instance variables directly?',
-              answer: 'Static methods belong to the class and are loaded into memory before any object instance exists. Because static methods do not have a "this" reference pointing to an object on the heap, they have no way of knowing which object\'s instance variable to access.',
+              question: 'What Is a Static Variable?',
+              answer: 'A static variable is a variable declared using the static keyword. It belongs to the class and is shared by all objects of that class.',
+              codeExample: `class Student {\n    static String schoolName = "ABC High School"; // Shared by all students\n}`,
               difficulty: 'Essential'
             },
             {
               id: 'st-q2',
-              question: 'When does a static block execute in Java?',
-              answer: 'A static block executes once when the class is loaded and initialized by the JVM ClassLoader, before any constructor is called and before any static method is executed.',
-              difficulty: 'Common'
+              question: 'What Is a Static Method?',
+              answer: 'A static method is a method declared using the static keyword. It belongs to the class and can be called using the class name without creating an object.',
+              codeExample: `class MathUtil {\n    static int square(int x) {\n        return x * x;\n    }\n}\n// Call directly via class name:\nint result = MathUtil.square(5); // Output: 25`,
+              difficulty: 'Essential'
+            },
+            {
+              id: 'st-q3',
+              question: 'What Is a Static Block?',
+              answer: 'A static block is a block of code that executes when the JVM initializes a class. It is mainly used to initialize static variables.',
+              codeExample: `class DatabaseConfig {\n    static String connectionUrl;\n    static {\n        // Executes once when class is loaded\n        connectionUrl = "jdbc:mysql://localhost:3306/mydb";\n    }\n}`,
+              difficulty: 'Essential'
+            },
+            {
+              id: 'st-q4',
+              question: 'Why Should a Variable Be Declared Static?',
+              answer: 'A variable should be declared static when its value needs to be shared by all objects of a class instead of having a separate copy for each object.',
+              difficulty: 'Essential'
+            },
+            {
+              id: 'st-q5',
+              question: 'What Is the Difference Between Static and Instance Variables?',
+              answer: 'A static variable is shared by all objects of a class, whereas an instance variable has a separate copy for each object.',
+              codeExample: `class Employee {\n    static String company = "TechCorp"; // 1 shared copy in Metaspace\n    String name;                        // Unique copy per object on heap\n}`,
+              difficulty: 'Essential'
+            },
+            {
+              id: 'st-q6',
+              question: 'Can We Call a Static Method Without Creating an Object?',
+              answer: 'Yes. We can call a static method using the class name without creating an object.',
+              codeExample: `ClassName.staticMethodName(); // Direct invocation without 'new ClassName()'`,
+              difficulty: 'Essential'
+            },
+            {
+              id: 'st-q7',
+              question: 'Can a Static Method Access Instance Variables Directly?',
+              answer: 'No. A static method cannot directly access instance variables because they belong to individual objects. It can access them through an object reference.',
+              codeExample: `class Test {\n    int num = 10; // Instance variable\n    static void show() {\n        // System.out.println(num); // Error: non-static variable cannot be referenced from static context\n        Test t = new Test();\n        System.out.println(t.num); // Allowed via object reference\n    }\n}`,
+              difficulty: 'Essential'
+            },
+            {
+              id: 'st-q8',
+              question: 'Can We Use this Inside a Static Method?',
+              answer: 'No. The this keyword refers to the current object, and a static method does not belong to a particular object.',
+              difficulty: 'Essential'
+            },
+            {
+              id: 'st-q9',
+              question: 'Can We Overload a Static Method?',
+              answer: 'Yes. We can overload a static method by using the same method name with different parameter lists.',
+              codeExample: `class Calculator {\n    static int add(int a, int b) { return a + b; }\n    static double add(double a, double b) { return a + b; } // Overloaded\n}`,
+              difficulty: 'Essential'
+            },
+            {
+              id: 'st-q10',
+              question: 'Can We Override a Static Method?',
+              answer: 'No. Static methods cannot be overridden in the runtime-polymorphism sense. If a subclass declares a static method with the same signature, it is called method hiding.',
+              codeExample: `class Parent {\n    static void print() { System.out.println("Parent"); }\n}\nclass Child extends Parent {\n    static void print() { System.out.println("Child"); } // Method Hiding, not overriding\n}`,
+              difficulty: 'Essential'
+            },
+            {
+              id: 'st-q11',
+              question: 'What Is the Difference Between a Static Variable and a Static Block?',
+              answer: 'A static variable stores class-level data shared by all objects, whereas a static block executes when the class is initialized and is commonly used to initialize static variables.',
+              difficulty: 'Essential'
+            },
+            {
+              id: 'st-q12',
+              question: 'Give a Real-World Example of a Static Variable.',
+              answer: 'In a school, each student has a different name and roll number, but all students share the same school name. Therefore, studentName and rollNumber can be instance variables, while schoolName can be a static variable.',
+              example: 'School Scenario: 1,000 students have unique studentName & rollNumber (Instance), but all share 1 schoolName (Static).',
+              difficulty: 'Essential'
             }
           ]
         },
@@ -782,86 +1127,167 @@ Total instances created: 2`
           definition: `WHAT IS A CONSTRUCTOR?
 A constructor initializes a new object. It has the same name as its class and has no return type, not even void. It is invoked when an object is created.
 
-DEFAULT CONSTRUCTOR:
+DEFAULT CONSTRUCTOR
 If a class declares no constructor, the compiler provides a no-argument default constructor. If you declare any constructor, the compiler does not automatically add that default constructor.
 
-COPY CONSTRUCTOR:
+COPY CONSTRUCTOR
 Java does not automatically provide a special copy-constructor feature. A copy constructor is programmer-defined and accepts an object of the same class, copying selected values into a new object.
 
-CONSTRUCTOR CHAINING:
+CONSTRUCTOR CHAINING
 Constructor chaining is when one constructor calls another to reuse initialization logic. Use this(...) for another constructor in the same class, or super(...) for a parent constructor. The call must be the first statement. Cyclic constructor chaining occurs when constructors call one another in a cycle; Java rejects such a cycle at compile time.`,
           interviewAnswer: 'A constructor initializes an object and has no return type. If you declare no constructor, the compiler provides a default no-argument constructor. Chaining reuses initialization logic using this(...) in the same class or super(...) in the parent class; it must be the very first statement. A copy constructor accepts an existing object of the same class and duplicates its field values.',
-          explanation: `1. Constructor Rules:
-- Same name as the class.
-- No return type (writing void turns it into a normal method!).
-- Invoked automatically with "new".
+          explanation: `1. What Is a Constructor?
+A constructor is a specialized setter of a class that has the same name as the class and no return type. It is automatically called when an object is created to initialize the object.
 
-2. Default vs No-Argument vs Parameterized:
-- Default constructor: Inserted by compiler only if NO constructor is declared in the class.
-- No-arg constructor: User-defined with zero parameters.
-- Parameterized constructor: Accepts parameters to initialize custom values.
+2. What Is a Default Constructor?
+A default constructor is a no-argument constructor automatically provided by the compiler when we do not declare any constructor in a class.
 
-3. Copy Constructor:
-Programmer-defined constructor that takes an instance of the same class:
-Student(Student other) { this.name = other.name; this.age = other.age; }
+3. What Is a Parameterized Constructor?
+A parameterized constructor is a constructor that accepts parameters to initialize an object with specific values at the time of object creation.
 
-4. Constructor Chaining:
-- this(...) calls another constructor in the same class.
-- super(...) calls parent class constructor.
-- Must be the first line of code.
-- Cyclic chaining (A calls B and B calls A) causes a compile error.`,
-          realWorldExample: 'When ordering a customized pizza: the default constructor gives you plain cheese; the parameterized constructor lets you pick custom toppings; the copy constructor makes a duplicate of your friend\'s exact custom order.',
+4. What Is a Copy Constructor?
+A copy constructor is a user-defined constructor that accepts an object of the same class and copies its values into a new object.
+
+5. What Is Constructor Chaining?
+Constructor chaining is the process of calling one constructor from another constructor to reuse initialization code.`,
+          realWorldExample: "When ordering a customized pizza: the default constructor gives you plain cheese; the parameterized constructor lets you pick custom toppings; the copy constructor makes a duplicate of your friend's exact custom order.",
           codeSnippet: {
-            code: `class Student {
-    String name;
-    int age;
+            code: `class ParentPizza {
+    String crust;
+    ParentPizza(String crust) {
+        this.crust = crust;
+    }
+}
+
+class Pizza extends ParentPizza {
+    String topping;
+    int size;
 
     // Parameterized constructor
-    Student(String name, int age) {
-        this.name = name;
-        this.age = age;
+    Pizza(String crust, String topping, int size) {
+        super(crust); // super(...) must be first statement!
+        this.topping = topping;
+        this.size = size;
     }
 
     // Constructor chaining using this(...)
-    Student() {
-        this("Unknown", 18); // Must be first statement!
+    Pizza() {
+        this("Thin Crust", "Plain Cheese", 10); // this(...) must be first statement!
     }
 
-    // Copy constructor
-    Student(Student other) {
-        this.name = other.name;
-        this.age = other.age;
+    // Copy constructor (user-defined)
+    Pizza(Pizza other) {
+        this(other.crust, other.topping, other.size); // Chaining to copy values
+    }
+
+    void display() {
+        System.out.println(size + "-inch " + crust + " Pizza with " + topping);
     }
 }
 
 public class ConstructorDemo {
     public static void main(String[] args) {
-        Student s1 = new Student("Chakri", 24);
-        Student s2 = new Student(s1); // Copied values
-        System.out.println("Original: " + s1.name + ", Age " + s1.age);
-        System.out.println("Copied: " + s2.name + ", Age " + s2.age);
+        Pizza defaultOrder = new Pizza(); // Default / chained
+        Pizza customOrder = new Pizza("Pan", "Mushrooms & Olives", 12); // Parameterized
+        Pizza friendOrder = new Pizza(customOrder); // Copy constructor
+
+        defaultOrder.display();
+        customOrder.display();
+        friendOrder.display();
     }
 }`,
-            input: "s1 initialized with ('Chakri', 24)",
-            output: `Original: Chakri, Age 24
-Copied: Chakri, Age 24`
+            input: "Creating Pizza with default, parameterized, and copy constructors",
+            output: `10-inch Thin Crust Pizza with Plain Cheese
+12-inch Pan Pizza with Mushrooms & Olives
+12-inch Pan Pizza with Mushrooms & Olives`
           },
-          codeExample: `Student(Student other) {
-    this.name = other.name;
-    this.age = other.age;
+          codeExample: `// Constructor chaining using this() and super()
+Pizza() {
+    this("Thin Crust", "Plain Cheese", 10); // Must be the first statement
 }`,
           questions: [
             {
               id: 'con-q1',
-              question: 'Does the compiler always provide a default constructor in Java?',
-              answer: 'No. The compiler supplies a default no-argument constructor ONLY if the class declares no constructors at all. If you declare any constructor (even a parameterized one), the compiler will NOT provide a default constructor.',
+              question: 'What Is a Constructor?',
+              answer: 'A constructor is a specialized setter of a class that has the same name as the class and no return type. It is automatically called when an object is created to initialize the object.',
+              codeExample: `class Student {\n    Student() { // Same name as class, no return type\n        System.out.println("Object initialized");\n    }\n}`,
               difficulty: 'Essential'
             },
             {
               id: 'con-q2',
-              question: 'Why must this() or super() be the first statement in a constructor?',
-              answer: 'Because base class and prior initialization logic must be fully established before the current constructor runs its specific initialization statements, preventing accesses to uninitialized state.',
-              difficulty: 'Common'
+              question: 'What Is a Default Constructor?',
+              answer: 'A default constructor is a no-argument constructor automatically provided by the compiler when we do not declare any constructor in a class.',
+              codeExample: `class Person {\n    // Compiler automatically supplies:\n    // Person() { super(); }\n}`,
+              difficulty: 'Essential'
+            },
+            {
+              id: 'con-q3',
+              question: 'What Is a Parameterized Constructor?',
+              answer: 'A parameterized constructor is a constructor that accepts parameters to initialize an object with specific values at the time of object creation.',
+              codeExample: `class Student {\n    String name;\n    Student(String name) { // Accepts parameter\n        this.name = name;\n    }\n}`,
+              difficulty: 'Essential'
+            },
+            {
+              id: 'con-q4',
+              question: 'What Is a Copy Constructor?',
+              answer: 'A copy constructor is a user-defined constructor that accepts an object of the same class and copies its values into a new object.',
+              codeExample: `class Student {\n    String name;\n    int age;\n    // Copy constructor\n    Student(Student other) {\n        this.name = other.name;\n        this.age = other.age;\n    }\n}`,
+              difficulty: 'Essential'
+            },
+            {
+              id: 'con-q5',
+              question: 'What Is Constructor Chaining?',
+              answer: 'Constructor chaining is the process of calling one constructor from another constructor to reuse initialization code.',
+              codeExample: `class Car {\n    Car() {\n        this("Sedan"); // Calls Car(String)\n    }\n    Car(String type) {\n        System.out.println("Car type: " + type);\n    }\n}`,
+              difficulty: 'Essential'
+            },
+            {
+              id: 'con-q6',
+              question: 'What Is this() in Constructor Chaining?',
+              answer: 'this() is used to call another constructor within the same class. It must be the first statement in the constructor.',
+              codeExample: `class Box {\n    int length;\n    Box() {\n        this(10); // Must be first statement!\n    }\n    Box(int length) {\n        this.length = length;\n    }\n}`,
+              difficulty: 'Essential'
+            },
+            {
+              id: 'con-q7',
+              question: 'What Is super() in Constructor Chaining?',
+              answer: 'super() is used to call the parent class constructor. It must be the first statement in the constructor when used explicitly.',
+              codeExample: `class Parent {\n    Parent(String msg) { System.out.println(msg); }\n}\nclass Child extends Parent {\n    Child() {\n        super("Calling Parent"); // Must be first statement!\n    }\n}`,
+              difficulty: 'Essential'
+            },
+            {
+              id: 'con-q8',
+              question: 'What Is the Difference Between a Default Constructor and a Parameterized Constructor?',
+              answer: 'A default constructor takes no arguments, whereas a parameterized constructor accepts arguments to initialize an object with specific values.',
+              difficulty: 'Essential'
+            },
+            {
+              id: 'con-q9',
+              question: 'Can a Constructor Have a Return Type?',
+              answer: 'No. A constructor cannot have a return type, not even void. If a return type is specified, Java treats it as a regular method rather than a constructor.',
+              codeExample: `class Demo {\n    void Demo() { } // Warning: This is a method, not a constructor!\n}`,
+              difficulty: 'Essential'
+            },
+            {
+              id: 'con-q10',
+              question: 'When Is a Constructor Called?',
+              answer: 'A constructor is called automatically when an object is created using the new keyword.',
+              codeExample: `Student s = new Student(); // Constructor is invoked here`,
+              difficulty: 'Essential'
+            },
+            {
+              id: 'con-q11',
+              question: 'Can We Overload a Constructor?',
+              answer: 'Yes. Constructor overloading means defining multiple constructors in the same class with different parameter lists.',
+              codeExample: `class Demo {\n    Demo() { }\n    Demo(int a) { }\n    Demo(int a, String b) { } // Overloaded constructors\n}`,
+              difficulty: 'Essential'
+            },
+            {
+              id: 'con-q12',
+              question: 'What Is Cyclic Constructor Chaining?',
+              answer: 'Cyclic constructor chaining occurs when constructors call one another in a cycle. Java does not allow it and produces a compile-time error.',
+              codeExample: `class Demo {\n    Demo() { this(10); }     // Error: Recursive constructor invocation\n    Demo(int x) { this(); }   // Error: Calls Demo() back\n}`,
+              difficulty: 'Essential'
             }
           ]
         },
@@ -874,62 +1300,115 @@ Copied: Chakri, Age 24`
           definition: `WHAT IS INHERITANCE?
 Inheritance allows a subclass to acquire accessible fields and methods from a superclass. A class uses extends to inherit from one direct superclass. Inheritance supports code reuse and method overriding.
 
-TYPES OF INHERITANCE:
+TYPES OF INHERITANCE
 - Single inheritance: One child class extends one parent class.
 - Multilevel inheritance: A class extends a class that itself extends another class, forming a chain.
 - Hierarchical inheritance: Two or more child classes extend the same parent class.
 - Multiple inheritance: Java classes cannot extend multiple classes (to avoid ambiguity), but a class can implement multiple interfaces.
 - Hybrid inheritance: Combines two or more inheritance patterns.
 
-IS-A RELATIONSHIP:
+IS-A RELATIONSHIP
 An is-a relationship means one type is a specialized form of another type. For example, Dog is an Animal when Dog extends Animal.`,
           interviewAnswer: 'Inheritance allows a subclass to acquire fields and methods from a superclass using "extends", modeling an is-a relationship. Java supports Single, Multilevel, and Hierarchical inheritance for classes. Multiple inheritance is not supported with classes to prevent Diamond ambiguity, but is supported through interfaces. Behavior can be Inherited, Overridden, or Specialized.',
-          explanation: `1. What is Inheritance?
-Allows a subclass to acquire accessible members of a superclass using the "extends" keyword.
+          explanation: `1. What Is Inheritance?
+Inheritance is a mechanism in Java where a child class acquires the properties and methods of a parent class using the extends keyword. It helps achieve code reusability.
 
 2. Types of Inheritance:
-- Single: B extends A
-- Multilevel: C extends B, B extends A
-- Hierarchical: B extends A, C extends A
-- Multiple (Classes): NOT supported in Java to avoid ambiguity (the Diamond Problem).
-- Multiple (Interfaces): Supported (class C implements A, B).
+- Single: One child class inherits from one parent class (class B extends A).
+- Multilevel: A class inherits from a child class that inherits from another parent class (class C extends B, and B extends A).
+- Hierarchical: Multiple child classes inherit from the same parent class (class B extends A, and class C extends A).
+- Multiple: One class inherits from multiple parent classes. Java does not support this through classes to avoid the Diamond Problem, but a class can implement multiple interfaces.
+- Hybrid: A combination of two or more inheritance types, achieved using classes and interfaces.
 
-3. is-a Relationship:
-Represents type specialization (e.g. Dog is-a Animal).
+3. IS-A Relationship:
+An IS-A relationship means one class is a specialized type of another class, achieved through inheritance using extends or implements (e.g., Dog IS-A Animal, Smartphone IS-A ElectronicDevice).
 
-4. Inherited, Overridden, and Specialized Behavior:
-- Inherited behavior: Used directly from parent without changing code.
-- Overridden behavior: Subclass provides a specific implementation of an inherited instance method.
-- Specialized behavior: New methods defined strictly in the child class.`,
+4. Why We Use Inheritance:
+To reuse existing code, reduce code duplication, support method overriding, and establish clean class hierarchies.`,
           realWorldExample: 'A smartphone IS-A electronic device. It inherits basic electronic power functions, overrides display brightness, and adds specialized mobile internet connectivity.',
           codeSnippet: {
-            code: `class Animal {
-    void eat() { System.out.println("Animal eats food (Inherited)"); }
+            code: `class ElectronicDevice {
+    void powerOn() {
+        System.out.println("Device power turned ON (Inherited)");
+    }
 }
 
-class Dog extends Animal {
+class Smartphone extends ElectronicDevice {
     // Specialized behavior
-    void bark() { System.out.println("Dog barks: Woof Woof! (Specialized)"); }
+    void enable5G() {
+        System.out.println("Connecting to 5G network (Specialized)");
+    }
 }
 
 public class InheritanceDemo {
     public static void main(String[] args) {
-        Dog d = new Dog();
-        d.eat();  // Inherited from Animal
-        d.bark(); // Specialized Dog method
+        Smartphone phone = new Smartphone();
+        phone.powerOn();  // Inherited from ElectronicDevice
+        phone.enable5G(); // Specialized Smartphone method
     }
 }`,
-            input: "Dog object instantiated",
-            output: `Animal eats food (Inherited)
-Dog barks: Woof Woof! (Specialized)`
+            input: "Smartphone object created",
+            output: `Device power turned ON (Inherited)
+Connecting to 5G network (Specialized)`
           },
-          codeExample: `class Animal { void eat() {} }
-class Dog extends Animal { void bark() {} }`,
+          codeExample: `class ElectronicDevice { void powerOn() {} }
+class Smartphone extends ElectronicDevice { void enable5G() {} }`,
           questions: [
             {
               id: 'inh-q1',
-              question: 'Why does Java not support multiple inheritance with classes?',
-              answer: 'To prevent ambiguity known as the Diamond Problem. If two parent classes define the same method with different implementations and a child class extends both, the compiler cannot decide which parent method to invoke. Java avoids this ambiguity by permitting multiple inheritance only through interfaces.',
+              question: 'What Is Inheritance?',
+              answer: 'Inheritance is a mechanism in Java where a child class acquires the properties and methods of a parent class using the extends keyword. It helps achieve code reusability.',
+              codeExample: `class Parent { void greet() {} }\nclass Child extends Parent { } // Child inherits greet()`,
+              difficulty: 'Essential'
+            },
+            {
+              id: 'inh-q2',
+              question: 'What Are the Types of Inheritance in Java?',
+              answer: 'Java inheritance has five commonly discussed types:\n• Single Inheritance: One child class inherits from one parent class.\n• Multilevel Inheritance: A class inherits from a child class that inherits from another parent class.\n• Hierarchical Inheritance: Multiple child classes inherit from the same parent class.\n• Multiple Inheritance: One class inherits from multiple parent classes. Java does not support this through classes, but a class can implement multiple interfaces.\n• Hybrid Inheritance: A combination of two or more inheritance types. It can be achieved in Java using classes and interfaces.',
+              codeExample: `// Single: class B extends A {}\n// Multilevel: class C extends B {}\n// Hierarchical: class B extends A {}, class C extends A {}\n// Multiple: class C implements I1, I2 {}`,
+              difficulty: 'Essential'
+            },
+            {
+              id: 'inh-q3',
+              question: 'What Is an IS-A Relationship?',
+              answer: 'An IS-A relationship means one class is a specialized type of another class. It is achieved through inheritance using extends or implements.\n\nExample: A Dog IS-A Animal.',
+              codeExample: `class Animal { }\nclass Dog extends Animal { } // Dog IS-A Animal`,
+              difficulty: 'Essential'
+            },
+            {
+              id: 'inh-q4',
+              question: 'Why Do We Use Inheritance?',
+              answer: 'Inheritance is used to reuse existing code, reduce code duplication, support method overriding, and create relationships between classes.',
+              difficulty: 'Essential'
+            },
+            {
+              id: 'inh-q5',
+              question: 'Why Does Java Not Support Multiple Inheritance Through Classes?',
+              answer: 'Java does not support multiple inheritance through classes to avoid ambiguity when multiple parent classes provide the same method implementation. This is commonly known as the Diamond Problem.',
+              codeExample: `// If Java permitted:
+// class C extends A, B { } // If both A and B define display(), which one should C execute?
+// Java avoids this ambiguity by prohibiting multiple class inheritance.`,
+              difficulty: 'Essential'
+            },
+            {
+              id: 'inh-q6',
+              question: 'What Is the Difference Between a Parent Class and a Child Class?',
+              answer: 'A parent class is the class whose accessible members can be inherited, whereas a child class is the class that inherits from the parent class using extends.',
+              codeExample: `class Parent { } // Base / Superclass\nclass Child extends Parent { } // Derived / Subclass`,
+              difficulty: 'Essential'
+            },
+            {
+              id: 'inh-q7',
+              question: 'Can We Achieve Multiple Inheritance in Java?',
+              answer: 'Yes. Java supports multiple inheritance of type through interfaces. A class can implement multiple interfaces using the implements keyword.',
+              codeExample: `interface Printable { void print(); }\ninterface Showable { void show(); }\nclass Document implements Printable, Showable {\n    public void print() { System.out.println("Printing"); }\n    public void show() { System.out.println("Showing"); }\n}`,
+              difficulty: 'Essential'
+            },
+            {
+              id: 'inh-q8',
+              question: 'Give a Real-World Example of Inheritance.',
+              answer: 'A smartphone IS-A electronic device. The smartphone can inherit common properties and methods from an ElectronicDevice class (such as powerOn) and add its own specialized features, such as mobile internet connectivity (such as enable5G).',
+              example: 'ElectronicDevice (Parent: powerOn) -> Smartphone (Child: powerOn + enable5G)',
               difficulty: 'Essential'
             }
           ]
@@ -940,70 +1419,154 @@ class Dog extends Animal { void bark() {} }`,
           description: 'Comprehensive interview definitions, examples, and rules for super, final & Access Modifiers (public, protected, package-private, private).',
           difficulty: 'Essential',
           studyTime: '8 minutes',
-          definition: `WHAT IS SUPER?
+          definition: `WHAT IS THE SUPER KEYWORD?
 The super keyword is used to refer to the immediate parent class. It is used to access parent class variables and methods and to call the parent class constructor.
 
-WHAT IS FINAL?
-The final keyword is used to restrict changes in Java. A final variable cannot be reassigned, a final method cannot be overridden, and a final class cannot be inherited.
+WHAT IS THE FINAL KEYWORD?
+The final keyword is used to restrict changes in Java:
+- Final Variable: Its value cannot be reassigned after initialization.
+- Final Method: It cannot be overridden by a subclass.
+- Final Class: It cannot be inherited by another class.
 
-ACCESS MODIFIERS:
-- public: broadest member access (accessible from anywhere).
-- protected: same package and subclass access under Java's rules.
-- Package-private (no modifier): same package only.
-- private: restricted to the declaring class and permitted enclosing scope. Top-level classes can be public or package-private, not protected or private.`,
-          interviewAnswer: 'In Java, the "super" keyword refers to the immediate parent class to access parent variables and methods and call parent constructors. The "final" keyword restricts changes: a final variable cannot be reassigned, a final method cannot be overridden, and a final class cannot be inherited. Access modifiers (public, protected, package-private, private) define the visibility and accessibility of classes and members.',
-          explanation: `1. What is super?
+ACCESS MODIFIERS
+Access modifiers are keywords used to control the visibility and accessibility of classes, variables, methods, and constructors in Java:
+- public: Allows a class or member to be accessed from anywhere, subject to normal Java access rules.
+- protected: Allows access within the same package and also in subclasses outside the package, subject to Java's access rules.
+- default (package-private): When no access modifier is specified, the member can be accessed within the same package.
+- private: Restricts access to the declaring class.`,
+          interviewAnswer: 'The super keyword refers to the immediate parent class to access parent variables and methods and call parent constructors. The final keyword restricts changes: a final variable cannot be reassigned, a final method cannot be overridden, and a final class cannot be inherited. Access modifiers (public, protected, package-private, private) define the visibility and accessibility of classes and members.',
+          explanation: `1. What Is the super Keyword?
 The super keyword is used to refer to the immediate parent class. It is used to access parent class variables and methods and to call the parent class constructor.
 
-2. What is final?
-The final keyword is used to restrict changes in Java. A final variable cannot be reassigned, a final method cannot be overridden, and a final class cannot be inherited.
+2. What Is the final Keyword?
+The final keyword is used to restrict changes in Java:
+- Final Variable: Value cannot be reassigned after initialization.
+- Final Method: Cannot be overridden by a subclass.
+- Final Class: Cannot be inherited by another class.
 
-3. Access Modifiers:
-- public: Broadest member access (accessible from anywhere).
-- protected: Accessible within the same package and by subclasses in other packages.
-- package-private (default): Same package only.
-- private: Restricted to the declaring class only.`,
-          realWorldExample: 'A "final" variable is like a stamped passport number (cannot be changed). "private" is your personal diary (accessible only to you). "public" is a billboard on a highway (visible to everyone).',
+3. What Are Access Modifiers?
+Access modifiers control the visibility and accessibility of classes, variables, methods, and constructors:
+- public: Broadest access (anywhere).
+- protected: Same package + subclasses across packages.
+- default (package-private): Same package only.
+- private: Declaring class only (most restrictive).
+
+4. Difference Between super and this:
+- super refers to the immediate parent class.
+- this refers to the current object.`,
+          realWorldExample: 'A final variable is like a fixed passport number that cannot be reassigned. A private variable is like a personal diary that others cannot access directly, whereas a public notice is available for everyone to see.',
           codeSnippet: {
-            code: `class Parent {
-    String role = "Parent";
-    void greet() { System.out.println("Hello from Parent"); }
+            code: `class ParentDevice {
+    protected String brand = "GenericTech";
+
+    ParentDevice(String brand) {
+        this.brand = brand;
+    }
+
+    void showInfo() {
+        System.out.println("Brand: " + brand);
+    }
 }
 
-class Child extends Parent {
-    String role = "Child";
+final class SecurePhone extends ParentDevice { // final class: cannot be inherited
+    private final String imeiNumber; // final variable: cannot be reassigned
+    public String modelName;
 
-    void test() {
-        super.greet(); // Calls superclass method
-        System.out.println("this.role: " + this.role);
-        System.out.println("super.role: " + super.role);
+    SecurePhone(String brand, String modelName, String imei) {
+        super(brand); // super constructor call
+        this.modelName = modelName;
+        this.imeiNumber = imei;
+    }
+
+    @Override
+    public final void showInfo() { // final method: cannot be overridden
+        super.showInfo(); // Calls parent method
+        System.out.println("Model: " + modelName + " (Public)");
+        System.out.println("IMEI: " + imeiNumber + " (Private Final)");
     }
 }
 
 public class SuperFinalDemo {
     public static void main(String[] args) {
-        final int MAX = 100; // Cannot be reassigned
-        new Child().test();
+        SecurePhone phone = new SecurePhone("Apple", "iPhone 15", "990001234567890");
+        phone.showInfo();
     }
 }`,
-            input: "MAX = 100",
-            output: `Hello from Parent
-this.role: Child
-super.role: Parent`
+            input: "Creating SecurePhone with final IMEI and public model",
+            output: `Brand: Apple
+Model: iPhone 15 (Public)
+IMEI: 990001234567890 (Private Final)`
           },
-          codeExample: `final class ImmutableClass {}
+          codeExample: `final class ImmutableClass { }
 public / protected / package-private / private`,
           questions: [
             {
               id: 'sf-q1',
-              question: 'What is the effect of applying the final keyword to a variable, method, and class?',
-              answer: '1. final variable: Cannot be reassigned once initialized (acts as a constant).\n2. final method: Cannot be overridden by any subclass.\n3. final class: Cannot be extended or inherited by any subclass (e.g. String, Integer).',
+              question: 'What Is the super Keyword?',
+              answer: 'The super keyword is used to refer to the immediate parent class. It is used to access parent class variables and methods and to call the parent class constructor.',
+              codeExample: `class Child extends Parent {\n    void test() {\n        super.display(); // Calls parent method\n        System.out.println(super.name); // Parent variable\n    }\n}`,
               difficulty: 'Essential'
             },
             {
               id: 'sf-q2',
-              question: 'Explain the visibility of Java\'s four access modifiers.',
-              answer: 'public: Accessible everywhere.\nprotected: Accessible within the same package and by subclasses in other packages.\npackage-private (default): Accessible only within classes of the same package.\nprivate: Accessible only within the declaring class.',
+              question: 'What Is the final Keyword?',
+              answer: 'The final keyword is used to restrict changes in Java:\n• Final Variable: Its value cannot be reassigned after initialization.\n• Final Method: It cannot be overridden by a subclass.\n• Final Class: It cannot be inherited by another class.',
+              codeExample: `final class A { } // Cannot be inherited\nclass B {\n    final int MAX = 100; // Cannot be reassigned\n    final void lock() { } // Cannot be overridden\n}`,
+              difficulty: 'Essential'
+            },
+            {
+              id: 'sf-q3',
+              question: 'What Are Access Modifiers?',
+              answer: 'Access modifiers are keywords used to control the visibility and accessibility of classes, variables, methods, and constructors in Java.',
+              codeExample: `public class Demo {\n    public int a;\n    protected int b;\n    int c; // default\n    private int d;\n}`,
+              difficulty: 'Essential'
+            },
+            {
+              id: 'sf-q4',
+              question: 'What Is public?',
+              answer: 'public allows a class or member to be accessed from anywhere, subject to normal Java access rules.',
+              codeExample: `public class PublicDemo {\n    public void display() {\n        System.out.println("Accessible anywhere");\n    }\n}`,
+              difficulty: 'Essential'
+            },
+            {
+              id: 'sf-q5',
+              question: 'What Is private?',
+              answer: 'private restricts access to the declaring class.',
+              codeExample: `class BankAccount {\n    private double balance; // Accessible only inside BankAccount\n}`,
+              difficulty: 'Essential'
+            },
+            {
+              id: 'sf-q6',
+              question: 'What Is protected?',
+              answer: 'protected allows access within the same package and also in subclasses outside the package, subject to Java\'s access rules.',
+              codeExample: `class Parent {\n    protected int score = 90; // Same package & subclasses\n}`,
+              difficulty: 'Essential'
+            },
+            {
+              id: 'sf-q7',
+              question: 'What Is the Default Access Modifier?',
+              answer: 'When no access modifier is specified, Java uses package-private access. The member can be accessed within the same package.',
+              codeExample: `class PackageDemo {\n    int defaultNumber = 42; // Package-private\n}`,
+              difficulty: 'Essential'
+            },
+            {
+              id: 'sf-q8',
+              question: 'What Is the Difference Between public, private, protected, and Default?',
+              answer: '• Public: Accessible from anywhere, subject to normal access rules.\n• Protected: Accessible within the same package and through inheritance under Java\'s access rules.\n• Default: Accessible only within the same package.\n• Private: Accessible only within the declaring class.',
+              difficulty: 'Essential'
+            },
+            {
+              id: 'sf-q9',
+              question: 'What Is the Difference Between super and this?',
+              answer: '• super: Refers to the immediate parent class.\n• this: Refers to the current object.',
+              codeExample: `class Child extends Parent {\n    int x = 20;\n    void print() {\n        System.out.println(this.x);  // 20 (Child)\n        System.out.println(super.x); // 10 (Parent)\n    }\n}`,
+              difficulty: 'Essential'
+            },
+            {
+              id: 'sf-q10',
+              question: 'Give a Real-World Example of final and Access Modifiers.',
+              answer: 'A final variable is like a fixed passport number that cannot be reassigned. A private variable is like a personal diary that others cannot access directly, whereas a public notice is available for everyone to see.',
+              example: 'Passport Number (final: immutable) | Personal Diary (private) | Family Album (protected) | Office Notice (package-private) | Billboard (public)',
               difficulty: 'Essential'
             }
           ]
@@ -1015,56 +1578,44 @@ public / protected / package-private / private`,
           difficulty: 'Essential',
           studyTime: '10 minutes',
           definition: `WHAT IS POLYMORPHISM?
-Polymorphism means one thing can take many forms. In Java, it allows the same method name or parent class reference to behave differently depending on the situation or actual object.
-
-WHAT IS METHOD OVERRIDING?
-Method overriding occurs when a child class provides its own implementation of a method already defined in the parent class, using the same method signature and a compatible return type.
-
-WHAT IS A COVARIANT RETURN TYPE?
-A covariant return type allows an overridden method in a child class to return a subtype of the return type declared in the parent class.
-
-WHAT IS COMPILE-TIME POLYMORPHISM?
-Compile-time polymorphism occurs when the compiler selects the appropriate method based on its parameter list. It is achieved through method overloading.
-
-WHAT IS RUNTIME POLYMORPHISM?
-Runtime polymorphism occurs when the JVM selects the overridden method to execute based on the actual object at runtime. It is achieved through method overriding.
+Polymorphism means one name, many forms. In Java, it allows the same method name or interface to behave differently in different situations.
 
 WHAT IS METHOD OVERLOADING?
-Method overloading occurs when a class contains multiple methods with the same name but different parameter lists. The parameters can differ in number, type, or order. It is an example of compile-time polymorphism.`,
-          interviewAnswer: 'Polymorphism means one thing can take many forms. Compile-time polymorphism is achieved through Method Overloading (compiler binds method based on parameter list: number, type, or order). Runtime polymorphism is achieved through Method Overriding (JVM selects method to execute at runtime based on the actual heap object). A covariant return type allows an overridden method in a child class to return a subtype of the parent method\'s return type.',
+Method overloading means defining multiple methods with the same name but different parameter lists in the same class. It is an example of compile-time polymorphism.
+
+WHAT IS METHOD OVERRIDING?
+Method overriding occurs when a child class provides its own implementation of an inherited instance method with the same signature. It supports runtime polymorphism.
+
+WHAT IS A COVARIANT RETURN TYPE?
+A covariant return type allows an overriding method to return a more specific reference type (subtype) than the method in the parent class.`,
+          interviewAnswer: 'Polymorphism means one name, many forms. Compile-time polymorphism is achieved through Method Overloading (compiler binds method based on parameter list: count, type, or order). Runtime polymorphism is achieved through Method Overriding (JVM dynamically selects method to execute at runtime based on actual heap object). A covariant return type allows an overriding method to return a subtype of the parent method\'s return type.',
           explanation: `1. What is Polymorphism?
-Polymorphism means one thing can take many forms. In Java, it allows the same method name or parent class reference to behave differently depending on the situation or actual object.
+Polymorphism means one name, many forms. In Java, it allows the same method name or interface to behave differently in different situations.
 
-2. What is Method Overriding?
-Method overriding occurs when a child class provides its own implementation of a method already defined in the parent class, using the same method signature and a compatible return type.
+2. Method Overloading (Compile-Time Polymorphism):
+Defining multiple methods in the same class with the same name but different parameter lists (count, type, or order). Return type alone cannot distinguish overloaded methods.
 
-3. What is a Covariant Return Type?
-A covariant return type allows an overridden method in a child class to return a subtype of the return type declared in the parent class.
+3. Method Overriding (Runtime Polymorphism):
+A child class provides its own implementation of an inherited instance method with the same name, same parameters, and compatible return type.
 
-4. What is Compile-Time Polymorphism?
-Compile-time polymorphism occurs when the compiler selects the appropriate method based on its parameter list. It is achieved through method overloading.
-
-5. What is Runtime Polymorphism?
-Runtime polymorphism occurs when the JVM selects the overridden method to execute based on the actual object at runtime. It is achieved through method overriding.
-
-6. What is Method Overloading?
-Method overloading occurs when a class contains multiple methods with the same name but different parameter lists. The parameters can differ in number, type, or order. It is an example of compile-time polymorphism.`,
+4. Covariant Return Type:
+Enables the overriding method in the child class to return a subtype of the parent method's return type without requiring an explicit cast.`,
           realWorldExample: 'A smartphone volume button: In a media player, it adjusts video volume. During a phone call, it adjusts in-call speech volume. On the home screen, it adjusts ringtone volume. One button (same interface), multiple behaviors based on current runtime context.',
           codeSnippet: {
             code: `class Calculator {
-    // 1. Compile-Time Polymorphism (Method Overloading)
+    // 1. Method Overloading (Compile-Time Polymorphism)
     int add(int a, int b) { return a + b; }
     int add(int a, int b, int c) { return a + b + c; }
 }
 
 class Animal {
-    // 2. Runtime Polymorphism (Method Overriding)
+    // 2. Method Overriding (Runtime Polymorphism)
     Animal reproduce() { return new Animal(); }
     void sound() { System.out.println("Animal makes a sound"); }
 }
 
 class Dog extends Animal {
-    // 3. Covariant Return Type (Dog is subtype of Animal)
+    // 3. Covariant Return Type (Dog is a subtype of Animal)
     @Override
     Dog reproduce() { return new Dog(); }
 
@@ -1074,36 +1625,59 @@ class Dog extends Animal {
 
 public class PolymorphismDemo {
     public static void main(String[] args) {
-        // Compile-time overloading
+        // Method Overloading
         Calculator calc = new Calculator();
-        System.out.println("Overloaded add(2, 3): " + calc.add(2, 3));
-        System.out.println("Overloaded add(2, 3, 4): " + calc.add(2, 3, 4));
+        System.out.println("add(2, 3): " + calc.add(2, 3));
+        System.out.println("add(2, 3, 4): " + calc.add(2, 3, 4));
 
-        // Runtime overriding (Parent reference pointing to Child object)
-        Animal a = new Dog();
-        a.sound(); // Dynamic method dispatch executes Dog's sound()
+        // Method Overriding & Dynamic Dispatch
+        Animal a = new Dog(); // Upcasting
+        a.sound(); // Calls Dog's overridden sound() at runtime
     }
 }`,
-            input: "calc.add(2, 3), calc.add(2, 3, 4), a = new Dog()",
-            output: `Overloaded add(2, 3): 5
-Overloaded add(2, 3, 4): 9
+            input: "calc.add(2, 3), calc.add(2, 3, 4), Animal a = new Dog()",
+            output: `add(2, 3): 5
+add(2, 3, 4): 9
 Dog barks: Woof Woof!`
           },
-          codeExample: `class Animal { void sound() { System.out.println("Animal"); } }
-class Dog extends Animal {
-  @Override void sound() { System.out.println("Dog"); }
-}`,
+          codeExample: `// Overloading
+int add(int a, int b) { return a + b; }
+// Overriding with Covariant Return
+@Override Dog reproduce() { return new Dog(); }`,
           questions: [
             {
               id: 'poly-q1',
-              question: 'What is the difference between Compile-Time and Runtime Polymorphism?',
-              answer: '1) Compile-time polymorphism is achieved through Method Overloading; the compiler binds the method call based on parameter count, type, or order at compile time.\n2) Runtime polymorphism is achieved through Method Overriding; the JVM dynamically determines which method to execute at runtime based on the actual object instance on the heap.',
+              question: 'What is Polymorphism?',
+              answer: 'Polymorphism means one name, many forms. In Java, it allows the same method name or interface to behave differently in different situations.',
+              codeExample: `// Compile-time (Overloading) & Runtime (Overriding)`,
               difficulty: 'Essential'
             },
             {
               id: 'poly-q2',
-              question: 'What is a covariant return type in Java method overriding?',
-              answer: 'A covariant return type allows an overridden method in a child class to return a subtype of the return type declared in the parent class method (for example, parent returns Animal, child returns Dog).',
+              question: 'What is Method Overloading?',
+              answer: 'Method overloading means defining multiple methods with the same name but different parameter lists in the same class. It is an example of compile-time polymorphism.',
+              codeExample: `class Calc {\n    int add(int a, int b) { return a + b; }\n    int add(int a, int b, int c) { return a + b + c; }\n}`,
+              difficulty: 'Essential'
+            },
+            {
+              id: 'poly-q3',
+              question: 'What is Method Overriding?',
+              answer: 'Method overriding occurs when a child class provides its own implementation of an inherited instance method with the same signature. It supports runtime polymorphism.',
+              codeExample: `class Animal { void sound() { System.out.println("Animal"); } }\nclass Dog extends Animal {\n    @Override void sound() { System.out.println("Dog barks"); }\n}`,
+              difficulty: 'Essential'
+            },
+            {
+              id: 'poly-q4',
+              question: 'What is Covariant Return Type?',
+              answer: 'A covariant return type allows an overriding method to return a more specific reference type than the method in the parent class.',
+              codeExample: `class Parent { Parent get() { return this; } }\nclass Child extends Parent {\n    @Override Child get() { return this; } // Covariant return\n}`,
+              difficulty: 'Essential'
+            },
+            {
+              id: 'poly-q5',
+              question: 'What is the Difference Between Overloading and Overriding?',
+              answer: '• Overloading: Same method name with different parameter lists; compile-time polymorphism.\n• Overriding: A child class provides a new implementation of an inherited method; runtime polymorphism.',
+              codeExample: `// Overloading: happens within the same class\n// Overriding: happens between superclass and subclass`,
               difficulty: 'Essential'
             }
           ]
@@ -1114,22 +1688,24 @@ class Dog extends Animal {
           description: 'Comprehensive interview definitions, examples, and rules for Method Hiding vs Method Overriding.',
           difficulty: 'Essential',
           studyTime: '8 minutes',
-          definition: `CAN STATIC METHODS BE OVERRIDDEN?
-Static methods are hidden, not overridden, because they belong to the class rather than an object. Selection depends on the class/reference type, not runtime overriding dispatch.
+          definition: `WHAT IS METHOD HIDING?
+Method hiding occurs when a child class declares a static method with the same signature as a static method in its parent class. Selection depends on the class or reference type used to make the call, not runtime overriding dispatch.
 
-WHAT IS METHOD HIDING?
-Method hiding occurs when a subclass declares a static method with the same signature as a superclass static method. Selection depends on the class/reference type.`,
-          interviewAnswer: 'In Java, static methods cannot be overridden. If a subclass declares a static method with the same signature as a superclass static method, it is Method Hiding. Because static methods belong to the class, the compiler resolves them at compile-time using the declared reference type (Static Binding), whereas overriding uses Dynamic Method Dispatch at runtime based on the actual heap object.',
-          explanation: `1. Can Static Methods Be Overridden?
-No. Static methods belong to the class rather than an individual object instance. They are resolved at compile-time by the compiler using the declared reference variable type (Static / Early Binding).
+CAN STATIC METHODS BE OVERRIDDEN?
+No. Static methods cannot be overridden in the runtime-polymorphism sense. A static method with the same signature in a child class hides the parent method.`,
+          interviewAnswer: 'Method hiding occurs when a child class declares a static method with the same signature as a static method in its parent class. Static methods belong to the class, not instance objects; therefore, the compiler resolves them at compile-time based on the declared reference type (Early Binding). In contrast, method overriding applies to instance methods where the JVM dynamically selects the method at runtime based on the actual heap object (Dynamic Binding).',
+          explanation: `1. What is Method Hiding?
+Method hiding occurs when a child class declares a static method with the same signature as a static method in its parent class.
 
-2. Method Hiding:
-Occurs when a subclass declares a static method with the same signature as a static method in its superclass.
-When invoked via a parent reference pointing to a child object (Parent p = new Child()), the parent's static method runs, not the child's!
+2. Difference Between Method Hiding and Method Overriding:
+- Method Hiding: Applies to static methods and depends on the reference or class used to call the method (compile-time).
+- Method Overriding: Applies to instance methods and the implementation is selected at runtime based on the actual object.
 
-3. Method Hiding vs Overriding:
-- Overriding: applies to non-static instance methods; runtime dynamic dispatch.
-- Method Hiding: applies to static methods; compile-time static binding.`,
+3. Can We Override a Static Method?
+No. Static methods cannot be overridden in the runtime-polymorphism sense. A static method with the same signature in a child class hides the parent method.
+
+4. Can We Hide an Instance Method?
+No. An instance method cannot be hidden by declaring a static method with the same signature in a child class. Java reports a compilation error.`,
           realWorldExample: 'A corporate memo issued by the main company headquarters Corporate.policy() versus a branch notice Branch.policy(). A customer reading the corporate letterhead will always read Corporate.policy() because static notices belong to the letterhead, not the individual delivery courier.',
           codeSnippet: {
             code: `class Parent {
@@ -1159,8 +1735,30 @@ class Child extends Parent { static void print() {} }`,
           questions: [
             {
               id: 'mh-q1',
-              question: 'Can static methods be overridden in Java? Why or why not?',
-              answer: 'No, static methods cannot be overridden because they belong to the class, not an object instance. The compiler binds static method calls at compile-time using the declared reference type (Early Binding). If a subclass declares a static method with the same signature, it is Method Hiding, not overriding.',
+              question: 'What is Method Hiding?',
+              answer: 'Method hiding occurs when a child class declares a static method with the same signature as a static method in its parent class.',
+              codeExample: `class Parent { static void show() { System.out.println("Parent"); } }\nclass Child extends Parent { static void show() { System.out.println("Child"); } }`,
+              difficulty: 'Essential'
+            },
+            {
+              id: 'mh-q2',
+              question: 'What is the Difference Between Method Hiding and Method Overriding?',
+              answer: '• Method Hiding: Applies to static methods and depends on the reference or class used to call the method.\n• Method Overriding: Applies to instance methods and the implementation is selected at runtime based on the actual object.',
+              codeExample: `Parent p = new Child();\np.staticMethod(); // Calls Parent (Method Hiding)\np.instanceMethod(); // Calls Child (Method Overriding)`,
+              difficulty: 'Essential'
+            },
+            {
+              id: 'mh-q3',
+              question: 'Can We Override a Static Method?',
+              answer: 'No. Static methods cannot be overridden in the runtime-polymorphism sense. A static method with the same signature in a child class hides the parent method.',
+              codeExample: `// Static methods belong to the class, not to an object instance`,
+              difficulty: 'Essential'
+            },
+            {
+              id: 'mh-q4',
+              question: 'Can We Hide an Instance Method?',
+              answer: 'No. An instance method cannot be hidden by declaring a static method with the same signature in a child class. Java reports a compilation error.',
+              codeExample: `class Parent { void display() {} }\nclass Child extends Parent {\n    // static void display() {} // COMPILE ERROR: Cannot hide instance method with static\n}`,
               difficulty: 'Essential'
             }
           ]
@@ -1172,24 +1770,26 @@ class Child extends Parent { static void print() {} }`,
           difficulty: 'Essential',
           studyTime: '8 minutes',
           definition: `WHAT IS UPCASTING?
-Upcasting assigns a subclass object to a superclass reference. It is implicit and safe, but only members visible through the declared reference type can be called directly. E.g.: Animal a = new Dog();
+Upcasting means converting a child-class reference into a parent-class reference. It happens implicitly and safely. E.g.: Animal a = new Dog();
 
 WHAT IS DOWNCASTING?
-Downcasting converts a superclass reference back to a subclass reference. It needs an explicit cast and is safe only if the object really is an instance of that subclass; otherwise, ClassCastException may occur. E.g.: if (a instanceof Dog) { Dog d = (Dog) a; }`,
-          interviewAnswer: 'Upcasting converts a subclass reference to a superclass type (Animal a = new Dog()). It is implicit, safe, and powers runtime polymorphism. Downcasting converts a superclass reference back to a subclass type (Dog d = (Dog) a). It is explicit and can throw a runtime ClassCastException if the heap object is not an instance of that subclass; hence, we always verify with the "instanceof" operator first.',
-          explanation: `1. Upcasting:
-- Subclass object assigned to superclass reference: Animal a = new Dog();
-- Implicit and 100% safe because every Dog IS-A Animal.
-- Limitation: Through 'a', you can only call methods declared in Animal.
+Downcasting means converting a parent-class reference into a child-class reference. It generally requires an explicit cast. E.g.: Dog d = (Dog) a;`,
+          interviewAnswer: 'Upcasting converts a child-class reference to a parent-class reference implicitly and safely, powering runtime polymorphism. Downcasting converts a parent-class reference back to a child-class reference explicitly to access child-specific members, and can throw a runtime ClassCastException if the heap object is not compatible.',
+          explanation: `1. What is Upcasting?
+Upcasting means converting a child-class reference into a parent-class reference. It happens implicitly.
 
-2. Downcasting:
-- Superclass reference converted down to subclass: Dog d = (Dog) a;
-- Explicit cast operator required.
-- Danger: If the actual object on the heap is a Cat and you cast to Dog, Java throws ClassCastException at runtime.
+2. What is Downcasting?
+Downcasting means converting a parent-class reference into a child-class reference. It generally requires an explicit cast.
 
-3. Safe Downcasting with instanceof:
-Always guard downcasting with instanceof check:
-if (a instanceof Dog) { Dog d = (Dog) a; d.bark(); }`,
+3. Difference Between Upcasting and Downcasting:
+- Upcasting: Child reference to parent reference; automatic, safe, and supports polymorphism.
+- Downcasting: Parent reference to child reference; explicit and can fail at runtime if the object is not compatible.
+
+4. Why We Use Upcasting:
+Allows us to refer to different child-class objects through a common parent-class reference and supports runtime polymorphism.
+
+5. Why We Use Downcasting:
+Used when we need to access child-specific members through a parent reference and know that the actual object is an instance of that child class.`,
           realWorldExample: 'Upcasting: Handing someone an iPhone and saying "Here is a smartphone" (always true). Downcasting: Handing a mystery gadget box and claiming "This is specifically an iPhone with FaceID". If the box actually contains an Android, it fails with ClassCastException.',
           codeSnippet: {
             code: `class Animal {
@@ -1217,13 +1817,41 @@ public class CastingDemo {
             output: `Animal eats
 Dog barks: Woof!`
           },
-          codeExample: `Animal a = new Dog();
-if (a instanceof Dog) { Dog d = (Dog) a; }`,
+          codeExample: `Animal a = new Dog(); // Upcasting (Implicit)
+if (a instanceof Dog) { Dog d = (Dog) a; } // Downcasting (Explicit)`,
           questions: [
             {
               id: 'ud-q1',
-              question: 'What is the difference between Upcasting and Downcasting in Java?',
-              answer: 'Upcasting assigns a subclass object to a superclass reference; it is implicit and always safe. Downcasting converts a superclass reference back to a subclass reference; it requires an explicit cast and can throw ClassCastException if the object is not an instance of that subclass.',
+              question: 'What is Upcasting?',
+              answer: 'Upcasting means converting a child-class reference into a parent-class reference. It happens implicitly.',
+              codeExample: `Animal a = new Dog(); // Child reference converted to Parent`,
+              difficulty: 'Essential'
+            },
+            {
+              id: 'ud-q2',
+              question: 'What is Downcasting?',
+              answer: 'Downcasting means converting a parent-class reference into a child-class reference. It generally requires an explicit cast.',
+              codeExample: `Dog d = (Dog) a; // Explicit cast required`,
+              difficulty: 'Essential'
+            },
+            {
+              id: 'ud-q3',
+              question: 'What is the Difference Between Upcasting and Downcasting?',
+              answer: '• Upcasting: Child reference to parent reference; automatic.\n• Downcasting: Parent reference to child reference; explicit and can fail at runtime if the object is not compatible.',
+              difficulty: 'Essential'
+            },
+            {
+              id: 'ud-q4',
+              question: 'Why Do We Use Upcasting?',
+              answer: 'Upcasting allows us to refer to different child-class objects through a common parent-class reference and supports runtime polymorphism.',
+              codeExample: `void process(Animal a) { a.eat(); } // Accepts any Animal subclass`,
+              difficulty: 'Essential'
+            },
+            {
+              id: 'ud-q5',
+              question: 'Why Do We Use Downcasting?',
+              answer: 'Downcasting is used when we need to access child-specific members through a parent reference and know that the actual object is an instance of that child class.',
+              codeExample: `if (a instanceof Dog) {\n    Dog d = (Dog) a;\n    d.bark(); // Access Dog-specific method\n}`,
               difficulty: 'Essential'
             }
           ]
@@ -1235,58 +1863,32 @@ if (a instanceof Dog) { Dog d = (Dog) a; }`,
           difficulty: 'Essential',
           studyTime: '12 minutes',
           definition: `WHAT IS ABSTRACTION?
-Abstraction is the process of hiding implementation details and showing only the essential functionality to the user. In Java, abstraction is achieved using abstract classes and interfaces.
+Abstraction means hiding implementation details and showing only the essential functionality to the user. In Java, it is achieved using abstract classes and interfaces.
 
 WHAT IS AN ABSTRACT CLASS?
-An abstract class is a class declared with the abstract keyword that cannot be instantiated directly. It can contain abstract methods, concrete methods, constructors, and variables.
+An abstract class is declared using the abstract keyword. It can contain abstract methods and concrete methods, and we cannot create its objects directly.
 
 WHAT IS AN ABSTRACT METHOD?
-An abstract method is a method declared without a method body. A concrete subclass must implement the inherited abstract method unless the subclass is also abstract.
-
-WHAT IS A CONCRETE METHOD?
-A concrete method is a method that has a method body containing the implementation.
+An abstract method is a method declared without an implementation. A concrete subclass must implement it unless the subclass is also abstract.
 
 WHAT IS AN INTERFACE?
-An interface is a blueprint that defines a contract that implementing classes must follow. It supports abstraction and allows a class to implement multiple interfaces.
-
-WHAT ARE THE RULES OF AN INTERFACE?
-A class can implement multiple interfaces, and an interface can extend multiple interfaces. Interface variables are implicitly public, static, and final. Interfaces can contain abstract, default, static, and private methods.
-
-WHAT IS A MARKER INTERFACE?
-A marker interface is an interface that contains no declared methods or fields and is used to mark a class with a particular property or indicate special behavior. Examples include Serializable and Cloneable.
-
-CAN WE CREATE AN INTERFACE OBJECT?
-No, we cannot instantiate an interface directly. However, an interface reference can refer to an object of a class that implements the interface.
-
-WHAT IS THE DIFFERENCE BETWEEN AN ABSTRACT CLASS AND AN INTERFACE?
-An abstract class can contain abstract methods, concrete methods, constructors, and instance variables. An interface defines a contract and supports multiple inheritance of type because a class can implement multiple interfaces.`,
+An interface defines a contract that implementing classes agree to follow. It can contain abstract methods, default methods, static methods, and constants.`,
           interviewAnswer: 'Abstraction is the process of hiding implementation details and showing only essential functionality to the user via abstract classes and interfaces. An abstract class cannot be instantiated directly and can contain abstract methods, concrete methods, constructors, and variables. An interface defines a contract supporting multiple inheritance of type; interface variables are public static final, and methods can be abstract, default, static, or private. Interfaces cannot be instantiated directly, but their references can point to implementing objects.',
           explanation: `1. What is Abstraction?
-Abstraction is the process of hiding implementation details and showing only the essential functionality to the user. In Java, abstraction is achieved using abstract classes and interfaces.
+Abstraction means hiding implementation details and showing only the essential functionality to the user. In Java, it is achieved using abstract classes and interfaces.
 
 2. What is an Abstract Class?
-An abstract class is a class declared with the abstract keyword that cannot be instantiated directly. It can contain abstract methods, concrete methods, constructors, and variables.
+An abstract class is declared using the abstract keyword. It can contain abstract methods and concrete methods, and we cannot create its objects directly.
 
 3. What is an Abstract Method?
-An abstract method is a method declared without a method body. A concrete subclass must implement the inherited abstract method unless the subclass is also abstract.
+An abstract method is a method declared without an implementation. A concrete subclass must implement it unless the subclass is also abstract.
 
-4. What is a Concrete Method?
-A concrete method is a method that has a method body containing the implementation.
+4. What is an Interface?
+An interface defines a contract that implementing classes agree to follow. It can contain abstract methods, default methods, static methods, and constants.
 
-5. What is an Interface?
-An interface is a blueprint that defines a contract that implementing classes must follow. It supports abstraction and allows a class to implement multiple interfaces.
-
-6. What are the Rules of an Interface?
-A class can implement multiple interfaces, and an interface can extend multiple interfaces. Interface variables are implicitly public, static, and final. Interfaces can contain abstract, default, static, and private methods.
-
-7. What is a Marker Interface?
-A marker interface is an interface that contains no declared methods or fields and is used to mark a class with a particular property or indicate special behavior. Examples include Serializable and Cloneable.
-
-8. Can We Create an Interface Object?
-No, we cannot instantiate an interface directly. However, an interface reference can refer to an object of a class that implements the interface.
-
-9. What is the Difference Between an Abstract Class and an Interface?
-An abstract class can contain abstract methods, concrete methods, constructors, and instance variables. An interface defines a contract and supports multiple inheritance of type because a class can implement multiple interfaces.`,
+5. Difference Between Abstract Class and Interface:
+- Abstract Class: Can have instance variables, constructors, abstract methods, and concrete methods. Extended using "extends".
+- Interface: Defines a contract and supports multiple interface implementation by a class using "implements".`,
           realWorldExample: 'A car\'s steering wheel and brake pedal are an Abstraction. You use them to drive without needing to know the hydraulic fluid pressure or mechanical gearbox ratios under the hood.',
           codeSnippet: {
             code: `interface Drivable {
@@ -1318,15 +1920,69 @@ abstract class Vehicle implements Drivable {}`,
           questions: [
             {
               id: 'abs-q1',
-              question: 'What is the difference between an Abstract Class and an Interface in Java?',
-              answer: '1. Abstract classes can have instance variables and constructors; interfaces cannot have constructors and only have public static final constants.\n2. A class can extend only one abstract class, but can implement multiple interfaces.\n3. Abstract classes represent an "is-a" relationship for related classes; interfaces represent a contract for unrelated classes.\n4. Interfaces support default, static, and private methods in modern Java.',
+              question: 'What is Abstraction?',
+              answer: 'Abstraction means hiding implementation details and showing only the essential functionality to the user. In Java, it is achieved using abstract classes and interfaces.',
               difficulty: 'Essential'
             },
             {
               id: 'abs-q2',
-              question: 'What is a Marker Interface in Java?',
-              answer: 'A marker interface is an interface that contains zero methods and zero constants (e.g. Serializable, Cloneable). It is used to "mark" or tag a class so the JVM or frameworks can treat instances of that class with special behavior.',
-              difficulty: 'Common'
+              question: 'What is an Abstract Class?',
+              answer: 'An abstract class is declared using the abstract keyword. It can contain abstract methods and concrete methods, and we cannot create its objects directly.',
+              codeExample: `abstract class Vehicle {\n    abstract void start();\n    void stop() { System.out.println("Stopped"); }\n}`,
+              difficulty: 'Essential'
+            },
+            {
+              id: 'abs-q3',
+              question: 'What is an Abstract Method?',
+              answer: 'An abstract method is a method declared without an implementation. A concrete subclass must implement it unless the subclass is also abstract.',
+              codeExample: `abstract void calculate(); // No body, ends with semicolon`,
+              difficulty: 'Essential'
+            },
+            {
+              id: 'abs-q4',
+              question: 'What is an Interface?',
+              answer: 'An interface defines a contract that implementing classes agree to follow. It can contain abstract methods, default methods, static methods, and constants.',
+              codeExample: `interface Drivable {\n    int MAX_SPEED = 120; // public static final\n    void drive(); // public abstract\n}`,
+              difficulty: 'Essential'
+            },
+            {
+              id: 'abs-q5',
+              question: 'What is the Difference Between an Abstract Class and an Interface?',
+              answer: '• Abstract Class: Can have instance variables, constructors, abstract methods, and concrete methods.\n• Interface: Defines a contract and supports multiple interface implementation by a class.',
+              difficulty: 'Essential'
+            },
+            {
+              id: 'abs-q6',
+              question: 'Can We Create an Object of an Abstract Class?',
+              answer: 'No. We cannot directly create an object of an abstract class, but we can create an object of its concrete subclass.',
+              codeExample: `// Vehicle v = new Vehicle(); // COMPILE ERROR\nVehicle v = new Car(); // VALID`,
+              difficulty: 'Essential'
+            },
+            {
+              id: 'abs-q7',
+              question: 'Can an Interface Have a Constructor?',
+              answer: 'No. An interface cannot have a constructor because it cannot be instantiated directly.',
+              difficulty: 'Essential'
+            },
+            {
+              id: 'abs-q8',
+              question: 'Can a Class Implement Multiple Interfaces?',
+              answer: 'Yes. A class can implement multiple interfaces using the implements keyword.',
+              codeExample: `class Smartphone implements Camera, GPS, MusicPlayer { }`,
+              difficulty: 'Essential'
+            },
+            {
+              id: 'abs-q9',
+              question: 'Can an Abstract Class Have a Constructor?',
+              answer: 'Yes. An abstract class can have a constructor, which is called when a subclass object is created.',
+              codeExample: `abstract class Parent {\n    Parent() { System.out.println("Parent constructor called"); }\n}`,
+              difficulty: 'Essential'
+            },
+            {
+              id: 'abs-q10',
+              question: 'What Is the Difference Between Abstraction and Encapsulation?',
+              answer: '• Abstraction: Hides implementation details and shows essential functionality.\n• Encapsulation: Bundles data and methods together and restricts direct access to data.',
+              difficulty: 'Essential'
             }
           ]
         },
@@ -1337,49 +1993,48 @@ abstract class Vehicle implements Drivable {}`,
           difficulty: 'Essential',
           studyTime: '8 minutes',
           definition: `WHAT IS A HAS-A RELATIONSHIP?
-A has-a relationship means one class contains or uses an object of another class. Example: A Car has an Engine.
+A HAS-A relationship means one class contains or uses a reference to an object of another class. Example: A Car has an Engine.
+
+WHAT IS ASSOCIATION?
+Association is a relationship between two independent classes that interact with or use each other. Example: A teacher teaches students.
 
 WHAT IS AGGREGATION?
-Aggregation is a weak has-a relationship in which the child object can exist independently of the parent object. Example: A Department has Teachers.
+Aggregation is a weak HAS-A relationship in which one object contains or uses another object, but both can exist independently. Example: A department has teachers.
 
 WHAT IS COMPOSITION?
-Composition is a strong has-a relationship in which the parent object owns the child object as part of its lifecycle. Example: A House has Rooms.
+Composition is a strong HAS-A relationship in which a contained object is considered part of the owning object and its lifecycle is closely tied to the owner. Example: A house has rooms.`,
+          interviewAnswer: 'A HAS-A relationship means one class contains or uses an object of another class. Association connects two independent classes. Aggregation is a weak HAS-A relationship where the contained object exists independently of the owner (Department has Teachers). Composition is a strong HAS-A relationship where the contained object\'s lifecycle is tied to the owner (House has Rooms). "Favor composition over inheritance" allows flexible design without tight coupling.',
+          explanation: `1. What is a HAS-A Relationship?
+A HAS-A relationship means one class contains or uses a reference to an object of another class.
 
-WHAT IS THE DIFFERENCE BETWEEN AGGREGATION AND COMPOSITION?
-Aggregation is a weak relationship where the child object can exist independently. Composition is a strong relationship where the child object's lifecycle is closely tied to the parent object.
+2. What is Association?
+Association is a relationship between two independent classes that interact with or use each other. Example: A teacher teaches students.
 
-WHAT IS "FAVOR COMPOSITION OVER INHERITANCE"?
-It means using objects of other classes to achieve code reuse instead of relying too much on inheritance. Composition often provides more flexibility.`,
-          interviewAnswer: 'A has-a relationship means one class contains or uses an object of another class (Car has an Engine). Aggregation is a weak has-a relationship where the child object can exist independently of the parent (Department has Teachers). Composition is a strong has-a relationship where the child object\'s lifecycle is tied to the parent (House has Rooms). "Favor composition over inheritance" means using objects of other classes to achieve code reuse instead of relying too much on inheritance, providing more flexibility.',
-          explanation: `1. What is a Has-a Relationship?
-A has-a relationship means one class contains or uses an object of another class. Example: A Car has an Engine.
+3. What is Aggregation?
+Aggregation is a weak HAS-A relationship in which one object contains or uses another object, but both can exist independently. Example: A department has teachers.
 
-2. What is Aggregation?
-Aggregation is a weak has-a relationship in which the child object can exist independently of the parent object. Example: A Department has Teachers.
-
-3. What is Composition?
-Composition is a strong has-a relationship in which the parent object owns the child object as part of its lifecycle. Example: A House has Rooms.
-
-4. What is the Difference Between Aggregation and Composition?
-Aggregation is a weak relationship where the child object can exist independently. Composition is a strong relationship where the child object's lifecycle is closely tied to the parent object.
-
-5. What is "Favor Composition Over Inheritance"?
-It means using objects of other classes to achieve code reuse instead of relying too much on inheritance. Composition often provides more flexibility.`,
+4. What is Composition?
+Composition is a strong HAS-A relationship in which a contained object is considered part of the owning object and its lifecycle is closely tied to the owner. Example: A house has rooms.`,
           realWorldExample: 'A smartphone HAS-A SIM card (Aggregation: you can take the SIM card out and insert it into another phone). A smartphone HAS-A Motherboard (Composition: if the phone is crushed and destroyed, that motherboard is destroyed with it).',
           codeSnippet: {
-            code: `// Aggregation: Teacher exists independently
-class Teacher { String name; Teacher(String n) { this.name = n; } }
+            code: `// 1. Aggregation: Teacher exists independently
+class Teacher {
+    String name;
+    Teacher(String name) { this.name = name; }
+}
 
 class Department {
     Teacher teacher;
-    Department(Teacher t) { this.teacher = t; }
+    Department(Teacher t) { this.teacher = t; } // Aggregation
 }
 
-// Composition: Engine lifecycle is bound to Car
-class Engine { void start() { System.out.println("Engine started"); } }
+// 2. Composition: Engine lifecycle is bound to Car
+class Engine {
+    void start() { System.out.println("Engine started"); }
+}
 
 class Car {
-    private final Engine engine = new Engine(); // Owned lifecycle
+    private final Engine engine = new Engine(); // Composition
     void drive() { engine.start(); }
 }
 
@@ -1394,12 +2049,50 @@ public class HasADemo {
             input: "Teacher 'Dr. Rao', Car initialized",
             output: `Engine started`
           },
-          codeExample: `class Car { private final Engine engine = new Engine(); }`,
+          codeExample: `class Car { private final Engine engine = new Engine(); } // Composition
+class Department { Teacher teacher; } // Aggregation`,
           questions: [
             {
               id: 'has-q1',
-              question: 'What is the difference between Aggregation and Composition?',
-              answer: 'Aggregation is a weak HAS-A relationship where the contained object can exist independently of the container (e.g. Teacher and Department). Composition is a strong HAS-A relationship where the contained object cannot exist without the container and shares its lifecycle (e.g. Engine and Car).',
+              question: 'What is a HAS-A Relationship?',
+              answer: 'A HAS-A relationship means one class contains or uses a reference to an object of another class.',
+              codeExample: `class Car {\n    private Engine engine; // Car HAS-A Engine\n}`,
+              difficulty: 'Essential'
+            },
+            {
+              id: 'has-q2',
+              question: 'What is Association?',
+              answer: 'Association is a relationship between two independent classes that interact with or use each other.',
+              example: 'A teacher teaches students.',
+              codeExample: `class Teacher {\n    void teach(Student s) { }\n}`,
+              difficulty: 'Essential'
+            },
+            {
+              id: 'has-q3',
+              question: 'What is Aggregation?',
+              answer: 'Aggregation is a weak HAS-A relationship in which one object contains or uses another object, but both can exist independently.',
+              example: 'A department has teachers, and the teachers can exist independently of the department.',
+              codeExample: `class Department {\n    Teacher teacher;\n    Department(Teacher t) { this.teacher = t; }\n}`,
+              difficulty: 'Essential'
+            },
+            {
+              id: 'has-q4',
+              question: 'What is Composition?',
+              answer: 'Composition is a strong HAS-A relationship in which a contained object is considered part of the owning object and its lifecycle is closely tied to the owner.',
+              example: 'A house has rooms.',
+              codeExample: `class House {\n    private final Room room = new Room(); // Composition\n}`,
+              difficulty: 'Essential'
+            },
+            {
+              id: 'has-q5',
+              question: 'What is the Difference Between Aggregation and Composition?',
+              answer: '• Aggregation: The contained object can exist independently of the owner.\n• Composition: The contained object is treated as a part of the owner, with a closely tied lifecycle.',
+              difficulty: 'Essential'
+            },
+            {
+              id: 'has-q6',
+              question: 'What is the Difference Between IS-A and HAS-A?',
+              answer: '• IS-A: Represents inheritance. Example: A Dog is an Animal.\n• HAS-A: Represents a relationship between objects. Example: A Car has an Engine.',
               difficulty: 'Essential'
             }
           ]
@@ -1417,143 +2110,117 @@ public class HasADemo {
           description: 'Comprehensive interview definitions, examples, and rules for Java Arrays — Top 6 Important Interview Questions & Answers.',
           difficulty: 'Essential',
           studyTime: '10 minutes',
-          definition: `1. WHAT IS AN ARRAY?
-An array is a data structure used to store multiple values of the same data type in a single variable. Array elements are accessed using indexes, starting from 0, and an array has a fixed length.
+          definition: `WHAT IS AN ARRAY?
+An array is a data structure that stores a fixed number of elements of the same type in a single variable. Elements are stored sequentially in memory and accessed using zero-based indexes [0 to length - 1].
 
-2. WHAT ARE THE ADVANTAGES OF AN ARRAY?
-An array stores multiple values of the same type, provides fast access to elements using indexes, and makes it easy to process data using loops.
+ADVANTAGES OF ARRAYS
+- Stores multiple values of the same type under a single variable name.
+- Provides fast, constant-time O(1) random access to elements using indexes.
+- Simple and efficient to traverse and process using loops.
 
-3. WHAT IS THE DIFFERENCE BETWEEN AN ARRAY AND AN ARRAYLIST?
-An array has a fixed length, whereas an ArrayList can grow or shrink dynamically. An array can store primitives and objects, whereas an ArrayList stores objects and uses wrapper classes for primitive values.
+ARRAY VS ARRAYLIST
+- Array: Fixed size, can store both primitive types and objects, uses the .length property.
+- ArrayList: Resizable dynamic array, stores only objects (uses wrapper classes for primitives), uses the size() method.
 
-4. WHAT IS THE DIFFERENCE BETWEEN A ONE-DIMENSIONAL AND A TWO-DIMENSIONAL ARRAY?
-A one-dimensional array stores elements in a single sequence, whereas a two-dimensional array organizes elements into rows and columns.
+1D VS 2D ARRAYS
+- One-Dimensional (1D) Array: A single sequence of elements.
+- Two-Dimensional (2D) Array: Elements organized into rows and columns (an array of arrays).`,
+          interviewAnswer: 'An array in Java is a fixed-size, index-based data structure that stores elements of the same type sequentially in memory, with zero-based indexing. It provides O(1) direct access by index. To find the largest or second-largest element, traverse with tracking variables. To reverse, use a two-pointer approach swapping from ends to center. To identify or remove duplicates, use a Set to track seen elements.',
+          explanation: `1. Array Characteristics:
+- Fixed length (cannot grow or shrink after creation).
+- Homogeneous elements (same data type).
+- Zero-based index [0 to length - 1]. Accessing outside bounds throws ArrayIndexOutOfBoundsException.
 
-5. HOW DO YOU FIND THE LENGTH OF AN ARRAY?
-In Java, the length property returns the number of elements an array can hold.
-
-Example:
-int[] arr = {10, 20, 30, 40};
-System.out.println(arr.length);
-
-Output:
-4
-
-6. WHAT HAPPENS WHEN YOU ACCESS AN INVALID ARRAY INDEX?
-Java throws an ArrayIndexOutOfBoundsException when you access an array using an invalid index.
-
-Example:
-int[] arr = {10, 20, 30};
-System.out.println(arr[5]);
-
-Output:
-ArrayIndexOutOfBoundsException`,
-          interviewAnswer: `An array in Java is a fixed-size, index-based data structure that stores elements of the same data type sequentially in memory, with indexes starting at 0. Key advantages include fast O(1) random access by index and clean loop traversal. An array has a fixed length and can store both primitives and objects, whereas an ArrayList is dynamic in size and stores only objects. Multi-dimensional arrays organize elements into rows and columns (arrays of arrays). Accessing an index outside valid bounds [0, length - 1] results in an unchecked ArrayIndexOutOfBoundsException at runtime.`,
-          explanation: `1. What is an Array?
-An array is a data structure used to store multiple values of the same data type in a single variable. Array elements are accessed using indexes, starting from 0, and an array has a fixed length.
-
-2. What are the Advantages of an Array?
-An array stores multiple values of the same type, provides fast access to elements using indexes, and makes it easy to process data using loops.
-
-3. What is the Difference Between an Array and an ArrayList?
-An array has a fixed length, whereas an ArrayList can grow or shrink dynamically. An array can store primitives and objects, whereas an ArrayList stores objects and uses wrapper classes for primitive values.
-
-4. What is the Difference Between a One-Dimensional and a Two-Dimensional Array?
-A one-dimensional array stores elements in a single sequence, whereas a two-dimensional array organizes elements into rows and columns.
-
-5. How do you Find the Length of an Array?
-In Java, the length property returns the number of elements an array can hold.
-
-Example:
-int[] arr = {10, 20, 30, 40};
-System.out.println(arr.length); // Output: 4
-
-6. What Happens When you Access an Invalid Array Index?
-Java throws an ArrayIndexOutOfBoundsException when you access an array using an invalid index.
-
-Example:
-int[] arr = {10, 20, 30};
-System.out.println(arr[5]); // Throws ArrayIndexOutOfBoundsException`,
-          realWorldExample: `A row of numbered lockers at a gym or an egg carton:
-• Fixed Length: A standard 12-slot egg carton cannot stretch to hold 13 eggs.
-• Fast Index Access: You can go directly to Locker #5 in O(1) time without checking lockers 0 to 4.
-• Homogeneous: All slots contain items of the same type.
-• Index Bounds: Trying to open Locker #20 in a 10-locker facility throws an error immediately because that locker index does not exist.`,
+2. Essential Array Algorithms:
+- Largest / Second-Largest: Single-pass traversal maintaining tracking variables.
+- Reversal: Two-pointer technique swapping elements in-place with O(1) extra space.
+- Duplicates: HashSet gives O(n) lookup and deduplication.`,
+          realWorldExample: 'A row of numbered lockers in a gym: each locker has a fixed index (0, 1, 2...), you can access locker #5 immediately in O(1) time without checking lockers 0-4, and trying to open locker #20 in a 10-locker bank throws an out-of-bounds error.',
           codeSnippet: {
-            code: `public class ArrayDemo {
+            code: `import java.util.*;
+
+public class ArrayOperationsDemo {
     public static void main(String[] args) {
-        // 1. One-dimensional array initialization
-        int[] arr = {10, 20, 30, 40};
+        int[] arr = {12, 35, 1, 10, 34, 1, 35};
 
-        // 2. Finding length using .length property
-        System.out.println("Array Length: " + arr.length);
-
-        // 3. Fast index access & processing with loop
-        System.out.print("Array elements: ");
-        for (int i = 0; i < arr.length; i++) {
-            System.out.print(arr[i] + (i < arr.length - 1 ? ", " : ""));
+        // 1. Largest element
+        int max = arr[0];
+        for (int num : arr) {
+            if (num > max) max = num;
         }
-        System.out.println();
 
-        // 4. Two-dimensional array (rows and columns)
-        int[][] matrix = {
-            {1, 2, 3},
-            {4, 5, 6}
-        };
-        System.out.println("2D Matrix element at [1][2]: " + matrix[1][2]);
-
-        // 5. Accessing an invalid index throws ArrayIndexOutOfBoundsException
-        try {
-            System.out.println("Accessing arr[5]: " + arr[5]);
-        } catch (ArrayIndexOutOfBoundsException e) {
-            System.out.println("Caught Exception: " + e.getClass().getSimpleName() + " (Index 5 out of bounds for length " + arr.length + ")");
+        // 2. Second-largest distinct element
+        int largest = Integer.MIN_VALUE, second = Integer.MIN_VALUE;
+        for (int num : arr) {
+            if (num > largest) {
+                second = largest;
+                largest = num;
+            } else if (num > second && num != largest) {
+                second = num;
+            }
         }
+
+        // 3. Finding duplicates using Set
+        Set<Integer> seen = new HashSet<>();
+        Set<Integer> duplicates = new LinkedHashSet<>();
+        for (int num : arr) {
+            if (!seen.add(num)) duplicates.add(num);
+        }
+
+        System.out.println("Largest: " + max);
+        System.out.println("Second Largest: " + second);
+        System.out.println("Duplicates: " + duplicates);
     }
 }`,
-            input: "int[] arr = {10, 20, 30, 40}; int[][] matrix = {{1, 2, 3}, {4, 5, 6}};",
-            output: `Array Length: 4
-Array elements: 10, 20, 30, 40
-2D Matrix element at [1][2]: 6
-Caught Exception: ArrayIndexOutOfBoundsException (Index 5 out of bounds for length 4)`
+            input: "arr = {12, 35, 1, 10, 34, 1, 35}",
+            output: `Largest: 35
+Second Largest: 34
+Duplicates: [1, 35]`
           },
-          codeExample: `int[] arr = {10, 20, 30, 40};
-System.out.println("Length: " + arr.length);
-System.out.println("First element: " + arr[0]);`,
+          codeExample: `int[] arr = {12, 35, 1, 10, 34};
+int max = arr[0];
+for (int num : arr) if (num > max) max = num;`,
           questions: [
             {
               id: 'arr-q1',
-              question: 'What is an Array in Java?',
-              answer: 'An array is a data structure used to store multiple values of the same data type in a single variable. Array elements are accessed using zero-based indexes, and an array has a fixed length.',
+              question: 'What is an Array?',
+              answer: 'An array is a data structure that stores a fixed number of elements of the same type. Elements are accessed using indexes starting from 0.',
+              codeExample: `int[] arr = new int[5]; // Fixed-size 5, zero-indexed`,
               difficulty: 'Essential'
             },
             {
               id: 'arr-q2',
-              question: 'What are the advantages of an Array?',
-              answer: 'An array stores multiple values of the same type, provides fast access to elements using indexes (O(1) time complexity), and makes it easy to process data using loops.',
+              question: 'How Do You Find the Largest Element in an Array?',
+              answer: 'Initialize a variable with the first element, then traverse the array and update the variable whenever a larger element is found.',
+              codeExample: `int max = arr[0];\nfor (int i = 1; i < arr.length; i++) {\n    if (arr[i] > max) max = arr[i];\n}`,
               difficulty: 'Essential'
             },
             {
               id: 'arr-q3',
-              question: 'What is the difference between an Array and an ArrayList?',
-              answer: '• An array has a fixed length, whereas an ArrayList can grow or shrink dynamically.\n• An array can store primitives and objects, whereas an ArrayList stores objects and uses wrapper classes for primitive values.\n• An array uses the .length property, whereas an ArrayList uses the size() method.',
+              question: 'How Do You Find the Second-Largest Element in an Array?',
+              answer: 'Traverse the array while maintaining the largest and second-largest distinct values. Update them whenever a larger value is found.',
+              codeExample: `int largest = Integer.MIN_VALUE, second = Integer.MIN_VALUE;\nfor (int num : arr) {\n    if (num > largest) {\n        second = largest;\n        largest = num;\n    } else if (num > second && num != largest) {\n        second = num;\n    }\n}`,
               difficulty: 'Essential'
             },
             {
               id: 'arr-q4',
-              question: 'What is the difference between a one-dimensional and a two-dimensional array?',
-              answer: '• A one-dimensional (1D) array stores elements in a single linear sequence.\n• A two-dimensional (2D) array organizes elements into rows and columns (arrays of arrays).',
+              question: 'How Do You Reverse an Array?',
+              answer: 'Use two pointers: one at the beginning and one at the end. Swap their elements and move both pointers toward the center.',
+              codeExample: `int left = 0, right = arr.length - 1;\nwhile (left < right) {\n    int temp = arr[left];\n    arr[left] = arr[right];\n    arr[right] = temp;\n    left++;\n    right--;\n}`,
               difficulty: 'Essential'
             },
             {
               id: 'arr-q5',
-              question: 'How do you find the length of an array in Java?',
-              answer: 'In Java, the length property returns the number of elements an array can hold.\n\nExample:\nint[] arr = {10, 20, 30, 40};\nSystem.out.println(arr.length);\n\nOutput:\n4',
+              question: 'How Do You Remove Duplicate Elements from an Array?',
+              answer: 'Use a HashSet to track elements already seen, or use a nested loop to identify duplicates.',
+              codeExample: `Set<Integer> uniqueSet = new LinkedHashSet<>();\nfor (int num : arr) uniqueSet.add(num);\n// uniqueSet contains all distinct elements in original insertion order`,
               difficulty: 'Essential'
             },
             {
               id: 'arr-q6',
-              question: 'What happens when you access an invalid array index?',
-              answer: 'Java throws an unchecked ArrayIndexOutOfBoundsException at runtime when you access an array using an invalid index (e.g. index < 0 or index >= arr.length).\n\nExample:\nint[] arr = {10, 20, 30};\nSystem.out.println(arr[5]);\n\nOutput:\nArrayIndexOutOfBoundsException',
+              question: 'How Do You Find Duplicate Elements in an Array?',
+              answer: 'Traverse the array and use a HashSet to track previously seen elements. If an element is already present, it is a duplicate.',
+              codeExample: `Set<Integer> seen = new HashSet<>();\nfor (int num : arr) {\n    if (!seen.add(num)) {\n        System.out.println("Duplicate found: " + num);\n    }\n}`,
               difficulty: 'Essential'
             }
           ]
@@ -1678,64 +2345,100 @@ System.out.println(s1.equals(s2));`,
           description: 'Comprehensive interview definitions, examples, and rules for StringBuilder vs StringBuffer & Key String Operations.',
           difficulty: 'Essential',
           studyTime: '8 minutes',
-          definition: `1. STRING VS STRINGBUILDER VS STRINGBUFFER
-String: String is immutable, which means its value cannot be changed after creation.
-StringBuilder: StringBuilder is mutable, which means its value can be changed without creating a new object for every modification. It is faster for repeated string modifications in a single thread.
-StringBuffer: StringBuffer is mutable, and its methods are synchronized, making it suitable for thread-safe operations.
+          definition: `STRINGBUILDER VS STRINGBUFFER
+• StringBuilder: Mutable, not thread-safe, and generally faster for single-threaded operations.
+• StringBuffer: Mutable and synchronized, making it suitable for thread-safe operations when shared between threads.
 
-2. STRINGBUILDER LENGTH AND CAPACITY
-length(): Returns the number of characters currently stored in the StringBuilder.
-capacity(): Returns the amount of character storage available before more capacity is needed. The default capacity of an empty StringBuilder is 16.
+STRING VS STRINGBUILDER
+String is immutable, meaning its value cannot be changed after creation. StringBuilder is mutable, meaning its content can be modified without creating a new object for every operation.
 
-3. SPLIT() VS STRINGTOKENIZER
-split(): The split() method divides a String into parts using a regular expression and returns a String array.
-StringTokenizer: StringTokenizer is a class used to divide a String into tokens using delimiters. It is a legacy class, and split() is often preferred in modern Java.`,
-          interviewAnswer: `String is immutable, whereas StringBuilder and StringBuffer are mutable. StringBuilder is generally faster for repeated modifications in a single thread because it is not synchronized. StringBuffer uses synchronized methods for thread safety.
+HOW TO REVERSE A STRING
+Create a StringBuilder object from the String and call its reverse() method.
 
-In StringBuilder, length() gives the number of characters, while capacity() gives the available character storage.
+PALINDROME CHECKING
+Reverse the String and compare it with the original String. If both are equal, it is a palindrome.
 
-The split() method divides a String using a regular expression and returns a String array, whereas StringTokenizer separates a String into tokens using delimiters.`,
-          explanation: `1. String vs StringBuilder vs StringBuffer:
-- String: String is immutable, which means its value cannot be changed after creation.
-- StringBuilder: StringBuilder is mutable, which means its value can be changed without creating a new object for every modification. It is faster for repeated string modifications in a single thread.
-- StringBuffer: StringBuffer is mutable, and its methods are synchronized, making it suitable for thread-safe operations.
+== VS EQUALS() FOR STRINGS
+== compares object references, whereas equals() compares String contents.`,
+          interviewAnswer: 'String is immutable, whereas StringBuilder and StringBuffer are mutable. StringBuilder is non-synchronized and faster for single-threaded operations; StringBuffer is synchronized and thread-safe. To reverse a string or check for a palindrome, instantiate a StringBuilder and use its reverse() method. Always use equals() to compare string contents rather than ==, which only compares memory addresses.',
+          explanation: `1. Difference Between StringBuilder and StringBuffer:
+- StringBuilder: Mutable, not thread-safe, and generally faster for single-threaded operations.
+- StringBuffer: Mutable and synchronized, making it suitable for thread-safe operations when shared between threads.
 
-2. StringBuilder Length and Capacity:
-- length(): Returns the number of characters currently stored in the StringBuilder.
-- capacity(): Returns the amount of character storage available before more capacity is needed. The default capacity of an empty StringBuilder is 16.
+2. Difference Between String and StringBuilder:
+String is immutable (value cannot be changed after creation). StringBuilder is mutable (content can be modified in-place without creating a new object).
 
-3. split() vs StringTokenizer:
-- split(): The split() method divides a String into parts using a regular expression and returns a String array.
-- StringTokenizer: StringTokenizer is a class used to divide a String into tokens using delimiters. It is a legacy class, and split() is often preferred in modern Java.`,
-          realWorldExample: 'String is a stone tablet (words carved in stone cannot change). StringBuilder is a whiteboard with a dry-erase marker (you can erase and append text instantly without throwing the whiteboard away).',
+3. String Reversal and Palindrome:
+- Reversal: new StringBuilder(str).reverse().toString()
+- Palindrome: str.equals(new StringBuilder(str).reverse().toString())
+
+4. == vs equals():
+- == checks if both references point to the same memory address.
+- equals() checks if both strings contain the same characters in the same sequence.`,
+          realWorldExample: 'String is a stone tablet (words carved in stone cannot change). StringBuilder is a whiteboard with a dry-erase marker (you can erase, append, and reverse text instantly without buying a new whiteboard).',
           codeSnippet: {
-            code: `public class StringBuilderDemo {
+            code: `public class StringOperationsDemo {
     public static void main(String[] args) {
-        StringBuilder sb = new StringBuilder("Java");
-        sb.append("Script");
-        System.out.println("Modified StringBuilder: " + sb);
-        System.out.println("length(): " + sb.length());     // 10 characters
-        System.out.println("capacity(): " + sb.capacity()); // 16 + 4 = 20
+        // 1. StringBuilder reversal
+        String original = "madam";
+        String reversed = new StringBuilder(original).reverse().toString();
 
-        // split() example
-        String[] parts = "apple,banana,mango".split(",");
-        System.out.println("Split parts count: " + parts.length);
+        // 2. Palindrome check
+        boolean isPalindrome = original.equals(reversed);
+        System.out.println("Original: " + original);
+        System.out.println("Reversed: " + reversed);
+        System.out.println("Is Palindrome: " + isPalindrome);
+
+        // 3. == vs equals()
+        String s1 = new String("Java");
+        String s2 = new String("Java");
+        System.out.println("s1 == s2: " + (s1 == s2));         // false (different references)
+        System.out.println("s1.equals(s2): " + s1.equals(s2)); // true (same content)
     }
 }`,
-            input: "sb = 'Java', append 'Script'",
-            output: `Modified StringBuilder: JavaScript
-length(): 10
-capacity(): 20
-Split parts count: 3`
+            input: "original = 'madam', s1 and s2 = new String('Java')",
+            output: `Original: madam
+Reversed: madam
+Is Palindrome: true
+s1 == s2: false
+s1.equals(s2): true`
           },
-          codeExample: `StringBuilder sb = new StringBuilder("Java");
-sb.append("Script");
-System.out.println(sb);`,
+          codeExample: `// String reversal & palindrome check
+String reversed = new StringBuilder("madam").reverse().toString();
+boolean isPal = "madam".equals(reversed);`,
           questions: [
             {
               id: 'sb-q1',
-              question: 'What is the difference between String, StringBuilder, and StringBuffer?',
-              answer: 'String is immutable. StringBuilder is mutable and not thread-safe (fastest, ideal for single-threaded loops). StringBuffer is mutable and synchronized/thread-safe (slower due to synchronization overhead).',
+              question: 'What is the Difference Between StringBuilder and StringBuffer?',
+              answer: '• StringBuilder: Mutable, not thread-safe, and generally faster for single-threaded operations.\n• StringBuffer: Mutable and synchronized, making it suitable for thread-safe operations when shared between threads.',
+              difficulty: 'Essential'
+            },
+            {
+              id: 'sb-q2',
+              question: 'What Is the Difference Between String and StringBuilder?',
+              answer: 'String is immutable, meaning its value cannot be changed after creation. StringBuilder is mutable, meaning its content can be modified without creating a new object for every operation.',
+              codeExample: `String s = "Hello"; s += " World"; // Creates new object\nStringBuilder sb = new StringBuilder("Hello"); sb.append(" World"); // Modifies in-place`,
+              difficulty: 'Essential'
+            },
+            {
+              id: 'sb-q3',
+              question: 'How Do You Reverse a String in Java?',
+              answer: 'Create a StringBuilder object from the String and call its reverse() method.',
+              codeExample: `String str = "hello";\nString reversed = new StringBuilder(str).reverse().toString();\nSystem.out.println(reversed); // "olleh"`,
+              difficulty: 'Essential'
+            },
+            {
+              id: 'sb-q4',
+              question: 'How Do You Check Whether a String Is a Palindrome?',
+              answer: 'Reverse the String and compare it with the original String. If both are equal, it is a palindrome.',
+              codeExample: `String str = "racecar";\nString rev = new StringBuilder(str).reverse().toString();\nboolean isPalindrome = str.equalsIgnoreCase(rev);`,
+              difficulty: 'Essential'
+            },
+            {
+              id: 'sb-q5',
+              question: 'What Is the Difference Between == and equals() for Strings?',
+              answer: '== compares object references, whereas equals() compares String contents.',
+              codeExample: `String s1 = new String("test");\nString s2 = new String("test");\nSystem.out.println(s1 == s2);      // false (different heap objects)\nSystem.out.println(s1.equals(s2));  // true (identical content)`,
               difficulty: 'Essential'
             }
           ]
@@ -1753,56 +2456,35 @@ System.out.println(sb);`,
           description: 'Comprehensive interview definitions, examples, and rules for Exception Hierarchy (Throwable, Error vs Exception, Checked vs Unchecked).',
           difficulty: 'Essential',
           studyTime: '10 minutes',
-          definition: `WHAT IS AN EXCEPTION?
-An exception is an unwanted event that occurs during program execution and interrupts the normal flow of the program.
+          definition: `EXCEPTION HIERARCHY
+Throwable is the parent class of Error and Exception. Exception includes checked exceptions and the unchecked RuntimeException class and its subclasses.
 
-EXCEPTION HIERARCHY:
-Throwable is the parent class of Error and Exception.
-Exception is divided into Checked and Unchecked Exceptions.
+ERROR VS EXCEPTION
+• Error: Represents serious problems generally outside an application's normal handling, such as OutOfMemoryError.
+• Exception: Represents conditions an application may handle, such as IOException.
 
-ERROR VS EXCEPTION:
-Error:
-An Error is a serious problem that usually occurs at the JVM or system level and is generally difficult to recover from.
-Example: OutOfMemoryError, StackOverflowError.
+CHECKED EXCEPTIONS
+A checked exception is checked by the compiler. It must be caught or declared using throws.
+Example: IOException
 
-Exception:
-An Exception is an abnormal condition that occurs during program execution and can be handled to maintain the normal flow of the program.
-Example: IOException, ArithmeticException.
+UNCHECKED EXCEPTIONS
+An unchecked exception is not checked by the compiler at compile time. It includes RuntimeException and its subclasses.
+Example: NullPointerException
 
-CHECKED VS UNCHECKED EXCEPTIONS:
-Checked Exception:
-A checked exception is checked by the compiler. We must handle it using try-catch or declare it using throws.
-Example: IOException, SQLException.
+CHECKED VS UNCHECKED COMPARISON
+Checked exceptions must be caught or declared using throws, whereas unchecked exceptions do not have this requirement.`,
+          interviewAnswer: 'In Java, Throwable is the root parent class, branching into Error and Exception. Errors represent fatal system problems (OutOfMemoryError) that applications cannot handle. Exceptions represent recoverable conditions. Exceptions are divided into Checked Exceptions (checked by the compiler, requiring try-catch or throws, e.g. IOException) and Unchecked Exceptions (subclasses of RuntimeException, not checked at compile time, e.g. NullPointerException).',
+          explanation: `1. Exception Hierarchy:
+Throwable is the parent class of Error and Exception. Exception includes checked exceptions and the unchecked RuntimeException class and its subclasses.
 
-Unchecked Exception:
-An unchecked exception is not checked by the compiler. Handling or declaring it is not compulsory.
-Example: NullPointerException, ArithmeticException.`,
-          interviewAnswer: `In Java, Throwable is the parent class of Error and Exception. An Error represents a serious problem, such as OutOfMemoryError. An Exception represents a problem that a program may handle. Exceptions are divided into checked and unchecked exceptions. Checked exceptions must be caught or declared using throws, whereas unchecked exceptions do not require compulsory handling or declaration.`,
-          explanation: `1. What is an Exception?
-An exception is an unwanted event that occurs during program execution and interrupts the normal flow of the program.
+2. Error vs Exception:
+- Error: Serious problems generally outside an application's normal handling (e.g. OutOfMemoryError, StackOverflowError).
+- Exception: Abnormal conditions that an application can handle (e.g. IOException, ArithmeticException).
 
-2. Exception Hierarchy:
-Throwable is the parent class of Error and Exception.
-Exception is divided into Checked and Unchecked Exceptions.
-
-3. Error vs Exception:
-Error:
-An Error is a serious problem that usually occurs at the JVM or system level and is generally difficult to recover from.
-Example: OutOfMemoryError, StackOverflowError.
-
-Exception:
-An Exception is an abnormal condition that occurs during program execution and can be handled to maintain the normal flow of the program.
-Example: IOException, ArithmeticException.
-
-4. Checked vs Unchecked Exceptions:
-Checked Exception:
-A checked exception is checked by the compiler. We must handle it using try-catch or declare it using throws.
-Example: IOException, SQLException.
-
-Unchecked Exception:
-An unchecked exception is not checked by the compiler. Handling or declaring it is not compulsory.
-Example: NullPointerException, ArithmeticException.`,
-          realWorldExample: 'A flat tire on your car is an Exception (you can pull over, replace it with a spare tire, and continue your journey). The bridge collapsing beneath your car is an Error (catastrophic failure that you cannot recover from).',
+3. Checked vs Unchecked:
+- Checked: Checked by compiler; must be caught or declared with throws.
+- Unchecked: Not checked by compiler; includes RuntimeException and subclasses.`,
+          realWorldExample: 'A flat tire on your car is an Exception (you pull over, put on the spare tire, and continue). The bridge collapsing beneath your car is an Error (catastrophic failure that you cannot recover from).',
           codeSnippet: {
             code: `public class ExceptionHierarchyDemo {
     public static void main(String[] args) {
@@ -1819,19 +2501,42 @@ Example: NullPointerException, ArithmeticException.`,
             output: `Caught Unchecked Exception: / by zero
 Application recovered and continued execution!`
           },
-          codeExample: `try { int result = 10 / 0; }
+          codeExample: `// Checked: needs try-catch or throws
+// Unchecked: RuntimeException subclass
+try { int result = 10 / 0; }
 catch (ArithmeticException e) { System.out.println(e); }`,
           questions: [
             {
               id: 'ex-q1',
-              question: 'What is the difference between Checked and Unchecked Exceptions in Java?',
-              answer: 'Checked exceptions are checked at compile time; the compiler requires them to be caught in a try-catch block or declared in the method signature with "throws" (e.g. IOException, SQLException). Unchecked exceptions are subclasses of RuntimeException; they occur at runtime and do not require explicit declaration or handling (e.g. NullPointerException, ArithmeticException).',
+              question: 'What Is the Exception Hierarchy in Java?',
+              answer: 'Throwable is the parent class of Error and Exception. Exception includes checked exceptions and the unchecked RuntimeException class and its subclasses.',
+              codeExample: `// Object -> Throwable -> (Error, Exception -> RuntimeException)`,
               difficulty: 'Essential'
             },
             {
               id: 'ex-q2',
-              question: 'What is the difference between Error and Exception?',
-              answer: 'An Error is a serious problem that usually occurs at the JVM or system level and is generally difficult to recover from (e.g. OutOfMemoryError, StackOverflowError).\n\nAn Exception is an abnormal condition that occurs during program execution and can be handled to maintain the normal flow of the program (e.g. IOException, ArithmeticException).',
+              question: 'What Is the Difference Between Error and Exception?',
+              answer: '• Error: Represents serious problems generally outside an application\'s normal handling, such as OutOfMemoryError and StackOverflowError.\n• Exception: Represents conditions an application may handle, such as IOException and ArithmeticException.',
+              difficulty: 'Essential'
+            },
+            {
+              id: 'ex-q3',
+              question: 'What Is a Checked Exception?',
+              answer: 'A checked exception is checked by the compiler. It must be caught or declared using throws.\n\nExample: IOException, SQLException.',
+              codeExample: `void readFile() throws IOException { // Must be declared or handled\n    FileReader file = new FileReader("test.txt");\n}`,
+              difficulty: 'Essential'
+            },
+            {
+              id: 'ex-q4',
+              question: 'What Is an Unchecked Exception?',
+              answer: 'An unchecked exception is not checked by the compiler at compile time. It includes RuntimeException and its subclasses.\n\nExample: NullPointerException, ArithmeticException.',
+              codeExample: `String s = null;\nSystem.out.println(s.length()); // Throws NullPointerException at runtime`,
+              difficulty: 'Essential'
+            },
+            {
+              id: 'ex-q5',
+              question: 'What Is the Difference Between Checked and Unchecked Exceptions?',
+              answer: 'Checked exceptions must be caught or declared using throws, whereas unchecked exceptions do not have this requirement.',
               difficulty: 'Essential'
             }
           ]
@@ -1842,47 +2547,47 @@ catch (ArithmeticException e) { System.out.println(e); }`,
           description: 'Comprehensive interview definitions, examples, and rules for try, catch, finally & Multiple Catch Blocks.',
           difficulty: 'Essential',
           studyTime: '8 minutes',
-          definition: `TRY BLOCK:
-The try block contains code that may cause an exception during program execution.
+          definition: `TRY BLOCK
+A try block contains code that might throw an exception.
 
-CATCH BLOCK:
-The catch block handles an exception thrown from the try block so that the program can continue normally.
+CATCH BLOCK
+A catch block handles an exception thrown from its associated try block.
 
-FINALLY BLOCK:
-The finally block is used to execute important cleanup code, such as closing resources. It normally executes whether an exception occurs or not.
+FINALLY BLOCK
+A finally block is used for cleanup code and normally executes whether an exception occurs or not.
 
-MULTIPLE CATCH BLOCKS:
-Java allows multiple catch blocks to handle different types of exceptions. More specific exceptions must be placed before more general exceptions.
+MULTIPLE CATCH BLOCKS
+Yes. We can use multiple catch blocks to handle different exception types. More specific exception types must appear before more general types.
 
-getMessage():
-The getMessage() method returns the detail message describing an exception.
+TRY WITHOUT CATCH
+Yes. A try block can be followed by finally without a catch block. A try-with-resources statement can also be used without an explicit catch or finally.
 
-printStackTrace():
-The printStackTrace() method prints the exception details and the sequence of method calls that led to the exception.`,
-          interviewAnswer: `In Java, the try block contains code that may throw an exception, the catch block handles the exception, and the finally block is used for cleanup and normally executes whether an exception occurs or not. We can use multiple catch blocks to handle different exceptions, placing specific exceptions before general ones. The getMessage() method returns the exception message, while printStackTrace() prints the exception details and stack trace.`,
+UNHANDLED EXCEPTIONS
+The exception propagates up the call stack. If it remains unhandled, the thread's uncaught-exception handler processes it, and the thread generally terminates.`,
+          interviewAnswer: 'In Java, the try block contains code that may throw an exception, catch handles specific exceptions to prevent abrupt termination, and finally executes critical cleanup code whether an exception occurred or not. Multiple catch blocks allow specialized handling per exception type (subclass before superclass). A try block can be paired with finally without catch, and unhandled exceptions bubble up the call stack until reaching the thread uncaught-exception handler.',
           explanation: `1. Try Block:
-The try block contains code that may cause an exception during program execution.
+Contains code that might throw an exception during execution.
 
 2. Catch Block:
-The catch block handles an exception thrown from the try block so that the program can continue normally.
+Catches and handles an exception thrown from its associated try block.
 
 3. Finally Block:
-The finally block is used to execute important cleanup code, such as closing resources. It normally executes whether an exception occurs or not.
+Used for cleanup code and normally executes whether an exception occurs or not.
 
 4. Multiple Catch Blocks:
-Java allows multiple catch blocks to handle different types of exceptions. More specific exceptions must be placed before more general exceptions.
+Handles different exception types; specific exception types must appear before general types.
 
-5. getMessage():
-The getMessage() method returns the detail message describing an exception.
+5. try Without catch:
+A try block can be followed by finally without catch, or used as a try-with-resources statement.
 
-6. printStackTrace():
-The printStackTrace() method prints the exception details and the sequence of method calls that led to the exception.`,
+6. Unhandled Exceptions:
+Propagate up the call stack until caught or processed by the thread's uncaught exception handler, terminating the thread.`,
           realWorldExample: 'A try-catch-finally is like booking a flight ticket: Try to charge the credit card; Catch insufficient balance and notify user; Finally, close the banking session whether payment succeeded or failed.',
           codeSnippet: {
             code: `public class TryCatchFinallyDemo {
     public static void main(String[] args) {
         try {
-            int result = 10 / 0;
+            int result = 10 / 0; // Throws ArithmeticException
         } catch (ArithmeticException e) {
             System.out.println("Handled ArithmeticException: " + e.getMessage());
         } catch (Exception e) {
@@ -1898,19 +2603,48 @@ Finally block executed for resource cleanup!`
           },
           codeExample: `try { int result = 10 / 0; }
 catch (ArithmeticException e) { System.out.println(e.getMessage()); }
-finally { System.out.println("Cleanup"); }`,
+finally { System.out.println("Cleanup executed"); }`,
           questions: [
             {
               id: 'tcf-q1',
-              question: 'Does a finally block always execute in Java?',
-              answer: 'Yes, the finally block executes almost unconditionally whether an exception occurs or not, even if there is a return statement inside the try or catch block. The only exceptions are when System.exit(0) is called or the JVM abruptly crashes.',
+              question: 'What Is a try Block?',
+              answer: 'A try block contains code that might throw an exception.',
+              codeExample: `try {\n    int data = 50 / 0; // Risky code\n}`,
               difficulty: 'Essential'
             },
             {
               id: 'tcf-q2',
-              question: 'Why must subclass catch blocks appear before superclass catch blocks in multiple catch?',
-              answer: 'Because Java evaluates catch blocks in top-down sequential order. If a superclass catch block (like catch (Exception e)) was placed first, it would catch all exceptions, rendering subsequent subclass catch blocks unreachable and causing a compile error.',
-              difficulty: 'Common'
+              question: 'What Is a catch Block?',
+              answer: 'A catch block handles an exception thrown from its associated try block.',
+              codeExample: `catch (ArithmeticException e) {\n    System.out.println("Division by zero prevented");\n}`,
+              difficulty: 'Essential'
+            },
+            {
+              id: 'tcf-q3',
+              question: 'What Is a finally Block?',
+              answer: 'A finally block is used for cleanup code and normally executes whether an exception occurs or not.',
+              codeExample: `finally {\n    System.out.println("Always executed for resource release");\n}`,
+              difficulty: 'Essential'
+            },
+            {
+              id: 'tcf-q4',
+              question: 'Can We Use Multiple Catch Blocks?',
+              answer: 'Yes. We can use multiple catch blocks to handle different exception types. More specific exception types must appear before more general types.',
+              codeExample: `try { ... }\ncatch (ArithmeticException e) { } // Subclass first\ncatch (Exception e) { }           // Superclass last`,
+              difficulty: 'Essential'
+            },
+            {
+              id: 'tcf-q5',
+              question: 'Can We Use try Without catch?',
+              answer: 'Yes. A try block can be followed by finally without a catch block. A try-with-resources statement can also be used without an explicit catch or finally.',
+              codeExample: `try {\n    // Code\n} finally {\n    // Cleanup\n}`,
+              difficulty: 'Essential'
+            },
+            {
+              id: 'tcf-q6',
+              question: 'What Happens If an Exception Is Not Handled?',
+              answer: 'The exception propagates up the call stack. If it remains unhandled, the thread\'s uncaught-exception handler processes it, and the thread generally terminates.',
+              difficulty: 'Essential'
             }
           ]
         },
@@ -1920,44 +2654,40 @@ finally { System.out.println("Cleanup"); }`,
           description: 'Comprehensive interview definitions, examples, and rules for throw vs throws, Exception Propagation, Ducking & Custom Exceptions.',
           difficulty: 'Essential',
           studyTime: '10 minutes',
-          definition: `1. THROW VS THROWS
-throw:
-The throw keyword is used to explicitly throw an exception object.
-Example: throw new ArithmeticException("Invalid operation");
+          definition: `THROW VS THROWS
+• throw: Used to explicitly throw an exception.
+• throws: Used in a method declaration to indicate exceptions that may be thrown to the caller.
 
-throws:
-The throws keyword is used in a method declaration to tell the caller which exceptions may occur.
-Example: void display() throws IOException
+EXCEPTION PROPAGATION
+Exception propagation is the process of passing an exception from the method where it occurs to its calling methods until it is handled.
 
-2. EXCEPTION PROPAGATION
-Exception propagation means an exception moves from the current method to the calling method when it is not handled in the current method.
+EXCEPTION DUCKING
+Exception ducking means declaring an exception using throws and allowing the calling method to handle it instead of handling it in the current method.
 
-3. EXCEPTION DUCKING
-Exception ducking means declaring an exception using throws instead of handling it in the current method. The responsibility is passed to the calling method.
+CUSTOM EXCEPTIONS
+A custom exception is a user-defined exception created by extending Exception or RuntimeException.
 
-4. CUSTOM EXCEPTION
-A custom exception is an exception created by a programmer to handle application-specific errors.
+HOW TO CREATE A CUSTOM EXCEPTION
+Create a class that extends Exception or RuntimeException, define a constructor, and use throw to throw an instance when the required condition occurs.
 
-Extend Exception to create a checked exception or RuntimeException to create an unchecked exception.`,
-          interviewAnswer: `In Java, throw is used to throw an exception explicitly, whereas throws is used to declare exceptions in a method signature. Exception propagation means an unhandled exception moves up the call stack until a matching handler is found. Exception ducking means passing the responsibility of handling an exception to the caller using throws. A custom exception is a user-defined exception created to handle application-specific errors.`,
+EXCEPTION VS RUNTIMEEXCEPTION
+Exception is the parent class for many application exceptions, including checked exceptions. RuntimeException is a subclass of Exception whose subclasses are unchecked.`,
+          interviewAnswer: 'throw explicitly instantiates and raises an exception inside a method, while throws declares potential exceptions in a method signature to pass responsibility to the caller. Exception propagation moves an unhandled exception up the call stack. Exception ducking defers handling to the caller via throws. Custom exceptions represent business-specific failures by subclassing Exception (checked) or RuntimeException (unchecked).',
           explanation: `1. throw vs throws:
-throw:
-The throw keyword is used to explicitly throw an exception object.
-Example: throw new ArithmeticException("Invalid operation");
-
-throws:
-The throws keyword is used in a method declaration to tell the caller which exceptions may occur.
-Example: void display() throws IOException
+- throw: explicitly throws an exception instance.
+- throws: declares exceptions a method might pass to callers.
 
 2. Exception Propagation:
-Exception propagation means an exception moves from the current method to the calling method when it is not handled in the current method.
+Passing an exception up the call stack until handled or reaching the JVM.
 
 3. Exception Ducking:
-Exception ducking means declaring an exception using throws instead of handling it in the current method. The responsibility is passed to the calling method.
+Declaring exceptions using throws to pass handling responsibility to the caller.
 
 4. Custom Exception:
-A custom exception is an exception created by a programmer to handle application-specific errors.
-Extend Exception to create a checked exception or RuntimeException to create an unchecked exception.`,
+A user-defined class extending Exception (checked) or RuntimeException (unchecked).
+
+5. Exception vs RuntimeException:
+Exception includes checked exceptions; RuntimeException represents unchecked runtime flaws.`,
           realWorldExample: 'A bank teller detecting a forged signature uses "throw" to raise an alert. The manager uses "throws" to notify the police department (caller) that this transaction might encounter a FraudException.',
           codeSnippet: {
             code: `class InvalidAgeException extends Exception {
@@ -1967,10 +2697,10 @@ Extend Exception to create a checked exception or RuntimeException to create an 
 }
 
 public class CustomExceptionDemo {
-    // 'throws' declares the exception to callers
+    // 'throws' declares the exception to callers (Exception Ducking)
     static void validateAge(int age) throws InvalidAgeException {
         if (age < 18) {
-            // 'throw' explicitly creates and throws the exception
+            // 'throw' explicitly throws the exception instance
             throw new InvalidAgeException("Age " + age + " is below legal voting age!");
         }
         System.out.println("Age valid for voting.");
@@ -1988,19 +2718,46 @@ public class CustomExceptionDemo {
             output: `Caught Custom Exception: Age 15 is below legal voting age!`
           },
           codeExample: `class InvalidAgeException extends Exception {
-  InvalidAgeException(String message) { super(message); }
+  InvalidAgeException(String msg) { super(msg); }
 }`,
           questions: [
             {
               id: 'th-q1',
-              question: 'What is the difference between throw and throws in Java?',
-              answer: '1. "throw" is a keyword used inside a method body to explicitly throw an exception instance (e.g. throw new Exception()).\n2. "throws" is a keyword used in the method signature to declare that the method might throw one or more exception classes to its caller (e.g. void test() throws IOException).',
+              question: 'What Is the Difference Between throw and throws?',
+              answer: '• throw: Used inside a method body to explicitly throw an exception object.\n• throws: Used in a method declaration to indicate exceptions that may be thrown to the caller.',
+              codeExample: `void check(int val) throws Exception { // throws in signature\n    if (val < 0) throw new Exception("Negative"); // throw in body\n}`,
               difficulty: 'Essential'
             },
             {
               id: 'th-q2',
-              question: 'How do you create a custom checked vs unchecked exception in Java?',
-              answer: 'To create a custom checked exception, extend java.lang.Exception. To create a custom unchecked exception, extend java.lang.RuntimeException. Both should provide a constructor passing an error message to super(message).',
+              question: 'What Is Exception Propagation?',
+              answer: 'Exception propagation is the process of passing an exception from the method where it occurs to its calling methods up the call stack until it is handled.',
+              difficulty: 'Essential'
+            },
+            {
+              id: 'th-q3',
+              question: 'What Is Exception Ducking?',
+              answer: 'Exception ducking means declaring an exception using throws and allowing the calling method to handle it instead of handling it in the current method.',
+              codeExample: `void processFile() throws IOException { // Ducks handling to caller\n    new FileReader("data.txt");\n}`,
+              difficulty: 'Essential'
+            },
+            {
+              id: 'th-q4',
+              question: 'What Is a Custom Exception?',
+              answer: 'A custom exception is a user-defined exception created by extending Exception or RuntimeException to handle application-specific business rules.',
+              difficulty: 'Essential'
+            },
+            {
+              id: 'th-q5',
+              question: 'How Do You Create a Custom Exception?',
+              answer: 'Create a class that extends Exception or RuntimeException, define a constructor passing the message to super(), and use throw to throw an instance when the required condition occurs.',
+              codeExample: `class InsufficientFundsException extends Exception {\n    public InsufficientFundsException(String msg) { super(msg); }\n}`,
+              difficulty: 'Essential'
+            },
+            {
+              id: 'th-q6',
+              question: 'What Is the Difference Between Exception and RuntimeException?',
+              answer: 'Exception is the parent class for many application exceptions, including checked exceptions that must be handled or declared. RuntimeException is a subclass of Exception whose subclasses are unchecked exceptions that do not require mandatory handling.',
               difficulty: 'Essential'
             }
           ]
@@ -2018,37 +2775,44 @@ public class CustomExceptionDemo {
           description: 'Comprehensive interview definitions, examples, and rules for Functional Interfaces & Lambda Expressions.',
           difficulty: 'Essential',
           studyTime: '10 minutes',
-          definition: `1. WHAT IS A FUNCTIONAL INTERFACE?
-A functional interface is an interface that contains exactly one abstract method. It can also contain multiple default and static methods.
+          definition: `FUNCTIONAL INTERFACES
+A functional interface is an interface with exactly one abstract method. It can also contain default and static methods.
 
-Example: Runnable, Comparator.
+LAMBDA EXPRESSIONS
+A lambda expression is a concise way to provide an implementation of a functional interface without creating a separate named class.
 
-@FunctionalInterface is used to tell the compiler to check whether the interface follows the functional interface rules.
+@FUNCTIONALINTERFACE ANNOTATION
+It tells the compiler that an interface is intended to be functional. The compiler reports an error if the interface does not satisfy the functional-interface requirements.
 
-2. WHAT IS A LAMBDA EXPRESSION?
-A lambda expression is a short way to provide an implementation of a functional interface without writing lengthy code.
+ADVANTAGES OF LAMBDA EXPRESSIONS
+They reduce boilerplate code, improve readability, and make it easier to work with functional interfaces and the Stream API.
 
-Example:
-() -> System.out.println("Hello");
+COMMON BUILT-IN FUNCTIONAL INTERFACES
+• Predicate: Accepts an input and returns a boolean.
+• Function: Accepts an input and returns a result.
+• Consumer: Accepts an input and returns no result.
+• Supplier: Provides a result without accepting an input.
 
-3. WHY DO WE USE LAMBDA EXPRESSIONS?
-Lambda expressions reduce code, improve readability, and make it easier to pass behavior as an argument.`,
-          interviewAnswer: `A functional interface is an interface that contains exactly one abstract method. A lambda expression provides a short implementation of that method without writing lengthy code. We use lambda expressions to reduce boilerplate code and make Java programs simpler and more readable.`,
-          explanation: `1. What is a Functional Interface?
-A functional interface is an interface that contains exactly one abstract method. It can also contain multiple default and static methods.
+LAMBDAS REQUIRE FUNCTIONAL INTERFACES
+No. A lambda expression needs a target functional-interface type to determine its parameter and return types.`,
+          interviewAnswer: 'A functional interface has exactly one abstract method (SAM), annotated with @FunctionalInterface. Lambda expressions provide a concise implementation of that abstract method without anonymous inner class boilerplate. Common built-in functional interfaces in java.util.function include Predicate (boolean test), Function (transform T to R), Consumer (consume with no return), and Supplier (produce a value). A lambda expression always requires a target functional interface type to bind parameter and return types.',
+          explanation: `1. What Is a Functional Interface?
+A functional interface is an interface with exactly one abstract method. It can also contain default and static methods.
 
-Example: Runnable, Comparator.
+2. What Is a Lambda Expression?
+A lambda expression is a concise way to provide an implementation of a functional interface without creating a separate named class.
 
-@FunctionalInterface is used to tell the compiler to check whether the interface follows the functional interface rules.
+3. @FunctionalInterface Annotation:
+Tells the compiler that an interface is intended to be functional, generating an error if more than one abstract method is present.
 
-2. What is a Lambda Expression?
-A lambda expression is a short way to provide an implementation of a functional interface without writing lengthy code.
+4. Advantages:
+Reduces boilerplate, improves readability, and seamlessly powers the Stream API.
 
-Example:
-() -> System.out.println("Hello");
-
-3. Why Do We Use Lambda Expressions?
-Lambda expressions reduce code, improve readability, and make it easier to pass behavior as an argument.`,
+5. Common Built-in Interfaces:
+- Predicate<T>: T -> boolean
+- Function<T, R>: T -> R
+- Consumer<T>: T -> void
+- Supplier<T>: () -> T`,
           realWorldExample: 'Instead of hiring a courier company with a 5-page legal contract (anonymous inner class) to deliver one single envelope, you simply hand the envelope to a messenger directly (lambda expression).',
           codeSnippet: {
             code: `@FunctionalInterface
@@ -2080,14 +2844,42 @@ task.run();`,
           questions: [
             {
               id: 'lam-q1',
-              question: 'What is a Functional Interface in Java?',
-              answer: 'A functional interface is an interface that contains exactly one abstract method (Single Abstract Method). It can also contain default, static, and private methods. The @FunctionalInterface annotation can be used to ensure the compiler enforces this rule.',
+              question: 'What Is a Functional Interface?',
+              answer: 'A functional interface is an interface with exactly one abstract method. It can also contain default and static methods.',
+              codeExample: `@FunctionalInterface\ninterface Greeter {\n    void greet(String name); // Exactly 1 abstract method\n}`,
               difficulty: 'Essential'
             },
             {
               id: 'lam-q2',
-              question: 'What is a Lambda Expression in Java and what problem does it solve?',
-              answer: 'A lambda expression is an anonymous function that implements the single abstract method of a functional interface concisely. It eliminates verbose anonymous inner class syntax and enables passing behavior as data.',
+              question: 'What Is a Lambda Expression?',
+              answer: 'A lambda expression is a concise way to provide an implementation of a functional interface without creating a separate named class.',
+              codeExample: `Greeter g = name -> System.out.println("Hello, " + name);`,
+              difficulty: 'Essential'
+            },
+            {
+              id: 'lam-q3',
+              question: 'What Is the @FunctionalInterface Annotation?',
+              answer: 'It tells the compiler that an interface is intended to be functional. The compiler reports an error if the interface does not satisfy the functional-interface requirements.',
+              codeExample: `@FunctionalInterface // Compiler verifies Single Abstract Method\ninterface Printable {\n    void print();\n}`,
+              difficulty: 'Essential'
+            },
+            {
+              id: 'lam-q4',
+              question: 'What Are the Advantages of Lambda Expressions?',
+              answer: 'They reduce boilerplate code, improve readability, and make it easier to work with functional interfaces and the Stream API.',
+              difficulty: 'Essential'
+            },
+            {
+              id: 'lam-q5',
+              question: 'What Are Common Built-in Functional Interfaces in Java?',
+              answer: '• Predicate: Accepts an input and returns a boolean.\n• Function: Accepts an input and returns a result.\n• Consumer: Accepts an input and returns no result.\n• Supplier: Provides a result without accepting an input.',
+              codeExample: `Predicate<Integer> isEven = n -> n % 2 == 0;\nFunction<String, Integer> length = s -> s.length();\nConsumer<String> printer = s -> System.out.println(s);\nSupplier<Double> random = () -> Math.random();`,
+              difficulty: 'Essential'
+            },
+            {
+              id: 'lam-q6',
+              question: 'Can We Use a Lambda Expression Without a Functional Interface?',
+              answer: 'No. A lambda expression needs a target functional-interface type to determine its parameter and return types.',
               difficulty: 'Essential'
             }
           ]
@@ -2098,47 +2890,56 @@ task.run();`,
           description: 'Comprehensive interview definitions, examples, and rules for Nested & Inner Classes (Member, Static Nested, Local & Anonymous).',
           difficulty: 'Common',
           studyTime: '8 minutes',
-          definition: `REGULAR CLASS:
-A regular class is a standard class declared at top level or as a member. It defines fields, constructors, and methods and can be instantiated if it is not abstract.
+          definition: `NESTED CLASSES
+A nested class is a class declared inside another class or interface.
 
-INNER CLASS (NON-STATIC NESTED CLASS):
-A non-static nested class declared inside another class is an inner class. Its instance is associated with an instance of the enclosing class and it can access the enclosing object's private members. (Outer outer = new Outer(); Outer.Inner inner = outer.new Inner();)
+INNER CLASSES
+An inner class is a non-static nested class. It is associated with an instance of its enclosing class and can access its enclosing instance's members.
 
-STATIC NESTED CLASS:
-A static nested class does not require an instance of the outer class to be created.
+STATIC NESTED CLASSES
+A static nested class is declared using the static keyword inside another class. It does not require an instance of the enclosing class to be created.
 
-LOCAL CLASS:
-A local class is declared inside a method or block and is visible only within that scope.
+LOCAL INNER CLASSES
+A local inner class is declared inside a method, constructor, or block and can be used within that scope.
 
-ANONYMOUS CLASS:
-An anonymous class has no declared name and is used to instantiate a class or implement an interface while providing behavior at the point of use.`,
-          interviewAnswer: 'Java supports four types of nested classes: 1) Member Inner Class (non-static, requires an outer instance), 2) Static Nested Class (static, does not require an outer instance), 3) Local Inner Class (defined inside a method block), and 4) Anonymous Inner Class (declared and instantiated simultaneously without a name for one-time use).',
-          explanation: `1. Member Inner Class:
-Declared inside a class without static. Belongs to an instance of the outer class and has direct access to all outer fields (even private ones).
-Instantiated as: Outer.Inner in = new Outer().new Inner();
+ANONYMOUS INNER CLASSES
+An anonymous inner class is a class without a declared name that is defined and instantiated in a single expression, commonly to implement an interface or extend a class.
 
-2. Static Nested Class:
-Declared with static. Does not have a reference to the outer class instance and can only directly access outer static members.
-Instantiated as: Outer.StaticNested sn = new Outer.StaticNested();
+INNER CLASS VS STATIC NESTED CLASS
+• Inner Class: Requires an enclosing-class instance to be created and can access its instance members directly.
+• Static Nested Class: Does not require an enclosing-class instance and cannot directly access its instance members without an object reference.`,
+          interviewAnswer: 'In Java, a nested class is a class defined within another class. Non-static nested classes are called Inner Classes (Member, Local, and Anonymous) and are bound to an enclosing instance with direct access to its members. A Static Nested Class is declared with the static keyword, does not require an outer instance, and cannot directly access non-static instance fields of the enclosing class.',
+          explanation: `1. What Is a Nested Class?
+A nested class is a class declared inside another class or interface.
 
-3. Local Inner Class:
-Declared inside a method body. Scope is restricted solely to that method.
+2. What Is an Inner Class?
+An inner class is a non-static nested class. It is associated with an instance of its enclosing class and can access its enclosing instance's members.
 
-4. Anonymous Inner Class:
-A class with no name declared and instantiated on the fly to override a method or implement an interface (e.g. new Runnable() { public void run() {} }).`,
+3. What Is a Static Nested Class?
+A static nested class is declared using the static keyword inside another class. It does not require an instance of the enclosing class to be created.
+
+4. What Is a Local Inner Class?
+A local inner class is declared inside a method, constructor, or block and can be used within that scope.
+
+5. What Is an Anonymous Inner Class?
+An anonymous inner class is a class without a declared name that is defined and instantiated in a single expression, commonly to implement an interface or extend a class.
+
+6. Inner Class vs Static Nested Class:
+- Inner Class: Requires an enclosing-class instance to be created and can access its instance members directly.
+- Static Nested Class: Does not require an enclosing-class instance and cannot directly access its instance members without an object reference.`,
           realWorldExample: 'A Car has an Engine (Member Inner class: an engine cannot function without a car chassis). A Car has a standard CarManual (Static Nested class: you can read the manual on a bookshelf without owning the car).',
           codeSnippet: {
             code: `class Outer {
     private String secret = "Outer Secret";
 
-    // Non-static Inner Class
+    // 1. Non-static Member Inner Class
     class Inner {
         void reveal() {
             System.out.println("Inner accessed: " + secret);
         }
     }
 
-    // Static Nested Class
+    // 2. Static Nested Class
     static class StaticNested {
         void info() {
             System.out.println("Static Nested Class instantiated independently.");
@@ -2167,9 +2968,44 @@ Outer.Inner inner = outer.new Inner();`,
           questions: [
             {
               id: 'nc-q1',
-              question: 'What is the difference between a Static Nested Class and an Inner Class in Java?',
-              answer: 'An Inner Class is non-static and tied to an instance of the enclosing outer class, with full access to the outer instance\'s fields. A Static Nested Class is static, does not require an outer object instance, and cannot directly access non-static instance fields of the outer class.',
-              difficulty: 'Common'
+              question: 'What Is a Nested Class?',
+              answer: 'A nested class is a class declared inside another class or interface.',
+              codeExample: `class Outer {\n    class Nested { }\n}`,
+              difficulty: 'Essential'
+            },
+            {
+              id: 'nc-q2',
+              question: 'What Is an Inner Class?',
+              answer: 'An inner class is a non-static nested class. It is associated with an instance of its enclosing class and can access its enclosing instance\'s members.',
+              codeExample: `Outer outer = new Outer();\nOuter.Inner inner = outer.new Inner();`,
+              difficulty: 'Essential'
+            },
+            {
+              id: 'nc-q3',
+              question: 'What Is a Static Nested Class?',
+              answer: 'A static nested class is declared using the static keyword inside another class. It does not require an instance of the enclosing class to be created.',
+              codeExample: `Outer.StaticNested nested = new Outer.StaticNested();`,
+              difficulty: 'Essential'
+            },
+            {
+              id: 'nc-q4',
+              question: 'What Is a Local Inner Class?',
+              answer: 'A local inner class is declared inside a method, constructor, or block and can be used within that scope.',
+              codeExample: `void myMethod() {\n    class LocalHelper {\n        void run() { System.out.println("Local inner class"); }\n    }\n    new LocalHelper().run();\n}`,
+              difficulty: 'Essential'
+            },
+            {
+              id: 'nc-q5',
+              question: 'What Is an Anonymous Inner Class?',
+              answer: 'An anonymous inner class is a class without a declared name that is defined and instantiated in a single expression, commonly to implement an interface or extend a class.',
+              codeExample: `Runnable r = new Runnable() {\n    @Override\n    public void run() { System.out.println("Anonymous inner class running"); }\n};`,
+              difficulty: 'Essential'
+            },
+            {
+              id: 'nc-q6',
+              question: 'What Is the Difference Between an Inner Class and a Static Nested Class?',
+              answer: '• Inner Class: Requires an enclosing-class instance to be created and can access its instance members directly.\n• Static Nested Class: Does not require an enclosing-class instance and cannot directly access its instance members without an object reference.',
+              difficulty: 'Essential'
             }
           ]
         }
@@ -2186,51 +3022,57 @@ Outer.Inner inner = outer.new Inner();`,
           description: 'Comprehensive interview definitions, examples, and rules for Java Multithreading — Top 7 Interview Questions & Answers.',
           difficulty: 'Essential',
           studyTime: '12 minutes',
-          definition: `1. WHAT IS MULTITHREADING?
-Multithreading is the process of executing multiple threads concurrently within a single program to perform multiple tasks efficiently.
+          definition: `WHAT IS MULTITHREADING
+Multithreading is a process of executing multiple threads concurrently within a single program. It helps perform multiple tasks efficiently.
 
-2. HOW CAN WE CREATE A THREAD IN JAVA?
-We can create a thread in two ways:
-1. By extending the Thread class.
-2. By implementing the Runnable interface.
+WHAT IS A THREAD
+A thread is the smallest unit of execution within a process. It allows a program to perform tasks independently.
 
-3. WHAT IS THE DIFFERENCE BETWEEN start() AND run()?
-start() starts a new thread, which executes the run() method. Calling run() directly executes it like a normal method without starting a new thread.
+HOW CAN WE CREATE A THREAD IN JAVA
+We can create a thread in two main ways:
+1. Extending the Thread class.
+2. Implementing the Runnable interface.
 
-4. WHAT IS SYNCHRONIZATION?
-Synchronization controls access to shared resources to prevent multiple threads from executing a synchronized section simultaneously on the same monitor.
+THREAD CLASS VS RUNNABLE INTERFACE
+• Thread: We extend the Thread class and override its run() method.
+• Runnable: We implement the Runnable interface and provide the implementation of its run() method. This approach allows the class to extend another class.
 
-5. WHAT IS DEADLOCK?
-Deadlock occurs when two or more threads wait indefinitely for resources held by one another.
+START() VS RUN()
+• start(): Starts a new thread, which then executes the run() method.
+• run(): Contains the code executed by the thread. Calling it directly behaves like a normal method call and does not start a new thread.
 
-6. WHAT IS THE DIFFERENCE BETWEEN sleep() AND wait()?
-sleep() pauses the current thread without releasing its held monitors. wait() releases the object's monitor while waiting and must be called while holding that monitor.
+THREAD SYNCHRONIZATION
+Thread synchronization is a mechanism that controls access to shared resources to prevent multiple threads from executing critical sections simultaneously.
 
-7. WHAT IS THE DIFFERENCE BETWEEN THREAD AND RUNNABLE?
-Thread is a class used to create and control threads, whereas Runnable is an interface used to define a task that a thread executes.`,
-          interviewAnswer: `Multithreading allows multiple threads to execute concurrently within a single process to maximize CPU utilization. In Java, threads are created by extending Thread or implementing Runnable (preferred for loose coupling). The start() method creates a new OS thread and invokes run(), whereas calling run() directly executes synchronously on the current thread. Synchronization prevents race conditions on shared resources, sleep() pauses without releasing locks, and wait() releases the monitor to coordinate with notify(). Deadlock happens when threads wait indefinitely for each other's locks.`,
-          explanation: `1. What is Multithreading?
-Multithreading is the process of executing multiple threads concurrently within a single program to perform multiple tasks efficiently.
+SLEEP() VS WAIT()
+• sleep(): Pauses the current thread for a specified time without releasing any monitors it holds.
+• wait(): Makes a thread wait until it is notified or interrupted, or until its timeout expires. It releases the monitor associated with the object.`,
+          interviewAnswer: `Multithreading allows multiple threads to execute concurrently within a single process to maximize CPU utilization. A thread is the smallest execution unit in a process. Threads are created by extending Thread or implementing Runnable (preferred for loose coupling and multiple inheritance). The start() method creates a new OS thread and calls run(), while run() executes synchronously on the current thread. Synchronization prevents concurrent race conditions on shared data, sleep() pauses without releasing locks, and wait() pauses while releasing the monitor until notified.`,
+          explanation: `1. What Is Multithreading?
+Multithreading is a process of executing multiple threads concurrently within a single program. It helps perform multiple tasks efficiently.
 
-2. How can we create a Thread in Java?
-We can create a thread in two ways:
-1. By extending the Thread class.
-2. By implementing the Runnable interface.
+2. What Is a Thread?
+A thread is the smallest unit of execution within a process. It allows a program to perform tasks independently.
 
-3. What is the difference between start() and run()?
-start() starts a new thread, which executes the run() method. Calling run() directly executes it like a normal method without starting a new thread.
+3. How Can We Create a Thread in Java?
+We can create a thread in two main ways:
+- Extending the Thread class.
+- Implementing the Runnable interface.
 
-4. What is Synchronization?
-Synchronization controls access to shared resources to prevent multiple threads from executing a synchronized section simultaneously on the same monitor.
+4. What Is the Difference Between the Thread Class and the Runnable Interface?
+- Thread: We extend the Thread class and override its run() method.
+- Runnable: We implement the Runnable interface and provide the implementation of its run() method. This approach allows the class to extend another class.
 
-5. What is Deadlock?
-Deadlock occurs when two or more threads wait indefinitely for resources held by one another.
+5. What Is the Difference Between start() and run()?
+- start(): Starts a new thread, which then executes the run() method.
+- run(): Contains the code executed by the thread. Calling it directly behaves like a normal method call and does not start a new thread.
 
-6. What is the difference between sleep() and wait()?
-sleep() pauses the current thread without releasing its held monitors. wait() releases the object's monitor while waiting and must be called while holding that monitor.
+6. What Is Thread Synchronization?
+Thread synchronization is a mechanism that controls access to shared resources to prevent multiple threads from executing critical sections simultaneously.
 
-7. What is the difference between Thread and Runnable?
-Thread is a class used to create and control threads, whereas Runnable is an interface used to define a task that a thread executes.`,
+7. What Is the Difference Between sleep() and wait()?
+- sleep(): Pauses the current thread for a specified time without releasing any monitors it holds.
+- wait(): Makes a thread wait until it is notified or interrupted, or until its timeout expires. It releases the monitor associated with the object.`,
           realWorldExample: 'A restaurant kitchen with multiple chefs working simultaneously: Chef A prepares the salad, Chef B cooks the main course, and Chef C bakes the dessert. If they all need the same single oven at the same time, synchronization ensures they take turns without colliding; a deadlock happens if Chef A holds the oven and waits for the knife held by Chef B, while Chef B waits for the oven.',
           codeSnippet: {
             code: `// 1. Creating thread using Runnable
@@ -2269,44 +3111,49 @@ t.start();`,
           questions: [
             {
               id: 'mt-q1',
-              question: 'What is Multithreading in Java?',
-              answer: 'Multithreading is the process of executing multiple threads concurrently within a single program to perform multiple tasks efficiently and maximize CPU utilization.',
+              question: 'What Is Multithreading?',
+              answer: 'Multithreading is a process of executing multiple threads concurrently within a single program. It helps perform multiple tasks efficiently.',
               difficulty: 'Essential'
             },
             {
               id: 'mt-q2',
-              question: 'How can we create a Thread in Java?',
-              answer: 'We can create a thread in two ways:\n1. By extending the Thread class and overriding its run() method.\n2. By implementing the Runnable interface and passing it to a Thread instance (recommended for loose coupling and multiple inheritance).',
+              question: 'What Is a Thread?',
+              answer: 'A thread is the smallest unit of execution within a process. It allows a program to perform tasks independently.',
+              codeExample: `Thread current = Thread.currentThread();\nSystem.out.println("Running thread: " + current.getName());`,
               difficulty: 'Essential'
             },
             {
               id: 'mt-q3',
-              question: 'What is the difference between start() and run()?',
-              answer: 'start() creates a new thread of execution and schedules it with the JVM thread scheduler, which then calls run(). Calling run() directly does not create a new thread; it executes synchronously in the caller thread like a regular method.',
+              question: 'How Can We Create a Thread in Java?',
+              answer: 'We can create a thread in two main ways:\n1. Extending the Thread class.\n2. Implementing the Runnable interface.',
+              codeExample: `// Way 1: Extending Thread\nclass Worker extends Thread {\n    public void run() { System.out.println("Thread running"); }\n}\n\n// Way 2: Implementing Runnable (Recommended)\nRunnable task = () -> System.out.println("Runnable running");\nnew Thread(task).start();`,
               difficulty: 'Essential'
             },
             {
               id: 'mt-q4',
-              question: 'What is Synchronization?',
-              answer: 'Synchronization controls access to shared resources to prevent multiple threads from executing a synchronized section simultaneously on the same monitor, preventing race conditions.',
+              question: 'What Is the Difference Between the Thread Class and the Runnable Interface?',
+              answer: '• Thread: We extend the Thread class and override its run() method.\n• Runnable: We implement the Runnable interface and provide the implementation of its run() method. This approach allows the class to extend another class.',
               difficulty: 'Essential'
             },
             {
               id: 'mt-q5',
-              question: 'What is Deadlock?',
-              answer: 'Deadlock occurs when two or more threads wait indefinitely for resources held by one another, causing all involved threads to remain blocked permanently.',
+              question: 'What Is the Difference Between start() and run()?',
+              answer: '• start(): Starts a new thread, which then executes the run() method.\n• run(): Contains the code executed by the thread. Calling it directly behaves like a normal method call and does not start a new thread.',
+              codeExample: `Thread t = new Thread(() -> System.out.println("Executed in new thread"));\nt.start(); // Creates new OS thread\n// t.run(); // Calls synchronously in current thread`,
               difficulty: 'Essential'
             },
             {
               id: 'mt-q6',
-              question: 'What is the difference between sleep() and wait()?',
-              answer: 'sleep() pauses the current thread for a specified time without releasing its held monitors/locks. wait() releases the object\'s monitor while waiting and must be called from within a synchronized context.',
+              question: 'What Is Thread Synchronization?',
+              answer: 'Thread synchronization is a mechanism that controls access to shared resources to prevent multiple threads from executing critical sections simultaneously.',
+              codeExample: `class Counter {\n    private int count = 0;\n    public synchronized void increment() {\n        count++; // Thread-safe critical section\n    }\n}`,
               difficulty: 'Essential'
             },
             {
               id: 'mt-q7',
-              question: 'What is the difference between Thread and Runnable?',
-              answer: 'Thread is a class used to create and control threads, whereas Runnable is an interface used to define the task or behavior that a thread executes. Implementing Runnable is generally preferred because Java supports implementing multiple interfaces.',
+              question: 'What Is the Difference Between sleep() and wait()?',
+              answer: '• sleep(): Pauses the current thread for a specified time without releasing any monitors it holds.\n• wait(): Makes a thread wait until it is notified or interrupted, or until its timeout expires. It releases the monitor associated with the object.',
+              codeExample: `// sleep: does not release lock\nThread.sleep(1000);\n\n// wait: called inside synchronized block, releases lock\nsynchronized(sharedObject) {\n    sharedObject.wait();\n}`,
               difficulty: 'Essential'
             }
           ]
@@ -2324,85 +3171,85 @@ t.start();`,
           description: 'Top 10 essential Java Collections interview questions and answers, differences between core interfaces/classes, and 3 key coding programs.',
           difficulty: 'Essential',
           studyTime: '15 minutes',
-          definition: `1. WHAT IS THE COLLECTION FRAMEWORK?
-The Collection Framework is a set of interfaces and classes in Java used to store, manage, and manipulate groups of objects efficiently.
+          definition: `COLLECTIONS FRAMEWORK
+The Java Collections Framework is a set of interfaces and classes used to store, manage, and manipulate groups of objects efficiently.
 
-2. WHAT IS THE DIFFERENCE BETWEEN LIST, SET, AND MAP?
-List allows duplicate elements and maintains insertion order.
-Set does not allow duplicate elements.
-Map stores data in key-value pairs, and keys must be unique.
+COLLECTION VS COLLECTIONS
+• Collection: An interface that represents a group of objects.
+• Collections: A utility class that provides methods for operations such as sorting, searching, and reversing collections.
 
-3. WHAT IS THE DIFFERENCE BETWEEN ARRAYLIST AND LINKEDLIST?
-ArrayList uses a dynamic array and provides fast access by index.
-LinkedList uses a doubly linked list and can efficiently insert or remove elements when the position is already known.
+LIST, SET, AND MAP
+• List: Stores elements in an ordered sequence and allows duplicates.
+• Set: Stores unique elements and does not allow duplicates.
+• Map: Stores key-value pairs, with unique keys.
 
-4. WHAT IS THE DIFFERENCE BETWEEN HASHSET AND TREESET?
-HashSet stores unique elements without guaranteeing their order.
-TreeSet stores unique elements in sorted order.
+ARRAYLIST VS LINKEDLIST
+• ArrayList: Uses a dynamic array and provides fast indexed access.
+• LinkedList: Uses a doubly linked list and can efficiently insert or remove elements when the relevant position or node is already known.
 
-5. WHAT IS THE DIFFERENCE BETWEEN HASHMAP AND HASHTABLE?
-HashMap is not synchronized and allows one null key and multiple null values.
-Hashtable is synchronized and does not allow null keys or null values.
+HASHSET VS TREESET
+• HashSet: Stores unique elements without guaranteeing their iteration order.
+• TreeSet: Stores unique elements in sorted order.
 
-6. WHAT IS THE DIFFERENCE BETWEEN HASHMAP AND TREEMAP?
-HashMap stores key-value pairs without guaranteeing their order.
-TreeMap stores key-value pairs sorted by keys.
+HASHMAP VS HASHTABLE
+• HashMap: Is not synchronized and allows one null key and multiple null values.
+• Hashtable: Is synchronized and does not allow null keys or null values.
 
-7. WHAT IS THE DIFFERENCE BETWEEN ARRAYLIST AND VECTOR?
-ArrayList is not synchronized by default and is generally faster in single-threaded use.
-Vector is synchronized and is a legacy collection class.
+HASHMAP VS TREEMAP
+• HashMap: Does not guarantee key iteration order.
+• TreeMap: Stores entries sorted by their keys.
 
-8. WHAT IS THE DIFFERENCE BETWEEN COMPARABLE AND COMPARATOR?
-Comparable defines the natural ordering of objects using the compareTo() method.
-Comparator defines a custom ordering using the compare() method.
+ITERATOR VS LISTITERATOR
+• Iterator: Traverses a collection forward and can remove elements during iteration when supported.
+• ListIterator: Traverses a list forward and backward and supports additional operations such as adding and replacing elements.
 
-9. WHAT IS THE DIFFERENCE BETWEEN ITERATOR AND LISTITERATOR?
-Iterator traverses elements in the forward direction and can remove elements.
-ListIterator works only with lists and supports forward and backward traversal, as well as adding, setting, and removing elements.
+COMPARABLE VS COMPARATOR
+• Comparable: Defines a class's natural ordering through the compareTo() method.
+• Comparator: Defines a comparison rule through the compare() method and allows different sorting orders.
 
-10. WHAT IS THE DIFFERENCE BETWEEN FAIL-FAST AND FAIL-SAFE ITERATORS?
-Fail-fast iterators generally throw ConcurrentModificationException when they detect structural modification outside the iterator's permitted operations.
-Iterators of concurrent collections, such as CopyOnWriteArrayList, can traverse a snapshot or use weakly consistent behavior without throwing this exception for concurrent modifications.`,
+FAIL-FAST AND FAIL-SAFE ITERATION
+• Fail-Fast: An iterator may throw ConcurrentModificationException if a collection is structurally modified outside the iterator during iteration.
+• Fail-Safe: An informal term often used for iterators that tolerate certain concurrent modifications, such as weakly consistent iterators or snapshot-based iterators. It is not an official Java Collections Framework category.`,
           interviewAnswer: `The Java Collection Framework provides a standardized architecture of interfaces and classes (List, Set, Queue, Map) to store and manipulate object groups efficiently. List (ArrayList/LinkedList) permits duplicates and preserves insertion order; Set (HashSet/TreeSet) enforces element uniqueness; and Map (HashMap/TreeMap/Hashtable) maps unique keys to values. For iteration, Iterator allows forward traversal across collections with safe element removal, while ListIterator enables bidirectional traversal in lists. Standard iterators are fail-fast (throwing ConcurrentModificationException on concurrent modification), whereas concurrent collections (e.g., CopyOnWriteArrayList) provide fail-safe snapshot iteration. Natural sorting uses Comparable with compareTo(), whereas custom or dynamic sorting uses Comparator with compare().`,
-          explanation: `1. WHAT IS THE COLLECTION FRAMEWORK?
-The Collection Framework is a set of interfaces and classes in Java used to store, manage, and manipulate groups of objects efficiently.
+          explanation: `1. What Is the Collections Framework in Java?
+The Java Collections Framework is a set of interfaces and classes used to store, manage, and manipulate groups of objects efficiently.
 
-2. WHAT IS THE DIFFERENCE BETWEEN LIST, SET, AND MAP?
-List allows duplicate elements and maintains insertion order.
-Set does not allow duplicate elements.
-Map stores data in key-value pairs, and keys must be unique.
+2. What Is the Difference Between Collection and Collections?
+• Collection: An interface that represents a group of objects.
+• Collections: A utility class that provides methods for operations such as sorting, searching, and reversing collections.
 
-3. WHAT IS THE DIFFERENCE BETWEEN ARRAYLIST AND LINKEDLIST?
-ArrayList uses a dynamic array and provides fast access by index.
-LinkedList uses a doubly linked list and can efficiently insert or remove elements when the position is already known.
+3. What Is the Difference Between List, Set, and Map?
+• List: Stores elements in an ordered sequence and allows duplicates.
+• Set: Stores unique elements and does not allow duplicates.
+• Map: Stores key-value pairs, with unique keys.
 
-4. WHAT IS THE DIFFERENCE BETWEEN HASHSET AND TREESET?
-HashSet stores unique elements without guaranteeing their order.
-TreeSet stores unique elements in sorted order.
+4. What Is the Difference Between ArrayList and LinkedList?
+• ArrayList: Uses a dynamic array and provides fast indexed access.
+• LinkedList: Uses a doubly linked list and can efficiently insert or remove elements when the relevant position or node is already known.
 
-5. WHAT IS THE DIFFERENCE BETWEEN HASHMAP AND HASHTABLE?
-HashMap is not synchronized and allows one null key and multiple null values.
-Hashtable is synchronized and does not allow null keys or null values.
+5. What Is the Difference Between HashSet and TreeSet?
+• HashSet: Stores unique elements without guaranteeing their iteration order.
+• TreeSet: Stores unique elements in sorted order.
 
-6. WHAT IS THE DIFFERENCE BETWEEN HASHMAP AND TREEMAP?
-HashMap stores key-value pairs without guaranteeing their order.
-TreeMap stores key-value pairs sorted by keys.
+6. What Is the Difference Between HashMap and Hashtable?
+• HashMap: Is not synchronized and allows one null key and multiple null values.
+• Hashtable: Is synchronized and does not allow null keys or null values.
 
-7. WHAT IS THE DIFFERENCE BETWEEN ARRAYLIST AND VECTOR?
-ArrayList is not synchronized by default and is generally faster in single-threaded use.
-Vector is synchronized and is a legacy collection class.
+7. What Is the Difference Between HashMap and TreeMap?
+• HashMap: Does not guarantee key iteration order.
+• TreeMap: Stores entries sorted by their keys.
 
-8. WHAT IS THE DIFFERENCE BETWEEN COMPARABLE AND COMPARATOR?
-Comparable defines the natural ordering of objects using the compareTo() method.
-Comparator defines a custom ordering using the compare() method.
+8. What Is the Difference Between Iterator and ListIterator?
+• Iterator: Traverses a collection forward and can remove elements during iteration when supported.
+• ListIterator: Traverses a list forward and backward and supports additional operations such as adding and replacing elements.
 
-9. WHAT IS THE DIFFERENCE BETWEEN ITERATOR AND LISTITERATOR?
-Iterator traverses elements in the forward direction and can remove elements.
-ListIterator works only with lists and supports forward and backward traversal, as well as adding, setting, and removing elements.
+9. What Is the Difference Between Comparable and Comparator?
+• Comparable: Defines a class's natural ordering through the compareTo() method.
+• Comparator: Defines a comparison rule through the compare() method and allows different sorting orders.
 
-10. WHAT IS THE DIFFERENCE BETWEEN FAIL-FAST AND FAIL-SAFE ITERATORS?
-Fail-fast iterators generally throw ConcurrentModificationException when they detect structural modification outside the iterator's permitted operations.
-Iterators of concurrent collections, such as CopyOnWriteArrayList, can traverse a snapshot or use weakly consistent behavior without throwing this exception for concurrent modifications.`,
+10. What Is Fail-Fast and Fail-Safe Iteration?
+• Fail-Fast: An iterator may throw ConcurrentModificationException if a collection is structurally modified outside the iterator during iteration.
+• Fail-Safe: An informal term often used for iterators that tolerate certain concurrent modifications, such as weakly consistent iterators or snapshot-based iterators. It is not an official Java Collections Framework category.`,
           realWorldExample: `A modern eCommerce Fulfillment Warehouse:
 • List (ArrayList): Order Cart Items — preserves checkout sequence, items can be duplicated (e.g., 2 identical shirts at index 0 and index 1).
 • Set (HashSet): Unique Product SKU Registry — every product barcode must be globally unique with zero duplicates.
@@ -2538,62 +3385,71 @@ public class ShiftElementsDemo {
           questions: [
             {
               id: 'col-q1',
-              question: 'What is the Collection Framework in Java?',
-              answer: 'The Collection Framework is a set of interfaces and classes in Java used to store, manage, and manipulate groups of objects efficiently.',
+              question: 'What Is the Collections Framework in Java?',
+              answer: 'The Java Collections Framework is a set of interfaces and classes used to store, manage, and manipulate groups of objects efficiently.',
               difficulty: 'Essential'
             },
             {
               id: 'col-q2',
-              question: 'What is the difference between List, Set, and Map?',
-              answer: '• List allows duplicate elements and maintains insertion order.\n• Set does not allow duplicate elements.\n• Map stores data in key-value pairs, and keys must be unique.',
+              question: 'What Is the Difference Between Collection and Collections?',
+              answer: '• Collection: An interface that represents a group of objects.\n• Collections: A utility class that provides methods for operations such as sorting, searching, and reversing collections.',
+              codeExample: `// Collection: Interface representing a group of objects\nCollection<String> group = new ArrayList<>();\n\n// Collections: Utility class providing static algorithms\nCollections.sort((List<String>) group);\nCollections.reverse((List<String>) group);`,
               difficulty: 'Essential'
             },
             {
               id: 'col-q3',
-              question: 'What is the difference between ArrayList and LinkedList?',
-              answer: '• ArrayList uses a dynamic array and provides fast access by index.\n• LinkedList uses a doubly linked list and can efficiently insert or remove elements when the position is already known.',
+              question: 'What Is the Difference Between List, Set, and Map?',
+              answer: '• List: Stores elements in an ordered sequence and allows duplicates.\n• Set: Stores unique elements and does not allow duplicates.\n• Map: Stores key-value pairs, with unique keys.',
+              codeExample: `List<String> list = Arrays.asList("A", "B", "A"); // Allows duplicate "A"\nSet<String> set = new HashSet<>(list);            // [A, B] (Duplicates removed)\nMap<String, Integer> map = Map.of("A", 1, "B", 2); // Key-Value mapping`,
               difficulty: 'Essential'
             },
             {
               id: 'col-q4',
-              question: 'What is the difference between HashSet and TreeSet?',
-              answer: '• HashSet stores unique elements without guaranteeing their order.\n• TreeSet stores unique elements in sorted order.',
+              question: 'What Is the Difference Between ArrayList and LinkedList?',
+              answer: '• ArrayList: Uses a dynamic array and provides fast indexed access.\n• LinkedList: Uses a doubly linked list and can efficiently insert or remove elements when the relevant position or node is already known.',
+              codeExample: `List<Integer> al = new ArrayList<>();  // O(1) random access: al.get(i)\nList<Integer> ll = new LinkedList<>(); // O(1) insert/remove at known node`,
               difficulty: 'Essential'
             },
             {
               id: 'col-q5',
-              question: 'What is the difference between HashMap and Hashtable?',
-              answer: '• HashMap is not synchronized and allows one null key and multiple null values.\n• Hashtable is synchronized and does not allow null keys or null values.',
+              question: 'What Is the Difference Between HashSet and TreeSet?',
+              answer: '• HashSet: Stores unique elements without guaranteeing their iteration order.\n• TreeSet: Stores unique elements in sorted order.',
+              codeExample: `Set<Integer> hashSet = new HashSet<>(Arrays.asList(40, 10, 30)); // Unpredictable order\nSet<Integer> treeSet = new TreeSet<>(Arrays.asList(40, 10, 30)); // Sorted: [10, 30, 40]`,
               difficulty: 'Essential'
             },
             {
               id: 'col-q6',
-              question: 'What is the difference between HashMap and TreeMap?',
-              answer: '• HashMap stores key-value pairs without guaranteeing their order.\n• TreeMap stores key-value pairs sorted by keys.',
+              question: 'What Is the Difference Between HashMap and Hashtable?',
+              answer: '• HashMap: Is not synchronized and allows one null key and multiple null values.\n• Hashtable: Is synchronized and does not allow null keys or null values.',
+              codeExample: `Map<String, String> map = new HashMap<>();\nmap.put(null, "allowed"); // HashMap permits 1 null key\n\n// Hashtable ht = new Hashtable();\n// ht.put(null, "fail"); // Throws NullPointerException!`,
               difficulty: 'Essential'
             },
             {
               id: 'col-q7',
-              question: 'What is the difference between ArrayList and Vector?',
-              answer: '• ArrayList is not synchronized by default and is generally faster in single-threaded use.\n• Vector is synchronized and is a legacy collection class.',
+              question: 'What Is the Difference Between HashMap and TreeMap?',
+              answer: '• HashMap: Does not guarantee key iteration order.\n• TreeMap: Stores entries sorted by their keys.',
+              codeExample: `Map<String, Integer> hashMap = new HashMap<>(); // Fast O(1) lookup, no ordering\nMap<String, Integer> treeMap = new TreeMap<>(); // O(log n) lookup, sorted by keys`,
               difficulty: 'Essential'
             },
             {
               id: 'col-q8',
-              question: 'What is the difference between Comparable and Comparator?',
-              answer: '• Comparable defines the natural ordering of objects using the compareTo() method.\n• Comparator defines a custom ordering using the compare() method.',
+              question: 'What Is the Difference Between Iterator and ListIterator?',
+              answer: '• Iterator: Traverses a collection forward and can remove elements during iteration when supported.\n• ListIterator: Traverses a list forward and backward and supports additional operations such as adding and replacing elements.',
+              codeExample: `ListIterator<String> lit = list.listIterator();\nwhile (lit.hasNext()) lit.next();\nwhile (lit.hasPrevious()) System.out.println(lit.previous()); // Reverse traversal`,
               difficulty: 'Essential'
             },
             {
               id: 'col-q9',
-              question: 'What is the difference between Iterator and ListIterator?',
-              answer: '• Iterator traverses elements in the forward direction and can remove elements.\n• ListIterator works only with lists and supports forward and backward traversal, as well as adding, setting, and removing elements.',
+              question: 'What Is the Difference Between Comparable and Comparator?',
+              answer: '• Comparable: Defines a class\'s natural ordering through the compareTo() method.\n• Comparator: Defines a comparison rule through the compare() method and allows different sorting orders.',
+              codeExample: `// 1. Comparable (Natural Order in class definition)\nclass Student implements Comparable<Student> {\n    public int compareTo(Student o) { return this.id - o.id; }\n}\n\n// 2. Comparator (Custom sorting)\nComparator<Student> byName = (s1, s2) -> s1.name.compareTo(s2.name);`,
               difficulty: 'Essential'
             },
             {
               id: 'col-q10',
-              question: 'What is the difference between Fail-Fast and Fail-Safe Iterators?',
-              answer: '• Fail-fast iterators generally throw ConcurrentModificationException when they detect structural modification outside the iterator\'s permitted operations.\n• Iterators of concurrent collections, such as CopyOnWriteArrayList, can traverse a snapshot or use weakly consistent behavior without throwing this exception for concurrent modifications.',
+              question: 'What Is Fail-Fast and Fail-Safe Iteration?',
+              answer: '• Fail-Fast: An iterator may throw ConcurrentModificationException if a collection is structurally modified outside the iterator during iteration.\n• Fail-Safe: An informal term often used for iterators that tolerate certain concurrent modifications, such as weakly consistent iterators or snapshot-based iterators. It is not an official Java Collections Framework category.',
+              codeExample: `// Fail-Fast: standard ArrayList iterator throws ConcurrentModificationException\nfor (String item : arrayList) arrayList.add("new"); // Throws exception!\n\n// Fail-Safe / Snapshot: CopyOnWriteArrayList traverses snapshot safely\nCopyOnWriteArrayList<String> safeList = new CopyOnWriteArrayList<>(arrayList);`,
               difficulty: 'Essential'
             }
           ]

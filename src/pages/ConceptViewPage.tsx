@@ -18,6 +18,7 @@ import Breadcrumbs from '../components/Breadcrumbs';
 import CodeBlock from '../components/CodeBlock';
 import InterviewQuestionCard from '../components/InterviewQuestionCard';
 import FormattedDefinitionBox from '../components/FormattedDefinitionBox';
+import TerminalBox from '../components/TerminalBox';
 
 export default function ConceptViewPage() {
   const { topicId, conceptId } = useParams<{ topicId: string; conceptId: string }>();
@@ -161,12 +162,25 @@ export default function ConceptViewPage() {
         <div className="space-y-6">
           {/* Quick Interview Answer Highlight */}
           <div className="glass-panel p-5 sm:p-6 border-l-4 border-l-primary bg-gradient-to-r from-blue-50/40 via-white to-white">
-            <div className="flex items-center gap-2 text-primary font-semibold text-xs uppercase tracking-wider mb-2">
-              <Sparkles className="w-4 h-4" />
-              <span>Model Interview Answer (How to answer in 60 seconds)</span>
+            <div className="flex items-center justify-between gap-3 mb-2 flex-wrap">
+              <div className="flex items-center gap-2 text-primary font-semibold text-xs uppercase tracking-wider">
+                <Sparkles className="w-4 h-4" />
+                <span>
+                  {concept.id === 'self-intro-speech' && typeof window !== 'undefined' && localStorage.getItem('chakri_custom_self_intro')
+                    ? 'Your Custom Self-Introduction'
+                    : 'Model Interview Answer (How to answer in 60 seconds)'}
+                </span>
+              </div>
+              {concept.id === 'self-intro-speech' && typeof window !== 'undefined' && localStorage.getItem('chakri_custom_self_intro') && (
+                <span className="text-[10px] font-bold uppercase tracking-wider bg-emerald-50 text-emerald-700 border border-emerald-200 px-2.5 py-0.5 rounded-full">
+                  Saved on this device
+                </span>
+              )}
             </div>
-            <p className="text-slate-800 text-sm sm:text-base leading-relaxed font-medium">
-              "{concept.interviewAnswer}"
+            <p className="text-slate-800 text-sm sm:text-base leading-relaxed font-medium whitespace-pre-line">
+              {concept.id === 'self-intro-speech' && typeof window !== 'undefined' && localStorage.getItem('chakri_custom_self_intro')
+                ? localStorage.getItem('chakri_custom_self_intro')
+                : `"${concept.interviewAnswer}"`}
             </p>
           </div>
 
@@ -222,27 +236,21 @@ export default function ConceptViewPage() {
                 </div>
               </div>
 
-              {/* TOP: Input & Output Boxes */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {/* BOX 1: Input */}
-                <div className="space-y-1.5">
-                  <span className="text-xs font-bold uppercase tracking-wider text-slate-700 block">
-                    1. Input / Parameters
-                  </span>
-                  <div className="bg-blue-50/70 border border-blue-200 rounded-xl p-3 text-xs sm:text-sm font-mono text-slate-800 break-words min-h-[50px]">
-                    {concept.codePrograms[activeProgramIndex]?.input || "None (Standard JVM execution)"}
-                  </div>
-                </div>
+              {/* TOP: Input Box & Output Box (Stacked One Over the Other — Full Width & Perfect Font) */}
+              <div className="space-y-3">
+                <TerminalBox
+                  title="1. Input / Parameters"
+                  badge="Input"
+                  content={concept.codePrograms[activeProgramIndex]?.input}
+                  placeholder="None (Standard JVM execution)"
+                />
 
-                {/* BOX 2: Output */}
-                <div className="space-y-1.5">
-                  <span className="text-xs font-bold uppercase tracking-wider text-slate-700 block">
-                    2. Console Output
-                  </span>
-                  <div className="bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs sm:text-sm font-mono text-emerald-400 whitespace-pre-line shadow-inner overflow-x-auto min-h-[50px]">
-                    {concept.codePrograms[activeProgramIndex]?.output || "Program executed successfully"}
-                  </div>
-                </div>
+                <TerminalBox
+                  title="2. Console Output"
+                  badge="Output"
+                  content={concept.codePrograms[activeProgramIndex]?.output}
+                  placeholder="Program executed successfully with no errors."
+                />
               </div>
 
               {/* BOX 3: Code (Below Input & Output) */}
@@ -275,27 +283,21 @@ export default function ConceptViewPage() {
                 </p>
               </div>
 
-              {/* TOP: Input & Output Boxes */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {/* BOX 1: Input */}
-                <div className="space-y-1.5">
-                  <span className="text-xs font-bold uppercase tracking-wider text-slate-700 block">
-                    1. Input / Parameters
-                  </span>
-                  <div className="bg-blue-50/70 border border-blue-200 rounded-xl p-3 text-xs sm:text-sm font-mono text-slate-800 break-words min-h-[50px]">
-                    {concept.codeSnippet?.input || "None (Standard JVM execution)"}
-                  </div>
-                </div>
+              {/* TOP: Input Box & Output Box (Stacked One Over the Other — Full Width & Perfect Font) */}
+              <div className="space-y-3">
+                <TerminalBox
+                  title="1. Input / Parameters"
+                  badge="Input"
+                  content={concept.codeSnippet?.input}
+                  placeholder="None (Standard JVM execution)"
+                />
 
-                {/* BOX 2: Output */}
-                <div className="space-y-1.5">
-                  <span className="text-xs font-bold uppercase tracking-wider text-slate-700 block">
-                    2. Console Output
-                  </span>
-                  <div className="bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs sm:text-sm font-mono text-emerald-400 whitespace-pre-line shadow-inner overflow-x-auto min-h-[50px]">
-                    {concept.codeSnippet?.output || "Program executed successfully"}
-                  </div>
-                </div>
+                <TerminalBox
+                  title="2. Console Output"
+                  badge="Output"
+                  content={concept.codeSnippet?.output}
+                  placeholder="Program executed successfully with no errors."
+                />
               </div>
 
               {/* BOX 3: Code (Below Input & Output) */}
