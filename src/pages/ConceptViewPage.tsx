@@ -168,10 +168,13 @@ export default function ConceptViewPage() {
                 <span>
                   {concept.id === 'self-intro-speech' && typeof window !== 'undefined' && localStorage.getItem('chakri_custom_self_intro')
                     ? 'Your Custom Self-Introduction'
+                    : concept.id === 'pe-project-name' && typeof window !== 'undefined' && localStorage.getItem('chakri_custom_project_explanation')
+                    ? 'Your Custom Project Explanation'
                     : 'Model Interview Answer (How to answer in 60 seconds)'}
                 </span>
               </div>
-              {concept.id === 'self-intro-speech' && typeof window !== 'undefined' && localStorage.getItem('chakri_custom_self_intro') && (
+              {((concept.id === 'self-intro-speech' && typeof window !== 'undefined' && localStorage.getItem('chakri_custom_self_intro')) ||
+                (concept.id === 'pe-project-name' && typeof window !== 'undefined' && localStorage.getItem('chakri_custom_project_explanation'))) && (
                 <span className="text-[10px] font-bold uppercase tracking-wider bg-emerald-50 text-emerald-700 border border-emerald-200 px-2.5 py-0.5 rounded-full">
                   Saved on this device
                 </span>
@@ -180,6 +183,8 @@ export default function ConceptViewPage() {
             <p className="text-slate-800 text-sm sm:text-base leading-relaxed font-medium whitespace-pre-line">
               {concept.id === 'self-intro-speech' && typeof window !== 'undefined' && localStorage.getItem('chakri_custom_self_intro')
                 ? localStorage.getItem('chakri_custom_self_intro')
+                : concept.id === 'pe-project-name' && typeof window !== 'undefined' && localStorage.getItem('chakri_custom_project_explanation')
+                ? localStorage.getItem('chakri_custom_project_explanation')
                 : `"${concept.interviewAnswer}"`}
             </p>
           </div>

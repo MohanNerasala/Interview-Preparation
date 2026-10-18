@@ -58,6 +58,7 @@ const menvyProjectParagraphs = [
 const fullSelfIntroSpeech = selfIntroParagraphs.join('\n\n');
 const fullMenvySpeech = menvyProjectParagraphs.join('\n\n');
 const SELF_INTRO_STORAGE_KEY = 'chakri_custom_self_intro';
+const PROJECT_EXPLANATION_STORAGE_KEY = 'chakri_custom_project_explanation';
 
 // Clean code viewer with Big fullscreen view, line numbers, and copy button
 function CleanCodeViewer({ code, title }: { code: string; title?: string }) {
@@ -99,6 +100,20 @@ export default function Dashboard() {
   const [selfIntroEditText, setSelfIntroEditText] = useState('');
   const [savedToast, setSavedToast] = useState<string | null>(null);
 
+  // Custom Project Explanation stored locally on this device/mobile
+  const [customProjectExplanation, setCustomProjectExplanation] = useState<string>(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        return localStorage.getItem(PROJECT_EXPLANATION_STORAGE_KEY) || '';
+      } catch {
+        return '';
+      }
+    }
+    return '';
+  });
+  const [showProjectModal, setShowProjectModal] = useState(false);
+  const [projectEditText, setProjectEditText] = useState('');
+
   const activeSelfIntroParagraphs = useMemo(() => {
     if (customSelfIntro && customSelfIntro.trim()) {
       const blocks = customSelfIntro.split(/\n\s*\n/).map(p => p.trim()).filter(Boolean);
@@ -111,6 +126,19 @@ export default function Dashboard() {
   const fullActiveSelfIntroSpeech = useMemo(() => {
     return activeSelfIntroParagraphs.join('\n\n');
   }, [activeSelfIntroParagraphs]);
+
+  const activeProjectParagraphs = useMemo(() => {
+    if (customProjectExplanation && customProjectExplanation.trim()) {
+      const blocks = customProjectExplanation.split(/\n\s*\n/).map(p => p.trim()).filter(Boolean);
+      if (blocks.length > 0) return blocks;
+      return customProjectExplanation.split('\n').map(p => p.trim()).filter(Boolean);
+    }
+    return menvyProjectParagraphs;
+  }, [customProjectExplanation]);
+
+  const fullActiveProjectSpeech = useMemo(() => {
+    return activeProjectParagraphs.join('\n\n');
+  }, [activeProjectParagraphs]);
 
   const openSelfIntroModal = () => {
     setSelfIntroEditText(customSelfIntro || fullSelfIntroSpeech);
@@ -152,6 +180,49 @@ export default function Dashboard() {
     setSelfIntroEditText(fullSelfIntroSpeech);
     setShowSelfIntroModal(false);
     setSavedToast('Back to default self-introduction!');
+    setTimeout(() => setSavedToast(null), 3000);
+  };
+
+  const openProjectModal = () => {
+    setProjectEditText(customProjectExplanation || fullMenvySpeech);
+    setShowProjectModal(true);
+  };
+
+  const handleSaveProject = () => {
+    const trimmed = projectEditText.trim();
+    if (trimmed) {
+      try {
+        localStorage.setItem(PROJECT_EXPLANATION_STORAGE_KEY, trimmed);
+      } catch (err) {
+        console.error('Failed to save to localStorage:', err);
+      }
+      setCustomProjectExplanation(trimmed);
+      setSavedToast('Your custom project explanation has been saved!');
+    } else {
+      try {
+        localStorage.removeItem(PROJECT_EXPLANATION_STORAGE_KEY);
+      } catch (err) {
+        console.error('Failed to remove from localStorage:', err);
+      }
+      setCustomProjectExplanation('');
+      setSavedToast('Back to default project explanation!');
+    }
+    setShowProjectModal(false);
+    setTimeout(() => setSavedToast(null), 3000);
+    setExpandedConceptIds(prev => new Set([...prev, 'pe-project-name']));
+  };
+
+  const handleResetProject = (e?: React.MouseEvent) => {
+    if (e) e.stopPropagation();
+    try {
+      localStorage.removeItem(PROJECT_EXPLANATION_STORAGE_KEY);
+    } catch (err) {
+      console.error('Failed to remove from localStorage:', err);
+    }
+    setCustomProjectExplanation('');
+    setProjectEditText(fullMenvySpeech);
+    setShowProjectModal(false);
+    setSavedToast('Back to default project explanation!');
     setTimeout(() => setSavedToast(null), 3000);
   };
 
@@ -221,7 +292,7 @@ export default function Dashboard() {
 
   const copyMenvySpeech = (e: React.MouseEvent) => {
     e.stopPropagation();
-    navigator.clipboard.writeText(fullMenvySpeech);
+    navigator.clipboard.writeText(fullActiveProjectSpeech);
     setCopiedMenvy(true);
     setTimeout(() => setCopiedMenvy(false), 2000);
   };
@@ -506,6 +577,33 @@ export default function Dashboard() {
                             </div>
                           )}
 
+                          {/* Quick Action ABOVE Project Explanation Card — Clean Action Only */}
+                          {isMenvyProject && (
+                            <div className="flex items-center justify-end gap-2.5 pt-1 pb-0.5">
+                              {Boolean(customProjectExplanation) && (
+                                <button
+                                  type="button"
+                                  onClick={handleResetProject}
+                                  className="inline-flex items-center gap-1.5 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl border border-rose-200 bg-white hover:bg-rose-50 text-rose-600 text-xs sm:text-sm font-semibold transition-all shadow-2xs shrink-0 cursor-pointer active:scale-95"
+                                  title="Back to default project explanation"
+                                >
+                                  <RotateCcw className="w-3.5 h-3.5 text-rose-500" />
+                                  <span>Back to Default</span>
+                                </button>
+                              )}
+
+                              <button
+                                type="button"
+                                onClick={openProjectModal}
+                                className="inline-flex items-center gap-2 px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs sm:text-sm font-semibold transition-all shadow-2xs hover:shadow-xs shrink-0 cursor-pointer active:scale-95"
+                                title="Add your project explanation"
+                              >
+                                <Edit3 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white" />
+                                <span>{customProjectExplanation ? 'Edit Your Project Explanation' : 'Add Your Project Explanation'}</span>
+                              </button>
+                            </div>
+                          )}
+
                           <div
                             className={`bg-white rounded-2xl border transition-[border-color,box-shadow] duration-200 overflow-hidden ${
                               isExpanded
@@ -550,9 +648,15 @@ export default function Dashboard() {
 
                                   <div className="flex items-center gap-2 min-w-0">
                                     <h3 className="text-sm sm:text-base font-bold text-slate-900 group-hover:text-primary transition-colors leading-snug truncate">
-                                      {isSelfIntro ? 'Self-Introduction' : isMenvyProject ? 'Menvy Project Overview' : concept.title}
+                                      {isSelfIntro ? 'Self-Introduction' : isMenvyProject ? (customProjectExplanation ? 'Project Explanation' : 'Menvy Project Overview') : concept.title}
                                     </h3>
                                     {isSelfIntro && Boolean(customSelfIntro) && (
+                                      <span className="text-[9px] sm:text-[10px] font-bold uppercase tracking-wider bg-emerald-50 text-emerald-700 border border-emerald-200 px-1.5 sm:px-2 py-0.5 rounded-full inline-flex items-center gap-1 shrink-0">
+                                        <Check className="w-2.5 h-2.5" />
+                                        Custom
+                                      </span>
+                                    )}
+                                    {isMenvyProject && Boolean(customProjectExplanation) && (
                                       <span className="text-[9px] sm:text-[10px] font-bold uppercase tracking-wider bg-emerald-50 text-emerald-700 border border-emerald-200 px-1.5 sm:px-2 py-0.5 rounded-full inline-flex items-center gap-1 shrink-0">
                                         <Check className="w-2.5 h-2.5" />
                                         Custom
@@ -677,28 +781,60 @@ export default function Dashboard() {
                                 <div className="bg-white rounded-2xl p-5 sm:p-7 border border-slate-200/80 shadow-[0_4px_20px_-4px_rgba(15,23,42,0.04)] space-y-5">
                                   {/* Clean 2-Line Header with Perfect Alignment */}
                                   <div className="pb-3 border-b border-slate-100 space-y-1">
-                                    <div className="flex items-center justify-between gap-3">
-                                      <h4 className="text-sm sm:text-base font-bold text-slate-900 truncate">
-                                        Q1. Tell me about your project.
-                                      </h4>
-
-                                      <button
-                                        onClick={copyMenvySpeech}
-                                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs font-medium transition-all shadow-2xs shrink-0 cursor-pointer"
-                                        title="Copy answer to clipboard"
-                                      >
-                                        {copiedMenvy ? (
-                                          <>
-                                            <Check className="w-3.5 h-3.5 text-emerald-600" />
-                                            <span className="text-emerald-700 font-semibold">Copied!</span>
-                                          </>
-                                        ) : (
-                                          <>
-                                            <Copy className="w-3.5 h-3.5 text-slate-500" />
-                                            <span>Copy Answer</span>
-                                          </>
+                                    <div className="flex flex-wrap items-center justify-between gap-3">
+                                      <div className="flex items-center gap-2">
+                                        <h4 className="text-sm sm:text-base font-bold text-slate-900 truncate">
+                                          Q1. Tell me about your project.
+                                        </h4>
+                                        {Boolean(customProjectExplanation) && (
+                                          <span className="text-[10px] font-bold uppercase tracking-wider bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-0.5 rounded-full inline-flex items-center gap-1">
+                                            <Check className="w-2.5 h-2.5" />
+                                            Custom Answer Active
+                                          </span>
                                         )}
-                                      </button>
+                                      </div>
+
+                                      <div className="flex items-center gap-2 shrink-0 flex-wrap">
+                                        {Boolean(customProjectExplanation) && (
+                                          <button
+                                            type="button"
+                                            onClick={handleResetProject}
+                                            className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg border border-rose-200 bg-rose-50/60 hover:bg-rose-50 text-rose-600 text-xs font-semibold transition-all shadow-2xs shrink-0 cursor-pointer active:scale-95"
+                                            title="Back to default project explanation"
+                                          >
+                                            <RotateCcw className="w-3.5 h-3.5 text-rose-500" />
+                                            <span>Back to Default</span>
+                                          </button>
+                                        )}
+
+                                        <button
+                                          type="button"
+                                          onClick={openProjectModal}
+                                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-primary/30 bg-primary/5 hover:bg-primary/10 text-primary text-xs font-semibold transition-all shadow-2xs shrink-0 cursor-pointer"
+                                          title="Add or edit your personal project explanation"
+                                        >
+                                          <Edit3 className="w-3.5 h-3.5" />
+                                          <span>{customProjectExplanation ? 'Edit Explanation' : 'Add Your Project Explanation'}</span>
+                                        </button>
+
+                                        <button
+                                          onClick={copyMenvySpeech}
+                                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs font-medium transition-all shadow-2xs shrink-0 cursor-pointer"
+                                          title="Copy answer to clipboard"
+                                        >
+                                          {copiedMenvy ? (
+                                            <>
+                                              <Check className="w-3.5 h-3.5 text-emerald-600" />
+                                              <span className="text-emerald-700 font-semibold">Copied!</span>
+                                            </>
+                                          ) : (
+                                            <>
+                                              <Copy className="w-3.5 h-3.5 text-slate-500" />
+                                              <span>Copy Answer</span>
+                                            </>
+                                          )}
+                                        </button>
+                                      </div>
                                     </div>
 
                                     <p className="text-xs text-slate-500">
@@ -708,10 +844,10 @@ export default function Dashboard() {
 
                                   {/* Single box with separate paragraphs */}
                                   <div className="space-y-4 text-xs sm:text-sm text-slate-800 leading-relaxed sm:leading-7 font-sans bg-slate-50/60 p-5 sm:p-6 rounded-xl border border-slate-100">
-                                    {menvyProjectParagraphs.map((para, idx) => (
+                                    {activeProjectParagraphs.map((para, idx) => (
                                       <p
                                         key={idx}
-                                        className={idx === menvyProjectParagraphs.length - 1 ? "font-semibold text-slate-900 pt-1" : ""}
+                                        className={idx === activeProjectParagraphs.length - 1 ? "font-semibold text-slate-900 pt-1" : ""}
                                       >
                                         {para}
                                       </p>
@@ -1219,6 +1355,111 @@ export default function Dashboard() {
                   >
                     <Save className="w-3.5 h-3.5" />
                     <span>Save Introduction</span>
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* Project Explanation Customization Modal Popup */}
+      <AnimatePresence>
+        {showProjectModal && (
+          <div 
+            className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-3 sm:p-5"
+            onClick={() => setShowProjectModal(false)}
+          >
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.95, y: 15 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 15 }}
+              transition={{ duration: 0.18, ease: "easeOut" }}
+              className="bg-white rounded-2xl max-w-2xl w-full max-h-[92vh] flex flex-col shadow-2xl border border-slate-200 overflow-hidden"
+              onClick={e => e.stopPropagation()}
+            >
+              {/* Modal Header */}
+              <div className="px-5 py-4 bg-gradient-to-r from-blue-50/90 via-indigo-50/50 to-white border-b border-slate-200 flex items-center justify-between shrink-0">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-8 h-8 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0">
+                    <Sparkles className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <h3 className="text-sm sm:text-base font-bold text-slate-900">
+                      {customProjectExplanation ? 'Edit Your Project Explanation' : 'Add Your Project Explanation'}
+                    </h3>
+                    <p className="text-[11px] sm:text-xs text-slate-500">
+                      Personalize your 60–90 second project answer. Tap "Back to Default" anytime to restore.
+                    </p>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setShowProjectModal(false)}
+                  className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors cursor-pointer"
+                  aria-label="Close"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              {/* Modal Body */}
+              <div className="p-4 sm:p-6 overflow-y-auto space-y-3.5 flex-1">
+                <div className="flex items-center justify-between text-xs text-slate-600">
+                  <label className="font-semibold text-slate-800">
+                    Your Project Explanation:
+                  </label>
+                  <span className="text-[11px] text-slate-500 font-mono bg-slate-100 px-2 py-0.5 rounded">
+                    {projectEditText.trim() ? projectEditText.trim().split(/\s+/).filter(Boolean).length : 0} words
+                  </span>
+                </div>
+
+                <textarea
+                  value={projectEditText}
+                  onChange={e => setProjectEditText(e.target.value)}
+                  placeholder="Sir, my project name is... Type or paste your project explanation here..."
+                  rows={10}
+                  className="w-full rounded-xl border border-slate-300 p-3.5 sm:p-4 text-xs sm:text-sm leading-relaxed text-slate-800 placeholder:text-slate-400 focus:outline-hidden focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all font-sans resize-y min-h-[220px]"
+                />
+
+                <div className="bg-blue-50/80 border border-blue-200/90 rounded-xl p-3 flex items-start gap-2.5 text-[11px] sm:text-xs text-blue-900 leading-relaxed">
+                  <Lightbulb className="w-4 h-4 text-blue-600 shrink-0 mt-0.5" />
+                  <div>
+                    <strong>Tip:</strong> Separate paragraphs with empty lines (press Enter twice) so each part appears cleanly organized for your rehearsal.
+                  </div>
+                </div>
+              </div>
+
+              {/* Modal Footer */}
+              <div className="px-5 py-3.5 bg-slate-50 border-t border-slate-200 flex flex-wrap items-center justify-between gap-2 shrink-0">
+                {Boolean(customProjectExplanation) ? (
+                  <button
+                    type="button"
+                    onClick={handleResetProject}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-rose-200 bg-white hover:bg-rose-50 text-rose-600 text-xs font-semibold transition-colors cursor-pointer active:scale-95 shadow-2xs"
+                  >
+                    <RotateCcw className="w-3.5 h-3.5" />
+                    <span>Back to Default</span>
+                  </button>
+                ) : (
+                  <div />
+                )}
+
+                <div className="flex items-center gap-2 ml-auto">
+                  <button
+                    type="button"
+                    onClick={() => setShowProjectModal(false)}
+                    className="px-3.5 py-1.5 rounded-xl border border-slate-200 hover:bg-slate-100 text-slate-600 text-xs font-semibold transition-colors cursor-pointer"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleSaveProject}
+                    className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-xl bg-primary hover:bg-primary-dark text-white text-xs font-semibold shadow-xs hover:shadow transition-all cursor-pointer"
+                  >
+                    <Save className="w-3.5 h-3.5" />
+                    <span>Save Explanation</span>
                   </button>
                 </div>
               </div>
