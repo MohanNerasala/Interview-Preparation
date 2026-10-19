@@ -3255,129 +3255,212 @@ The Java Collections Framework is a set of interfaces and classes used to store,
 • Set (HashSet): Unique Product SKU Registry — every product barcode must be globally unique with zero duplicates.
 • Map (HashMap): Order Tracking System — maps unique Order Number (Key) to Order Customer & Shipping Details (Value) for O(1) instant lookup.`,
           codeSnippet: {
-            code: `import java.util.Map;
-import java.util.LinkedHashMap;
+            code: `import java.util.Scanner;
+import java.util.HashMap;
+import java.util.Map;
 
-public class CharacterCountDemo {
+public class CharacterCountHashMap {
     public static void main(String[] args) {
-        String input = "programming";
-        
-        // Count frequency of each character using Map
-        Map<Character, Integer> charCountMap = new LinkedHashMap<>();
-        for (char ch : input.toCharArray()) {
-            charCountMap.put(ch, charCountMap.getOrDefault(ch, 0) + 1);
+        Scanner scanner = new Scanner(System.in);
+
+        // Take user input string
+        System.out.print("Enter a string: ");
+        String str = scanner.nextLine();
+
+        // Normal HashMap to store character and count
+        HashMap<Character, Integer> map = new HashMap<>();
+
+        // Normal map.put to count character occurrences
+        for (int i = 0; i < str.length(); i++) {
+            char ch = str.charAt(i);
+            if (map.containsKey(ch)) {
+                map.put(ch, map.get(ch) + 1);
+            } else {
+                map.put(ch, 1);
+            }
         }
 
-        System.out.println("Input String: " + input);
-        System.out.println("Character Frequencies: " + charCountMap);
+        // Print character counts
+        System.out.println("Character counts:");
+        for (Map.Entry<Character, Integer> entry : map.entrySet()) {
+            System.out.println(entry.getKey() + " : " + entry.getValue());
+        }
+
+        scanner.close();
     }
 }`,
-            input: 'String input = "programming";',
-            output: `Input String: programming
-Character Frequencies: {p=1, r=2, o=1, g=2, a=1, m=2, i=1, n=1}`
+            input: 'Enter a string: programming',
+            output: `Enter a string: programming
+Character counts:
+p : 1
+r : 2
+o : 1
+g : 2
+a : 1
+m : 2
+i : 1
+n : 1`
           },
           codePrograms: [
             {
               id: 'col-prog-1',
-              title: '1. Character Count in a String (HashMap)',
-              label: '1. Character Count',
-              input: 'String input = "programming";',
-              output: `Input String: programming
-Character Frequencies: {p=1, r=2, o=1, g=2, a=1, m=2, i=1, n=1}
-'p' -> 1 time
-'r' -> 2 times
-'o' -> 1 time
-'g' -> 2 times
-'a' -> 1 time
-'m' -> 2 times
-'i' -> 1 time
-'n' -> 1 time`,
-              code: `import java.util.Map;
-import java.util.LinkedHashMap;
+              title: '1. Character Count in a String (HashMap with User Input)',
+              label: '1. HashMap (Count)',
+              input: 'Enter a string: programming',
+              output: `Enter a string: programming
+Character counts:
+p : 1
+r : 2
+o : 1
+g : 2
+a : 1
+m : 2
+i : 1
+n : 1`,
+              code: `import java.util.Scanner;
+import java.util.HashMap;
+import java.util.Map;
 
-public class CharacterCountDemo {
+public class CharacterCountHashMap {
     public static void main(String[] args) {
-        String input = "programming";
-        
-        // Using LinkedHashMap to count frequencies while maintaining character order
-        Map<Character, Integer> charCountMap = new LinkedHashMap<>();
+        Scanner scanner = new Scanner(System.in);
 
-        for (char ch : input.toCharArray()) {
-            charCountMap.put(ch, charCountMap.getOrDefault(ch, 0) + 1);
+        // Take user input string
+        System.out.print("Enter a string: ");
+        String str = scanner.nextLine();
+
+        // Normal HashMap to store character and count
+        HashMap<Character, Integer> map = new HashMap<>();
+
+        // Normal map.put to count character occurrences
+        for (int i = 0; i < str.length(); i++) {
+            char ch = str.charAt(i);
+            if (map.containsKey(ch)) {
+                map.put(ch, map.get(ch) + 1);
+            } else {
+                map.put(ch, 1);
+            }
         }
 
-        System.out.println("Input String: " + input);
-        System.out.println("Character Frequencies: " + charCountMap);
+        // Print character counts
+        System.out.println("Character counts:");
+        for (Map.Entry<Character, Integer> entry : map.entrySet()) {
+            System.out.println(entry.getKey() + " : " + entry.getValue());
+        }
 
-        // Printing each character occurrence
-        charCountMap.forEach((ch, count) -> {
-            System.out.println("'" + ch + "' -> " + count + (count > 1 ? " times" : " time"));
-        });
+        scanner.close();
     }
 }`
             },
             {
               id: 'col-prog-2',
-              title: '2. Remove Duplicates from List (LinkedHashSet & TreeSet)',
-              label: '2. Remove Duplicates',
-              input: 'List<Integer> list = Arrays.asList(10, 20, 30, 20, 40, 10, 50, 30);',
-              output: `Original List with duplicates: [10, 20, 30, 20, 40, 10, 50, 30]
-Unique (Preserving Insertion Order via LinkedHashSet): [10, 20, 30, 40, 50]
-Unique (Sorted Natural Order via TreeSet): [10, 20, 30, 40, 50]`,
-              code: `import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
-import java.util.LinkedHashSet;
-import java.util.TreeSet;
+              title: '2. Remove Duplicates from Array (HashSet with User Input)',
+              label: '2. HashSet (Duplicates)',
+              input: `Enter size of array: 6
+Enter 6 elements:
+10
+20
+30
+20
+10
+40`,
+              output: `Enter size of array: 6
+Enter 6 elements:
+Original Array: [10, 20, 30, 20, 10, 40]
 
-public class RemoveDuplicatesDemo {
+Elements after removing duplicates (using set.add):
+10
+20
+30
+40`,
+              code: `import java.util.Scanner;
+import java.util.Arrays;
+import java.util.HashSet;
+
+public class RemoveDuplicatesHashSet {
     public static void main(String[] args) {
-        List<Integer> listWithDuplicates = Arrays.asList(10, 20, 30, 20, 40, 10, 50, 30);
-        System.out.println("Original List with duplicates: " + listWithDuplicates);
+        Scanner scanner = new Scanner(System.in);
 
-        // 1. LinkedHashSet: Removes duplicates while strictly preserving insertion order
-        Set<Integer> uniquePreserved = new LinkedHashSet<>(listWithDuplicates);
-        System.out.println("Unique (Preserving Insertion Order via LinkedHashSet): " + uniquePreserved);
+        // Take array size from user
+        System.out.print("Enter size of array: ");
+        int n = scanner.nextInt();
 
-        // 2. TreeSet: Removes duplicates and sorts elements in natural ascending order
-        Set<Integer> uniqueSorted = new TreeSet<>(listWithDuplicates);
-        System.out.println("Unique (Sorted Natural Order via TreeSet): " + uniqueSorted);
+        int[] arr = new int[n];
+        System.out.println("Enter " + n + " elements:");
+        for (int i = 0; i < n; i++) {
+            arr[i] = scanner.nextInt();
+        }
+
+        System.out.println("Original Array: " + Arrays.toString(arr));
+
+        // Normal HashSet to remove duplicates
+        HashSet<Integer> set = new HashSet<>();
+
+        // Add array elements to HashSet using set.add()
+        for (int num : arr) {
+            set.add(num);
+        }
+
+        // Print elements after removing duplicates
+        System.out.println("\\nElements after removing duplicates (using set.add):");
+        for (int element : set) {
+            System.out.println(element);
+        }
+
+        scanner.close();
     }
 }`
             },
             {
               id: 'col-prog-3',
-              title: '3. Shift / Rotate Elements in Collection (Collections.rotate)',
-              label: '3. Shift Elements',
-              input: 'List: [1, 2, 3, 4, 5] | Right shift distance = 2 | Left shift distance = -1',
-              output: `Initial List: [1, 2, 3, 4, 5]
-After Right Shift by 2 positions (Collections.rotate(list, 2)): [4, 5, 1, 2, 3]
-After Left Shift by 1 position (Collections.rotate(list, -1)): [5, 1, 2, 3, 4]
-After Manual Left Shift by 1 (remove(0) -> add()): [1, 2, 3, 4, 5]`,
-              code: `import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+              title: '3. ArrayList Operations (User Input, list.add & Print Elements)',
+              label: '3. ArrayList (Elements)',
+              input: `Enter number of elements: 4
+Enter 4 elements:
+Java
+Python
+C++
+JavaScript`,
+              output: `Enter number of elements: 4
+Enter 4 elements:
 
-public class ShiftElementsDemo {
+ArrayList elements (added via list.add):
+1. Java
+2. Python
+3. C++
+4. JavaScript
+
+Total elements: 4`,
+              code: `import java.util.Scanner;
+import java.util.ArrayList;
+
+public class ArrayListUserInputDemo {
     public static void main(String[] args) {
-        List<Integer> numbers = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5));
-        System.out.println("Initial List: " + numbers);
+        Scanner scanner = new Scanner(System.in);
 
-        // 1. Right Shift by 2 positions using Collections.rotate()
-        // Positive distance moves elements to the right; end elements wrap to front
-        Collections.rotate(numbers, 2);
-        System.out.println("After Right Shift by 2 positions (Collections.rotate(list, 2)): " + numbers);
+        // Take number of elements from user
+        System.out.print("Enter number of elements: ");
+        int n = scanner.nextInt();
+        scanner.nextLine(); // Consume newline
 
-        // 2. Left Shift by 1 position using Collections.rotate()
-        // Negative distance moves elements to the left; front elements wrap to end
-        Collections.rotate(numbers, -1);
-        System.out.println("After Left Shift by 1 position (Collections.rotate(list, -1)): " + numbers);
+        // Normal ArrayList
+        ArrayList<String> list = new ArrayList<>();
 
-        // 3. Manual Left Shift: Remove element from index 0 and append to end
-        int first = numbers.remove(0);
-        numbers.add(first);
-        System.out.println("After Manual Left Shift by 1 (remove(0) -> add()): " + numbers);
+        System.out.println("Enter " + n + " elements:");
+        for (int i = 0; i < n; i++) {
+            String element = scanner.nextLine();
+            list.add(element); // Normal list.add
+        }
+
+        // Print elements
+        System.out.println("\\nArrayList elements (added via list.add):");
+        for (int i = 0; i < list.size(); i++) {
+            System.out.println((i + 1) + ". " + list.get(i));
+        }
+
+        System.out.println("\\nTotal elements: " + list.size());
+
+        scanner.close();
     }
 }`
             }
