@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Code, Search, ChevronDown, ChevronRight, 
   ChevronsUpDown, ChevronsDownUp, Clock, HelpCircle, Copy, Check,
-  Lightbulb, X, ExternalLink,
+  Lightbulb, X,
   Edit3, Save, RotateCcw, Sparkles
 } from 'lucide-react';
 import { allTopics, getTotalConcepts, getTotalQuestions } from '../data';
@@ -255,8 +255,6 @@ export default function Dashboard() {
     activeProgramIndex?: number;
   } | null>(null);
 
-  // Track active code program tab per concept (e.g. for Collections 1, 2, 3)
-  const [activeCodeTabByConcept, setActiveCodeTabByConcept] = useState<Record<string, number>>({});
 
   // Prevent background scrolling and enable Escape key to close while any modal is open
   useEffect(() => {
@@ -906,103 +904,47 @@ export default function Dashboard() {
                                 </div>
                               )}
 
-                              {/* Interactive Code Section: Multi-Program 1-2-3 Switcher or Single Walkthrough */}
+                              {/* Interactive Code Section: Unified "Open Code" Walkthrough Button */}
                               {concept.codePrograms && concept.codePrograms.length > 0 ? (
-                                <div className="bg-slate-50/90 rounded-2xl border border-slate-200/90 p-4 sm:p-5 shadow-xs space-y-4">
-                                  {/* Tab Header with 1, 2, 3 Switcher Buttons */}
-                                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-200/90">
-                                    <div>
-                                      <div className="flex items-center gap-2">
-                                        <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-blue-700 bg-blue-50 px-2 py-0.5 rounded border border-blue-200">
-                                          3 Java Programs
-                                        </span>
-                                        <span className="text-xs text-slate-500 font-medium">Select code program:</span>
+                                <div className="pt-1">
+                                  <button
+                                    onClick={() => {
+                                      const progs = concept.codePrograms!;
+                                      const currentProg = progs[0];
+                                      setActiveCodeModal({
+                                        title: currentProg.title,
+                                        code: currentProg.code,
+                                        input: currentProg.input || "None (Standard JVM execution)",
+                                        output: currentProg.output || "Program executed successfully",
+                                        programs: progs,
+                                        activeProgramIndex: 0
+                                      });
+                                    }}
+                                    className="w-full flex items-center justify-between p-3 sm:p-3.5 rounded-2xl bg-gradient-to-r from-blue-50/80 via-white to-blue-50/40 border border-blue-200/90 hover:border-primary/80 hover:shadow-xs transition-all cursor-pointer group select-none text-left"
+                                  >
+                                    <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
+                                      <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-primary text-white flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform shadow-xs">
+                                        <Code className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                                       </div>
-                                      <h4 className="text-sm sm:text-base font-bold text-slate-900 mt-1">
-                                        {concept.codePrograms[activeCodeTabByConcept[concept.id] || 0]?.title}
-                                      </h4>
-                                    </div>
-
-                                    {/* 1, 2, 3 Switcher Buttons — HashMap, HashSet, ArrayList */}
-                                    <div className="grid grid-cols-3 gap-1.5 p-1 bg-slate-200/70 rounded-xl border border-slate-200/80 w-full sm:w-auto self-start sm:self-auto">
-                                      {concept.codePrograms.map((prog, idx) => {
-                                        const currentIdx = activeCodeTabByConcept[concept.id] || 0;
-                                        const isSelected = currentIdx === idx;
-                                        const displayLabel = idx === 0 ? 'HashMap' : idx === 1 ? 'HashSet' : 'ArrayList';
-                                        return (
-                                          <button
-                                            key={prog.id}
-                                            onClick={() => setActiveCodeTabByConcept(prev => ({ ...prev, [concept.id]: idx }))}
-                                            className={`px-2 sm:px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer flex items-center justify-center gap-1.5 whitespace-nowrap ${
-                                              isSelected
-                                                ? 'bg-blue-600 text-white shadow-xs font-bold'
-                                                : 'text-slate-700 hover:text-slate-950 hover:bg-slate-300/60'
-                                            }`}
-                                          >
-                                            <span className={`w-4 h-4 rounded-full text-[10px] flex items-center justify-center font-mono shrink-0 ${
-                                              isSelected ? 'bg-white text-blue-600 font-bold' : 'bg-slate-300/80 text-slate-700'
-                                            }`}>
-                                              {idx + 1}
-                                            </span>
-                                            <span className="font-semibold">{displayLabel}</span>
-                                          </button>
-                                        );
-                                      })}
-                                    </div>
-                                  </div>
-
-                                  {/* Input & Output for the selected program */}
-                                  {(() => {
-                                    const currentIdx = activeCodeTabByConcept[concept.id] || 0;
-                                    const currentProg = concept.codePrograms[currentIdx];
-                                    return (
-                                      <div className="space-y-3">
-                                        {/* Input Box over Output Box — Full Width & Perfect Font */}
-                                        <TerminalBox
-                                          title="1. Input Parameters"
-                                          badge="Input"
-                                          content={currentProg.input}
-                                          placeholder="None (Standard JVM execution)"
-                                          variant="light"
-                                        />
-
-                                        <TerminalBox
-                                          title="2. Console Output"
-                                          badge="Output"
-                                          content={currentProg.output}
-                                          placeholder="Program executed successfully with no errors."
-                                          variant="light"
-                                        />
-
-                                        {/* Code */}
-                                        <div className="space-y-1.5 pt-1">
-                                          <div className="flex items-center justify-between gap-3 flex-wrap sm:flex-nowrap">
-                                            <span className="text-xs font-bold uppercase tracking-wider text-slate-900 flex items-center gap-1.5 whitespace-nowrap shrink-0">
-                                              <Code className="w-3.5 h-3.5 text-blue-600 shrink-0" />
-                                              <span>3. Java Source Code</span>
-                                            </span>
-                                            <button
-                                              onClick={() => {
-                                                setActiveCodeModal({
-                                                  title: currentProg.title,
-                                                  code: currentProg.code,
-                                                  input: currentProg.input || "None (Standard JVM execution)",
-                                                  output: currentProg.output || "Program executed successfully",
-                                                  programs: concept.codePrograms,
-                                                  activeProgramIndex: currentIdx
-                                                });
-                                              }}
-                                              className="text-xs font-semibold text-blue-600 hover:text-blue-700 hover:underline flex items-center gap-1 cursor-pointer whitespace-nowrap shrink-0"
-                                            >
-                                              <span>Open Fullscreen</span>
-                                              <ExternalLink className="w-3 h-3 shrink-0" />
-                                            </button>
-                                          </div>
-                                          <CleanCodeViewer code={currentProg.code} title={currentProg.title} />
+                                      <div className="min-w-0">
+                                        <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
+                                          <span className="text-xs sm:text-sm font-bold text-slate-900 group-hover:text-primary transition-colors">
+                                            View Code Walkthrough
+                                          </span>
+                                          <span className="text-[9px] sm:text-[10px] font-mono font-semibold px-1.5 py-0.5 rounded bg-blue-100 text-primary border border-blue-200 shrink-0 whitespace-nowrap">
+                                            3 PROGRAMS • INPUT • OUTPUT • CODE
+                                          </span>
                                         </div>
+                                        <p className="text-[11px] text-slate-500 truncate">
+                                          Tap to view HashMap, HashSet & ArrayList code walkthrough
+                                        </p>
                                       </div>
-                                    );
-                                  })()}
+                                    </div>
+
+                                    <div className="px-2.5 sm:px-3 py-1 rounded-xl bg-white border border-slate-200 text-[11px] sm:text-xs font-semibold text-primary group-hover:bg-primary group-hover:text-white transition-all shadow-2xs shrink-0 ml-2">
+                                      Open Code
+                                    </div>
+                                  </button>
                                 </div>
                               ) : (concept.codeSnippet || concept.codeExample) && (
                                 <div className="pt-1">
@@ -1255,7 +1197,7 @@ export default function Dashboard() {
                         }`}>
                           {pIdx + 1}
                         </span>
-                        <span>{prog.label}</span>
+                        <span>{pIdx === 0 ? 'HashMap' : pIdx === 1 ? 'HashSet' : pIdx === 2 ? 'ArrayList' : prog.label}</span>
                       </button>
                     );
                   })}
