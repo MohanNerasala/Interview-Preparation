@@ -7,6 +7,7 @@ interface TerminalBoxProps {
   content?: string;
   placeholder?: string;
   className?: string;
+  variant?: 'light' | 'dark';
 }
 
 export default function TerminalBox({
@@ -14,7 +15,8 @@ export default function TerminalBox({
   badge,
   content,
   placeholder = "None (Standard JVM execution)",
-  className = ""
+  className = "",
+  variant = 'light'
 }: TerminalBoxProps) {
   const [copied, setCopied] = useState(false);
   const textToShow = content?.trim() ? content : placeholder;
@@ -30,38 +32,50 @@ export default function TerminalBox({
     }
   };
 
+  const isDark = variant === 'dark';
+
   return (
     <div className={`space-y-1.5 w-full ${className}`}>
       {/* Terminal Box Header */}
       <div className="flex items-center justify-between gap-2">
         <div className="flex items-center gap-1.5 min-w-0">
-          <Terminal className="w-3.5 h-3.5 text-blue-400 shrink-0" />
-          <span className="text-xs font-bold uppercase tracking-wider text-slate-200 whitespace-nowrap">
+          <Terminal className={`w-3.5 h-3.5 shrink-0 ${isDark ? 'text-blue-400' : 'text-blue-600'}`} />
+          <span className={`text-xs font-bold uppercase tracking-wider whitespace-nowrap ${
+            isDark ? 'text-slate-100' : 'text-slate-900'
+          }`}>
             {title}
           </span>
         </div>
         
         <div className="flex items-center gap-2 shrink-0">
           {badge && (
-            <span className="text-[10px] font-mono font-semibold px-2 py-0.5 rounded-md bg-slate-800 text-blue-300 border border-slate-700 whitespace-nowrap">
+            <span className={`text-[10px] font-mono font-bold px-2 py-0.5 rounded-md whitespace-nowrap border ${
+              isDark 
+                ? 'bg-slate-800 text-blue-300 border-slate-700' 
+                : 'bg-blue-50 text-blue-700 border-blue-200'
+            }`}>
               {badge}
             </span>
           )}
           <button
             type="button"
             onClick={handleCopy}
-            className="w-[62px] justify-center inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-medium text-slate-400 hover:text-slate-100 hover:bg-slate-800 transition-colors cursor-pointer border border-transparent hover:border-slate-700 active:scale-95 shrink-0"
+            className={`w-[62px] justify-center inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-medium transition-colors cursor-pointer border active:scale-95 shrink-0 ${
+              isDark
+                ? 'text-slate-300 hover:text-white hover:bg-slate-800 border-transparent hover:border-slate-700'
+                : 'text-slate-700 hover:text-slate-950 hover:bg-slate-100 border-slate-200 bg-white shadow-2xs'
+            }`}
             title={`Copy ${title}`}
           >
             {copied ? (
               <>
-                <Check className="w-3 h-3 text-emerald-400 shrink-0" />
-                <span className="text-emerald-400 font-semibold text-[10px]">Copied</span>
+                <Check className={`w-3 h-3 shrink-0 ${isDark ? 'text-emerald-400' : 'text-emerald-600'}`} />
+                <span className={`font-semibold text-[10px] ${isDark ? 'text-emerald-400' : 'text-emerald-600'}`}>Copied</span>
               </>
             ) : (
               <>
-                <Copy className="w-3 h-3 text-slate-400 shrink-0" />
-                <span className="text-[10px]">Copy</span>
+                <Copy className={`w-3 h-3 shrink-0 ${isDark ? 'text-slate-400' : 'text-slate-500'}`} />
+                <span className={`text-[10px] ${isDark ? 'text-slate-300' : 'text-slate-700 font-semibold'}`}>Copy</span>
               </>
             )}
           </button>
@@ -69,7 +83,9 @@ export default function TerminalBox({
       </div>
 
       {/* Crisp White Terminal Content with Black Text */}
-      <div className="bg-white border border-slate-300 rounded-xl p-3 sm:p-3.5 text-[13px] sm:text-[13.5px] font-mono font-semibold text-slate-900 leading-relaxed whitespace-pre overflow-x-auto min-h-[48px] select-text">
+      <div className={`border rounded-xl p-3 sm:p-3.5 text-[13px] sm:text-[13.5px] font-mono font-semibold text-slate-900 leading-relaxed whitespace-pre overflow-x-auto min-h-[48px] select-text ${
+        isDark ? 'bg-white border-slate-300 shadow-2xs' : 'bg-slate-50/80 border-slate-200/90 shadow-2xs'
+      }`}>
         {textToShow}
       </div>
     </div>

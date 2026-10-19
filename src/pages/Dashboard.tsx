@@ -963,6 +963,7 @@ export default function Dashboard() {
                                           badge="Input"
                                           content={currentProg.input}
                                           placeholder="None (Standard JVM execution)"
+                                          variant="dark"
                                         />
 
                                         <TerminalBox
@@ -970,6 +971,7 @@ export default function Dashboard() {
                                           badge="Output"
                                           content={currentProg.output}
                                           placeholder="Program executed successfully with no errors."
+                                          variant="dark"
                                         />
 
                                         {/* Code */}
@@ -1265,10 +1267,11 @@ export default function Dashboard() {
                 {/* TOP: Input Box & Output Box (Stacked One Over the Other — Full Width & Perfect Font) */}
                 <div className="space-y-3">
                   <TerminalBox
-                    title="1. Input / Parameters"
+                    title="1. Input Parameters"
                     badge="Input"
                     content={activeCodeModal.input}
                     placeholder="None (Standard JVM execution)"
+                    variant="light"
                   />
 
                   <TerminalBox
@@ -1276,13 +1279,14 @@ export default function Dashboard() {
                     badge="Output"
                     content={activeCodeModal.output}
                     placeholder="Execution completed successfully with no output."
+                    variant="light"
                   />
                 </div>
 
                 {/* BOX 3: Code (Below Input & Output, with reduced font size) */}
-                <div className="space-y-1 pt-0.5">
-                  <span className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-slate-700 flex items-center gap-1.5">
-                    <Code className="w-3.5 h-3.5 text-primary shrink-0" />
+                <div className="space-y-1.5 pt-1">
+                  <span className="text-xs font-bold uppercase tracking-wider text-slate-900 flex items-center gap-1.5">
+                    <Code className="w-3.5 h-3.5 text-blue-600 shrink-0" />
                     3. Java Implementation Code
                   </span>
                   <CleanCodeViewer code={activeCodeModal.code} title={activeCodeModal.title} />
