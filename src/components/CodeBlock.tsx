@@ -599,35 +599,32 @@ export default function CodeBlock({ code, language = 'java', title }: CodeBlockP
               </div>
             </div>
 
-            {/* Big Code Scrollable Body with Line Numbers */}
-            <div className={`flex-1 overflow-auto p-4 sm:p-6 font-mono leading-[1.65] flex ${containerBg}`}>
-              {/* Line Numbers */}
-              <div 
-                className={`select-none text-right pr-4 border-r mr-4 font-mono shrink-0 ${gutterBg} ${gutterText} ${gutterBorder}`}
-                style={{ fontSize: `${fontSize}px` }}
-              >
-                {parsedLines.map((_, i) => (
-                  <div key={i}>{i + 1}</div>
-                ))}
-              </div>
+            {/* Big Code Scrollable Body with Perfectly Aligned Line Numbers */}
+            <div 
+              className={`flex-1 overflow-auto p-4 sm:p-6 font-mono leading-[1.65] ${containerBg}`}
+              style={{ fontSize: `${fontSize}px` }}
+            >
+              <div className="table min-w-full border-collapse font-mono">
+                {parsedLines.map((lineTokens, lineIdx) => (
+                  <div key={lineIdx} className="table-row leading-[1.65]">
+                    {/* Gutter Line Number */}
+                    <div 
+                      className={`table-cell select-none text-right pr-4 border-r font-mono shrink-0 w-10 min-w-[2.5rem] align-top ${gutterBg} ${gutterText} ${gutterBorder}`}
+                    >
+                      {lineIdx + 1}
+                    </div>
 
-              {/* Highlighted Code Content */}
-              <pre 
-                className="whitespace-pre overflow-x-auto flex-1 font-mono"
-                style={{ fontSize: `${fontSize}px` }}
-              >
-                <code>
-                  {parsedLines.map((lineTokens, lineIdx) => (
-                    <div key={lineIdx}>
+                    {/* Highlighted Code Content */}
+                    <div className="table-cell pl-4 whitespace-pre font-mono align-top">
                       {lineTokens.length === 0 ? (
-                        '\n'
+                        '\u00A0'
                       ) : (
                         lineTokens.map((t, tIdx) => renderToken(t, tIdx))
                       )}
                     </div>
-                  ))}
-                </code>
-              </pre>
+                  </div>
+                ))}
+              </div>
             </div>
           </motion.div>
         </div>
@@ -721,31 +718,29 @@ export default function CodeBlock({ code, language = 'java', title }: CodeBlockP
           </div>
         </div>
 
-        {/* Code Body with Real Syntax Colors & Line Numbers */}
-        <div className={`p-3.5 sm:p-4 overflow-x-auto text-[13px] sm:text-[13.5px] font-mono leading-[1.65] flex ${containerBg}`}>
-          {/* Line Numbers */}
-          <div 
-            className={`select-none text-right pr-3 sm:pr-4 border-r mr-3 sm:mr-4 font-mono shrink-0 ${gutterBg} ${gutterText} ${gutterBorder}`}
-          >
-            {parsedLines.map((_, i) => (
-              <div key={i}>{i + 1}</div>
-            ))}
-          </div>
+        {/* Code Body with Real Syntax Colors & Perfectly Aligned Line Numbers */}
+        <div className={`p-3 sm:p-4 overflow-x-auto text-[13px] sm:text-[13.5px] font-mono leading-[1.65] ${containerBg}`}>
+          <div className="table min-w-full border-collapse font-mono">
+            {parsedLines.map((lineTokens, lineIdx) => (
+              <div key={lineIdx} className="table-row leading-[1.65]">
+                {/* Gutter Line Number */}
+                <div 
+                  className={`table-cell select-none text-right pr-3 sm:pr-4 border-r font-mono shrink-0 w-8 sm:w-10 min-w-[2rem] sm:min-w-[2.5rem] align-top ${gutterBg} ${gutterText} ${gutterBorder}`}
+                >
+                  {lineIdx + 1}
+                </div>
 
-          {/* Highlighted Code */}
-          <pre className="whitespace-pre overflow-x-auto flex-1 font-mono">
-            <code>
-              {parsedLines.map((lineTokens, lineIdx) => (
-                <div key={lineIdx}>
+                {/* Highlighted Code */}
+                <div className="table-cell pl-3 sm:pl-4 whitespace-pre font-mono align-top">
                   {lineTokens.length === 0 ? (
-                    '\n'
+                    '\u00A0'
                   ) : (
                     lineTokens.map((t, tIdx) => renderToken(t, tIdx))
                   )}
                 </div>
-              ))}
-            </code>
-          </pre>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 

@@ -924,26 +924,27 @@ export default function Dashboard() {
                                     </div>
 
                                     {/* 1, 2, 3 Switcher Buttons */}
-                                    <div className="flex items-center gap-1.5 p-1 bg-slate-950 rounded-xl border border-slate-800 self-start sm:self-auto">
+                                    <div className="flex items-center gap-1.5 p-1 bg-slate-950/90 rounded-xl border border-slate-800 self-start sm:self-auto overflow-x-auto max-w-full">
                                       {concept.codePrograms.map((prog, idx) => {
                                         const currentIdx = activeCodeTabByConcept[concept.id] || 0;
                                         const isSelected = currentIdx === idx;
+                                        const cleanLabel = prog.label.replace(/^\d+\.\s*/, '');
                                         return (
                                           <button
                                             key={prog.id}
                                             onClick={() => setActiveCodeTabByConcept(prev => ({ ...prev, [concept.id]: idx }))}
-                                            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer flex items-center gap-1.5 ${
+                                            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer flex items-center gap-1.5 whitespace-nowrap shrink-0 ${
                                               isSelected
                                                 ? 'bg-primary text-white shadow-xs font-bold'
                                                 : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
                                             }`}
                                           >
-                                            <span className={`w-4 h-4 rounded-full text-[10px] flex items-center justify-center font-mono ${
+                                            <span className={`w-4 h-4 rounded-full text-[10px] flex items-center justify-center font-mono shrink-0 ${
                                               isSelected ? 'bg-white text-primary font-bold' : 'bg-slate-800 text-slate-300'
                                             }`}>
                                               {idx + 1}
                                             </span>
-                                            <span>{prog.label}</span>
+                                            <span className="whitespace-nowrap">{cleanLabel}</span>
                                           </button>
                                         );
                                       })}
@@ -958,7 +959,7 @@ export default function Dashboard() {
                                       <div className="space-y-3">
                                         {/* Input Box over Output Box — Full Width & Perfect Font */}
                                         <TerminalBox
-                                          title="1. Input / Parameters"
+                                          title="1. Input Parameters"
                                           badge="Input"
                                           content={currentProg.input}
                                           placeholder="None (Standard JVM execution)"
@@ -972,11 +973,11 @@ export default function Dashboard() {
                                         />
 
                                         {/* Code */}
-                                        <div className="space-y-1 pt-1">
-                                          <div className="flex items-center justify-between">
-                                            <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1">
-                                              <Code className="w-3.5 h-3.5 text-primary" />
-                                              3. Java Source Code
+                                        <div className="space-y-1.5 pt-1">
+                                          <div className="flex items-center justify-between gap-3 flex-wrap sm:flex-nowrap">
+                                            <span className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-1.5 whitespace-nowrap shrink-0">
+                                              <Code className="w-3.5 h-3.5 text-blue-400 shrink-0" />
+                                              <span>3. Java Source Code</span>
                                             </span>
                                             <button
                                               onClick={() => {
@@ -989,10 +990,10 @@ export default function Dashboard() {
                                                   activeProgramIndex: currentIdx
                                                 });
                                               }}
-                                              className="text-[11px] font-semibold text-blue-400 hover:text-blue-300 hover:underline flex items-center gap-1 cursor-pointer"
+                                              className="text-[11px] sm:text-xs font-semibold text-blue-400 hover:text-blue-300 hover:underline flex items-center gap-1 cursor-pointer whitespace-nowrap shrink-0"
                                             >
                                               <span>Open Fullscreen</span>
-                                              <ExternalLink className="w-3 h-3" />
+                                              <ExternalLink className="w-3 h-3 shrink-0" />
                                             </button>
                                           </div>
                                           <CleanCodeViewer code={currentProg.code} title={currentProg.title} />

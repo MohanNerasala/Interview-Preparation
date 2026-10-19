@@ -33,34 +33,34 @@ export default function TerminalBox({
   return (
     <div className={`space-y-1.5 w-full ${className}`}>
       {/* Terminal Box Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between gap-2">
         <div className="flex items-center gap-1.5 min-w-0">
-          <Terminal className="w-3.5 h-3.5 text-slate-500 shrink-0" />
-          <span className="text-xs font-bold uppercase tracking-wider text-slate-700 truncate">
+          <Terminal className="w-3.5 h-3.5 text-blue-400 shrink-0" />
+          <span className="text-xs font-bold uppercase tracking-wider text-slate-200 whitespace-nowrap">
             {title}
           </span>
         </div>
         
         <div className="flex items-center gap-2 shrink-0">
           {badge && (
-            <span className="text-[9.5px] font-mono font-semibold px-2 py-0.5 rounded-md bg-slate-100 text-slate-700 border border-slate-300">
+            <span className="text-[10px] font-mono font-semibold px-2 py-0.5 rounded-md bg-slate-800 text-blue-300 border border-slate-700 whitespace-nowrap">
               {badge}
             </span>
           )}
           <button
             type="button"
             onClick={handleCopy}
-            className="w-[62px] justify-center inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors cursor-pointer border border-transparent hover:border-slate-300 active:scale-95"
+            className="w-[62px] justify-center inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-medium text-slate-400 hover:text-slate-100 hover:bg-slate-800 transition-colors cursor-pointer border border-transparent hover:border-slate-700 active:scale-95 shrink-0"
             title={`Copy ${title}`}
           >
             {copied ? (
               <>
-                <Check className="w-3 h-3 text-emerald-600 shrink-0" />
-                <span className="text-emerald-600 font-semibold text-[10px]">Copied</span>
+                <Check className="w-3 h-3 text-emerald-400 shrink-0" />
+                <span className="text-emerald-400 font-semibold text-[10px]">Copied</span>
               </>
             ) : (
               <>
-                <Copy className="w-3 h-3 text-slate-500 shrink-0" />
+                <Copy className="w-3 h-3 text-slate-400 shrink-0" />
                 <span className="text-[10px]">Copy</span>
               </>
             )}
@@ -69,7 +69,7 @@ export default function TerminalBox({
       </div>
 
       {/* Crisp White Terminal Content with Black Text */}
-      <div className="bg-white border border-slate-300 rounded-xl p-3 sm:p-3.5 text-[13px] sm:text-[13.5px] font-mono font-semibold text-slate-900 leading-relaxed whitespace-pre-line shadow-2xs overflow-x-auto min-h-[48px] select-text">
+      <div className="bg-white border border-slate-300 rounded-xl p-3 sm:p-3.5 text-[13px] sm:text-[13.5px] font-mono font-semibold text-slate-900 leading-relaxed whitespace-pre overflow-x-auto min-h-[48px] select-text">
         {textToShow}
       </div>
     </div>

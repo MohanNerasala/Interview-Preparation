@@ -219,32 +219,35 @@ export default function ConceptViewPage() {
                 </div>
 
                 {/* 1, 2, 3 Switcher Buttons */}
-                <div className="flex items-center gap-1.5 p-1 bg-slate-100 rounded-xl self-start sm:self-auto">
-                  {concept.codePrograms.map((prog, idx) => (
-                    <button
-                      key={prog.id}
-                      onClick={() => setActiveProgramIndex(idx)}
-                      className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer flex items-center gap-1.5 ${
-                        activeProgramIndex === idx
-                          ? 'bg-white text-primary shadow-xs font-bold'
-                          : 'text-slate-600 hover:text-slate-900'
-                      }`}
-                    >
-                      <span className={`w-4 h-4 rounded-full text-[10px] flex items-center justify-center font-mono ${
-                        activeProgramIndex === idx ? 'bg-primary text-white' : 'bg-slate-200 text-slate-700'
-                      }`}>
-                        {idx + 1}
-                      </span>
-                      <span>{prog.label}</span>
-                    </button>
-                  ))}
+                <div className="flex items-center gap-1.5 p-1 bg-slate-100 rounded-xl self-start sm:self-auto overflow-x-auto max-w-full">
+                  {concept.codePrograms.map((prog, idx) => {
+                    const cleanLabel = prog.label.replace(/^\d+\.\s*/, '');
+                    return (
+                      <button
+                        key={prog.id}
+                        onClick={() => setActiveProgramIndex(idx)}
+                        className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer flex items-center gap-1.5 whitespace-nowrap shrink-0 ${
+                          activeProgramIndex === idx
+                            ? 'bg-white text-primary shadow-xs font-bold'
+                            : 'text-slate-600 hover:text-slate-900'
+                        }`}
+                      >
+                        <span className={`w-4 h-4 rounded-full text-[10px] flex items-center justify-center font-mono shrink-0 ${
+                          activeProgramIndex === idx ? 'bg-primary text-white' : 'bg-slate-200 text-slate-700'
+                        }`}>
+                          {idx + 1}
+                        </span>
+                        <span className="whitespace-nowrap">{cleanLabel}</span>
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
 
               {/* TOP: Input Box & Output Box (Stacked One Over the Other — Full Width & Perfect Font) */}
               <div className="space-y-3">
                 <TerminalBox
-                  title="1. Input / Parameters"
+                  title="1. Input Parameters"
                   badge="Input"
                   content={concept.codePrograms[activeProgramIndex]?.input}
                   placeholder="None (Standard JVM execution)"
