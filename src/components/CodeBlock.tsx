@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
-  Check, Copy, Maximize2, Minimize2, X, ZoomIn, ZoomOut
+  Check, Copy, Maximize2, Minimize2, X, ZoomIn, ZoomOut, Moon, Sun
 } from 'lucide-react';
 
 interface CodeBlockProps {
@@ -251,6 +251,12 @@ export default function CodeBlock({ code, language = 'java', title }: CodeBlockP
     return () => window.removeEventListener('code-theme-change', handler);
   }, []);
 
+  const handleToggleTheme = (e?: React.MouseEvent) => {
+    if (e) e.stopPropagation();
+    const nextTheme: CodeThemeId = isDark ? 'vscode-light' : 'vscode-dark';
+    setTheme(nextTheme);
+    setCodeThemeGlobal(nextTheme);
+  };
 
   const handleCopy = async (e?: React.MouseEvent) => {
     if (e) e.stopPropagation();
@@ -500,6 +506,31 @@ export default function CodeBlock({ code, language = 'java', title }: CodeBlockP
                   </button>
                 </div>
 
+                {/* Theme Toggle Button (Black & White Theme) */}
+                <button
+                  type="button"
+                  onClick={handleToggleTheme}
+                  className={`min-w-[34px] sm:min-w-[76px] justify-center inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-semibold transition-colors cursor-pointer border active:scale-95 ${
+                    isDark 
+                      ? 'bg-[#1E1E1E] hover:bg-[#2A2D2E] text-slate-200 border-[#3C3C3C]' 
+                      : 'bg-white hover:bg-slate-50 text-slate-700 border-slate-300 shadow-2xs'
+                  }`}
+                  title={isDark ? "Switch to White (Light) Theme" : "Switch to Black (Dark) Theme"}
+                  aria-label="Toggle Black/White Theme"
+                >
+                  {isDark ? (
+                    <>
+                      <Moon className="w-3.5 h-3.5 text-amber-400 fill-amber-400/20 shrink-0" />
+                      <span className="hidden sm:inline">Dark</span>
+                    </>
+                  ) : (
+                    <>
+                      <Sun className="w-3.5 h-3.5 text-amber-500 shrink-0" />
+                      <span className="hidden sm:inline">Light</span>
+                    </>
+                  )}
+                </button>
+
                 {/* Fullscreen Toggle */}
                 <button
                   type="button"
@@ -626,8 +657,33 @@ export default function CodeBlock({ code, language = 'java', title }: CodeBlockP
             </span>
           </div>
 
-          {/* Right Controls: Big Button, Copy Button - Rock Solid Fixed Widths */}
+          {/* Right Controls: Theme Toggle, Big Button, Copy Button - Rock Solid Fixed Widths */}
           <div className="flex items-center gap-2 shrink-0 ml-auto">
+            {/* Theme Toggle Button (Black & White Theme with Half Moon Icon) */}
+            <button
+              type="button"
+              onClick={handleToggleTheme}
+              className={`min-w-[34px] sm:min-w-[76px] justify-center inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold transition-colors cursor-pointer border active:scale-95 ${
+                isDark 
+                  ? 'bg-[#1E1E1E] hover:bg-[#2A2D2E] text-slate-200 border-[#3C3C3C]' 
+                  : 'bg-white hover:bg-slate-50 text-slate-700 border-slate-300 shadow-2xs'
+              }`}
+              title={isDark ? "Switch to White (Light) Theme" : "Switch to Black (Dark) Theme"}
+              aria-label="Toggle Black/White Theme"
+            >
+              {isDark ? (
+                <>
+                  <Moon className="w-3.5 h-3.5 text-amber-400 fill-amber-400/20 shrink-0" />
+                  <span className="hidden sm:inline">Dark</span>
+                </>
+              ) : (
+                <>
+                  <Sun className="w-3.5 h-3.5 text-amber-500 shrink-0" />
+                  <span className="hidden sm:inline">Light</span>
+                </>
+              )}
+            </button>
+
             {/* Big Button */}
             <button
               type="button"

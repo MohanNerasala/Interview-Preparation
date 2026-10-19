@@ -1,4 +1,5 @@
-import { useState, useMemo, useEffect, useRef, startTransition } from 'react';
+import { useState, useMemo, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { Link, useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
@@ -257,33 +258,57 @@ export default function Dashboard() {
   // Track active code program tab per concept (e.g. for Collections 1, 2, 3)
   const [activeCodeTabByConcept, setActiveCodeTabByConcept] = useState<Record<string, number>>({});
 
-  // Toggle individual concept expansion (preserves other open concepts to prevent page jumping to the top)
+  // Prevent background scrolling and enable Escape key to close while any modal is open
+  useEffect(() => {
+    const isAnyModalOpen = Boolean(showSelfIntroModal || showProjectModal || activeCodeModal);
+    if (!isAnyModalOpen) return;
+
+    const originalBodyOverflow = document.body.style.overflow;
+    const mainEl = document.querySelector('main');
+    const originalMainOverflow = mainEl ? mainEl.style.overflow : '';
+
+    document.body.style.overflow = 'hidden';
+    if (mainEl) mainEl.style.overflow = 'hidden';
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setShowSelfIntroModal(false);
+        setShowProjectModal(false);
+        setActiveCodeModal(null);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.body.style.overflow = originalBodyOverflow;
+      if (mainEl) mainEl.style.overflow = originalMainOverflow;
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [showSelfIntroModal, showProjectModal, activeCodeModal]);
+
+  // Toggle individual concept expansion (instant 0ms response)
   const toggleConcept = (conceptId: string) => {
-    startTransition(() => {
-      setExpandedConceptIds(prev => {
-        const next = new Set(prev);
-        if (next.has(conceptId)) {
-          next.delete(conceptId);
-        } else {
-          next.add(conceptId);
-        }
-        return next;
-      });
+    setExpandedConceptIds(prev => {
+      const next = new Set(prev);
+      if (next.has(conceptId)) {
+        next.delete(conceptId);
+      } else {
+        next.add(conceptId);
+      }
+      return next;
     });
   };
 
-  // Toggle individual question answer expansion (preserves other open questions)
+  // Toggle individual question answer expansion (instant 0ms response)
   const toggleQuestion = (questionId: string) => {
-    startTransition(() => {
-      setExpandedQuestionIds(prev => {
-        const next = new Set(prev);
-        if (next.has(questionId)) {
-          next.delete(questionId);
-        } else {
-          next.add(questionId);
-        }
-        return next;
-      });
+    setExpandedQuestionIds(prev => {
+      const next = new Set(prev);
+      if (next.has(questionId)) {
+        next.delete(questionId);
+      } else {
+        next.add(questionId);
+      }
+      return next;
     });
   };
 
@@ -370,14 +395,13 @@ export default function Dashboard() {
     allFilteredConceptIds.length > 0 &&
     allFilteredConceptIds.every(id => expandedConceptIds.has(id));
 
+  // Instant expand/collapse all with 0ms delay
   const toggleExpandAll = () => {
-    startTransition(() => {
-      if (allAreExpanded) {
-        setExpandedConceptIds(new Set());
-      } else {
-        setExpandedConceptIds(new Set(allFilteredConceptIds));
-      }
-    });
+    if (allAreExpanded) {
+      setExpandedConceptIds(new Set());
+    } else {
+      setExpandedConceptIds(new Set(allFilteredConceptIds));
+    }
   };
 
   const difficultyColors = {
@@ -387,7 +411,7 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="space-y-6 animate-smooth-fade pb-16">
+    <div className="space-y-6 pb-16">
       {/* Top Banner — Centered Title in Perfect Middle, ONE Single Box Below */}
       <div className="bg-white rounded-2xl border border-slate-200/90 p-4 sm:p-5 shadow-2xs flex flex-col items-center justify-center text-center space-y-3">
         {/* Title strictly in ONE single line in the perfect middle */}
@@ -1151,355 +1175,393 @@ export default function Dashboard() {
       </div>
 
       {/* 3-BOX POP-UP CODE MODAL (CODE • INPUT • OUTPUT) */}
-      {activeCodeModal && (
-        <div 
-          className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 bg-slate-950/75 backdrop-blur-xs animate-fade-in"
-          onClick={() => setActiveCodeModal(null)}
-        >
-          <div 
-            className="bg-white rounded-3xl border border-slate-200 shadow-2xl max-w-2xl sm:max-w-3xl w-full max-h-[88vh] flex flex-col overflow-hidden animate-scale-in"
-            onClick={e => e.stopPropagation()}
+      {typeof document !== 'undefined' && activeCodeModal && createPortal(
+        <AnimatePresence>
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.14, ease: "easeOut" }}
+            className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-5 bg-slate-950/70"
+            onClick={() => setActiveCodeModal(null)}
+            style={{ willChange: 'opacity' }}
           >
-            {/* Modal Top Header */}
-            <div className="flex items-center justify-between px-5 py-4 border-b border-slate-100 bg-slate-50/90 shrink-0">
-              <div className="flex items-center gap-2.5 min-w-0">
-                <div className="w-8 h-8 rounded-xl bg-blue-50 text-primary flex items-center justify-center shrink-0">
-                  <Code className="w-4 h-4" />
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.96, y: 8 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.96, y: 8 }}
+              transition={{ duration: 0.14, ease: "easeOut" }}
+              style={{ willChange: 'transform, opacity' }}
+              className="bg-white rounded-3xl border border-slate-200 shadow-2xl max-w-2xl sm:max-w-3xl w-full max-h-[88vh] flex flex-col overflow-hidden"
+              onClick={e => e.stopPropagation()}
+            >
+              {/* Modal Top Header */}
+              <div className="flex items-center justify-between px-5 py-4 border-b border-slate-100 bg-slate-50/90 shrink-0">
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <div className="w-8 h-8 rounded-xl bg-blue-50 text-primary flex items-center justify-center shrink-0">
+                    <Code className="w-4 h-4" />
+                  </div>
+                  <div className="min-w-0">
+                    <h3 className="font-bold text-slate-900 text-sm sm:text-base truncate">
+                      {activeCodeModal.title}
+                    </h3>
+                    <span className="text-[11px] text-slate-500 font-medium">
+                      Code Walkthrough • 3 Boxes (Code, Input & Output)
+                    </span>
+                  </div>
                 </div>
-                <div className="min-w-0">
-                  <h3 className="font-bold text-slate-900 text-sm sm:text-base truncate">
-                    {activeCodeModal.title}
-                  </h3>
-                  <span className="text-[11px] text-slate-500 font-medium">
-                    Code Walkthrough • 3 Boxes (Code, Input & Output)
+
+                <button
+                  onClick={() => setActiveCodeModal(null)}
+                  className="w-8 h-8 rounded-xl flex items-center justify-center text-slate-400 hover:text-slate-700 hover:bg-slate-200/60 transition-colors cursor-pointer shrink-0 ml-2"
+                  title="Close"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              {/* Modal Multi-Program Switcher Tabs if multiple programs exist */}
+              {activeCodeModal.programs && activeCodeModal.programs.length > 0 && (
+                <div className="flex items-center gap-2 px-4 sm:px-5 py-2.5 bg-slate-100 border-b border-slate-200 overflow-x-auto shrink-0">
+                  <span className="text-[11px] font-bold text-slate-600 uppercase tracking-wider mr-1 shrink-0">
+                    Shift Program:
                   </span>
+                  {activeCodeModal.programs.map((prog, pIdx) => {
+                    const isSelected = (activeCodeModal.activeProgramIndex ?? 0) === pIdx;
+                    return (
+                      <button
+                        key={prog.id}
+                        onClick={() => {
+                          setActiveCodeModal({
+                            ...activeCodeModal,
+                            title: prog.title,
+                            code: prog.code,
+                            input: prog.input || "None (Standard JVM execution)",
+                            output: prog.output || "Program executed successfully",
+                            activeProgramIndex: pIdx
+                          });
+                        }}
+                        className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer flex items-center gap-1.5 shrink-0 ${
+                          isSelected
+                            ? 'bg-primary text-white shadow-xs font-bold'
+                            : 'bg-white text-slate-700 hover:bg-slate-200/80 border border-slate-200'
+                        }`}
+                      >
+                        <span className={`w-4 h-4 rounded-full text-[10px] flex items-center justify-center font-mono ${
+                          isSelected ? 'bg-white text-primary font-bold' : 'bg-slate-100 text-slate-700'
+                        }`}>
+                          {pIdx + 1}
+                        </span>
+                        <span>{prog.label}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
+
+              {/* Modal Scrollable Body — Input & Output ABOVE, Code BELOW */}
+              <div className="p-3.5 sm:p-5 overflow-y-auto space-y-3 max-h-[calc(88vh-110px)] overflow-x-hidden">
+                {/* TOP: Input Box & Output Box (Stacked One Over the Other — Full Width & Perfect Font) */}
+                <div className="space-y-3">
+                  <TerminalBox
+                    title="1. Input / Parameters"
+                    badge="Input"
+                    content={activeCodeModal.input}
+                    placeholder="None (Standard JVM execution)"
+                  />
+
+                  <TerminalBox
+                    title="2. Console Output"
+                    badge="Output"
+                    content={activeCodeModal.output}
+                    placeholder="Execution completed successfully with no output."
+                  />
+                </div>
+
+                {/* BOX 3: Code (Below Input & Output, with reduced font size) */}
+                <div className="space-y-1 pt-0.5">
+                  <span className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-slate-700 flex items-center gap-1.5">
+                    <Code className="w-3.5 h-3.5 text-primary shrink-0" />
+                    3. Java Implementation Code
+                  </span>
+                  <CleanCodeViewer code={activeCodeModal.code} title={activeCodeModal.title} />
                 </div>
               </div>
 
-              <button
-                onClick={() => setActiveCodeModal(null)}
-                className="w-8 h-8 rounded-xl flex items-center justify-center text-slate-400 hover:text-slate-700 hover:bg-slate-200/60 transition-colors cursor-pointer shrink-0 ml-2"
-                title="Close"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-
-            {/* Modal Multi-Program Switcher Tabs if multiple programs exist */}
-            {activeCodeModal.programs && activeCodeModal.programs.length > 0 && (
-              <div className="flex items-center gap-2 px-4 sm:px-5 py-2.5 bg-slate-100 border-b border-slate-200 overflow-x-auto shrink-0">
-                <span className="text-[11px] font-bold text-slate-600 uppercase tracking-wider mr-1 shrink-0">
-                  Shift Program:
-                </span>
-                {activeCodeModal.programs.map((prog, pIdx) => {
-                  const isSelected = (activeCodeModal.activeProgramIndex ?? 0) === pIdx;
-                  return (
-                    <button
-                      key={prog.id}
-                      onClick={() => {
-                        setActiveCodeModal({
-                          ...activeCodeModal,
-                          title: prog.title,
-                          code: prog.code,
-                          input: prog.input || "None (Standard JVM execution)",
-                          output: prog.output || "Program executed successfully",
-                          activeProgramIndex: pIdx
-                        });
-                      }}
-                      className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer flex items-center gap-1.5 shrink-0 ${
-                        isSelected
-                          ? 'bg-primary text-white shadow-xs font-bold'
-                          : 'bg-white text-slate-700 hover:bg-slate-200/80 border border-slate-200'
-                      }`}
-                    >
-                      <span className={`w-4 h-4 rounded-full text-[10px] flex items-center justify-center font-mono ${
-                        isSelected ? 'bg-white text-primary font-bold' : 'bg-slate-100 text-slate-700'
-                      }`}>
-                        {pIdx + 1}
-                      </span>
-                      <span>{prog.label}</span>
-                    </button>
-                  );
-                })}
+              {/* Modal Bottom Footer */}
+              <div className="px-5 py-3.5 border-t border-slate-200 bg-slate-50 flex items-center justify-end shrink-0">
+                <button
+                  type="button"
+                  onClick={() => setActiveCodeModal(null)}
+                  className="modal-btn-cancel"
+                >
+                  <X className="w-4 h-4 text-slate-400 group-hover:text-slate-600 transition-colors" />
+                  <span>Close</span>
+                </button>
               </div>
-            )}
-
-            {/* Modal Scrollable Body — Input & Output ABOVE, Code BELOW */}
-            <div className="p-3.5 sm:p-5 overflow-y-auto space-y-3 max-h-[calc(88vh-110px)] overflow-x-hidden">
-              {/* TOP: Input Box & Output Box (Stacked One Over the Other — Full Width & Perfect Font) */}
-              <div className="space-y-3">
-                <TerminalBox
-                  title="1. Input / Parameters"
-                  badge="Input"
-                  content={activeCodeModal.input}
-                  placeholder="None (Standard JVM execution)"
-                />
-
-                <TerminalBox
-                  title="2. Console Output"
-                  badge="Output"
-                  content={activeCodeModal.output}
-                  placeholder="Execution completed successfully with no output."
-                />
-              </div>
-
-              {/* BOX 3: Code (Below Input & Output, with reduced font size) */}
-              <div className="space-y-1 pt-0.5">
-                <span className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-slate-700 flex items-center gap-1.5">
-                  <Code className="w-3.5 h-3.5 text-primary shrink-0" />
-                  3. Java Implementation Code
-                </span>
-                <CleanCodeViewer code={activeCodeModal.code} title={activeCodeModal.title} />
-              </div>
-            </div>
-
-            {/* Modal Bottom Footer */}
-            <div className="px-5 py-3 border-t border-slate-100 bg-slate-50 flex items-center justify-end shrink-0">
-              <button
-                onClick={() => setActiveCodeModal(null)}
-                className="px-4 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-900 text-white text-xs font-semibold transition-colors cursor-pointer"
-              >
-                Close
-              </button>
-            </div>
-          </div>
-        </div>
+            </motion.div>
+          </motion.div>
+        </AnimatePresence>,
+        document.body
       )}
 
       {/* Self-Introduction Customization Modal Popup */}
-      <AnimatePresence>
-        {showSelfIntroModal && (
-          <div 
-            className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-3 sm:p-5"
-            onClick={() => setShowSelfIntroModal(false)}
-          >
+      {typeof document !== 'undefined' && createPortal(
+        <AnimatePresence>
+          {showSelfIntroModal && (
             <motion.div 
-              initial={{ opacity: 0, scale: 0.95, y: 15 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 15 }}
-              transition={{ duration: 0.18, ease: "easeOut" }}
-              className="bg-white rounded-2xl max-w-2xl w-full max-h-[92vh] flex flex-col shadow-2xl border border-slate-200 overflow-hidden"
-              onClick={e => e.stopPropagation()}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.14, ease: "easeOut" }}
+              className="fixed inset-0 z-[100] bg-slate-950/65 flex items-center justify-center p-3 sm:p-5"
+              onClick={() => setShowSelfIntroModal(false)}
+              style={{ willChange: 'opacity' }}
             >
-              {/* Modal Header — Clean Neutral CSS */}
-              <div className="px-5 py-4 bg-slate-50/90 border-b border-slate-200 flex items-center justify-between shrink-0">
-                <div className="flex items-center gap-2.5">
-                  <div className="w-8 h-8 rounded-xl bg-slate-100 border border-slate-200 text-slate-700 flex items-center justify-center shrink-0">
-                    <Sparkles className="w-4 h-4 text-slate-600" />
+              <motion.div 
+                initial={{ opacity: 0, scale: 0.96, y: 8 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.96, y: 8 }}
+                transition={{ duration: 0.14, ease: "easeOut" }}
+                style={{ willChange: 'transform, opacity' }}
+                className="bg-white rounded-2xl max-w-2xl w-full max-h-[92vh] flex flex-col shadow-2xl border border-slate-200 overflow-hidden"
+                onClick={e => e.stopPropagation()}
+              >
+                {/* Modal Header — Clean Neutral CSS */}
+                <div className="px-5 py-4 bg-slate-50/90 border-b border-slate-200 flex items-center justify-between shrink-0">
+                  <div className="flex items-center gap-2.5">
+                    <div className="w-8 h-8 rounded-xl bg-slate-100 border border-slate-200 text-slate-700 flex items-center justify-center shrink-0">
+                      <Sparkles className="w-4 h-4 text-slate-600" />
+                    </div>
+                    <div>
+                      <h3 className="text-sm sm:text-base font-bold text-slate-900">
+                        {customSelfIntro ? 'Edit Your Self-Introduction' : 'Add Your Self-Introduction'}
+                      </h3>
+                      <p className="text-[11px] sm:text-xs text-slate-500">
+                        Personalize your 60–90 second interview speech (max 200 words). Tap "Back to Default" anytime.
+                      </p>
+                    </div>
                   </div>
-                  <div>
-                    <h3 className="text-sm sm:text-base font-bold text-slate-900">
-                      {customSelfIntro ? 'Edit Your Self-Introduction' : 'Add Your Self-Introduction'}
-                    </h3>
-                    <p className="text-[11px] sm:text-xs text-slate-500">
-                      Personalize your 60–90 second interview speech (max 200 words). Tap "Back to Default" anytime.
-                    </p>
-                  </div>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => setShowSelfIntroModal(false)}
-                  className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors cursor-pointer"
-                  aria-label="Close"
-                >
-                  <X className="w-5 h-5" />
-                </button>
-              </div>
-
-              {/* Modal Body */}
-              <div className="p-4 sm:p-6 overflow-y-auto space-y-3.5 flex-1">
-                <div className="flex items-center justify-between text-xs text-slate-600">
-                  <label className="font-semibold text-slate-800">
-                    Your Self-Introduction:
-                  </label>
-                  <span className={`text-[11px] font-mono px-2 py-0.5 rounded font-medium border ${
-                    (selfIntroEditText.trim() ? selfIntroEditText.trim().split(/\s+/).filter(Boolean).length : 0) > 200 
-                      ? 'bg-rose-50 text-rose-600 border-rose-200 font-bold' 
-                      : 'bg-slate-100 text-slate-700 border-slate-200'
-                  }`}>
-                    {selfIntroEditText.trim() ? selfIntroEditText.trim().split(/\s+/).filter(Boolean).length : 0} / 200 words max
-                  </span>
-                </div>
-
-                <textarea
-                  value={selfIntroEditText}
-                  onChange={e => setSelfIntroEditText(e.target.value)}
-                  placeholder="Good morning sir/madam. My name is... Type or paste your self-introduction here (max 200 words)..."
-                  rows={10}
-                  className="w-full rounded-xl border border-slate-300 p-3.5 sm:p-4 text-xs sm:text-sm leading-relaxed text-slate-800 placeholder:text-slate-400 focus:outline-hidden focus:border-slate-500 focus:ring-2 focus:ring-slate-200 transition-all font-sans resize-y min-h-[220px]"
-                />
-
-                <div className="bg-slate-50 border border-slate-200 rounded-xl p-3 flex items-start gap-2.5 text-[11px] sm:text-xs text-slate-700 leading-relaxed">
-                  <Lightbulb className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
-                  <div>
-                    <strong>Max 200 Words:</strong> Keep your speech concise (under 200 words) so you can deliver it smoothly within 60–90 seconds. Separate paragraphs with empty lines.
-                  </div>
-                </div>
-              </div>
-
-              {/* Modal Footer */}
-              <div className="px-5 py-3.5 bg-slate-50 border-t border-slate-200 flex flex-wrap items-center justify-between gap-2 shrink-0">
-                {Boolean(customSelfIntro) ? (
-                  <button
-                    type="button"
-                    onClick={handleResetSelfIntro}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-rose-200 bg-white hover:bg-rose-50 text-rose-600 text-xs font-semibold transition-colors cursor-pointer active:scale-95 shadow-2xs"
-                  >
-                    <RotateCcw className="w-3.5 h-3.5" />
-                    <span>Back to Default</span>
-                  </button>
-                ) : (
-                  <div />
-                )}
-
-                <div className="flex items-center gap-2 ml-auto">
                   <button
                     type="button"
                     onClick={() => setShowSelfIntroModal(false)}
-                    className="px-3.5 py-1.5 rounded-xl border border-slate-200 hover:bg-slate-100 text-slate-600 text-xs font-semibold transition-colors cursor-pointer"
+                    className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors cursor-pointer"
+                    aria-label="Close"
                   >
-                    Cancel
-                  </button>
-                  <button
-                    type="button"
-                    onClick={handleSaveSelfIntro}
-                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs sm:text-sm font-semibold transition-all shadow-xs cursor-pointer active:scale-95"
-                  >
-                    <Save className="w-4 h-4" />
-                    <span>Save Self Intro</span>
+                    <X className="w-5 h-5" />
                   </button>
                 </div>
-              </div>
+
+                {/* Modal Body */}
+                <div className="p-4 sm:p-6 overflow-y-auto space-y-3.5 flex-1">
+                  <div className="flex items-center justify-between text-xs text-slate-600">
+                    <label className="font-semibold text-slate-800">
+                      Your Self-Introduction:
+                    </label>
+                    <span className={`text-[11px] font-mono px-2 py-0.5 rounded font-medium border ${
+                      (selfIntroEditText.trim() ? selfIntroEditText.trim().split(/\s+/).filter(Boolean).length : 0) > 200 
+                        ? 'bg-rose-50 text-rose-600 border-rose-200 font-bold' 
+                        : 'bg-slate-100 text-slate-700 border-slate-200'
+                    }`}>
+                      {selfIntroEditText.trim() ? selfIntroEditText.trim().split(/\s+/).filter(Boolean).length : 0} / 200 words max
+                    </span>
+                  </div>
+
+                  <textarea
+                    value={selfIntroEditText}
+                    onChange={e => setSelfIntroEditText(e.target.value)}
+                    placeholder="Good morning sir/madam. My name is... Type or paste your self-introduction here (max 200 words)..."
+                    rows={10}
+                    className="w-full rounded-xl border border-slate-300 p-3.5 sm:p-4 text-xs sm:text-sm leading-relaxed text-slate-800 placeholder:text-slate-400 focus:outline-hidden focus:border-slate-500 focus:ring-2 focus:ring-slate-200 transition-all font-sans resize-y min-h-[220px]"
+                  />
+
+                  <div className="bg-slate-50 border border-slate-200 rounded-xl p-3 flex items-start gap-2.5 text-[11px] sm:text-xs text-slate-700 leading-relaxed">
+                    <Lightbulb className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
+                    <div>
+                      <strong>Max 200 Words:</strong> Keep your speech concise (under 200 words) so you can deliver it smoothly within 60–90 seconds. Separate paragraphs with empty lines.
+                    </div>
+                  </div>
+                </div>
+
+                {/* Modal Footer */}
+                <div className="px-5 py-4 bg-slate-50/90 border-t border-slate-200 flex flex-wrap items-center justify-between gap-3 shrink-0">
+                  {Boolean(customSelfIntro) ? (
+                    <button
+                      type="button"
+                      onClick={handleResetSelfIntro}
+                      className="modal-btn-reset"
+                    >
+                      <RotateCcw className="w-3.5 h-3.5 shrink-0" />
+                      <span>Back to Default</span>
+                    </button>
+                  ) : (
+                    <div />
+                  )}
+
+                  <div className="flex items-center gap-2.5 sm:gap-3 ml-auto shrink-0">
+                    <button
+                      type="button"
+                      onClick={() => setShowSelfIntroModal(false)}
+                      className="modal-btn-cancel group whitespace-nowrap shrink-0"
+                    >
+                      <X className="w-3.5 h-3.5 text-slate-400 group-hover:text-slate-600 transition-colors shrink-0" />
+                      <span className="whitespace-nowrap">Cancel</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={handleSaveSelfIntro}
+                      className="modal-btn-save group whitespace-nowrap shrink-0"
+                    >
+                      <Save className="w-4 h-4 shrink-0 transition-transform" />
+                      <span className="whitespace-nowrap">Save Self Intro</span>
+                    </button>
+                  </div>
+                </div>
+              </motion.div>
             </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
+          )}
+        </AnimatePresence>,
+        document.body
+      )}
 
       {/* Project Explanation Customization Modal Popup */}
-      <AnimatePresence>
-        {showProjectModal && (
-          <div 
-            className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-3 sm:p-5"
-            onClick={() => setShowProjectModal(false)}
-          >
+      {typeof document !== 'undefined' && createPortal(
+        <AnimatePresence>
+          {showProjectModal && (
             <motion.div 
-              initial={{ opacity: 0, scale: 0.95, y: 15 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 15 }}
-              transition={{ duration: 0.18, ease: "easeOut" }}
-              className="bg-white rounded-2xl max-w-2xl w-full max-h-[92vh] flex flex-col shadow-2xl border border-slate-200 overflow-hidden"
-              onClick={e => e.stopPropagation()}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.14, ease: "easeOut" }}
+              className="fixed inset-0 z-[100] bg-slate-950/65 flex items-center justify-center p-3 sm:p-5"
+              onClick={() => setShowProjectModal(false)}
+              style={{ willChange: 'opacity' }}
             >
-              {/* Modal Header — Clean Neutral CSS */}
-              <div className="px-5 py-4 bg-slate-50/90 border-b border-slate-200 flex items-center justify-between shrink-0">
-                <div className="flex items-center gap-2.5">
-                  <div className="w-8 h-8 rounded-xl bg-slate-100 border border-slate-200 text-slate-700 flex items-center justify-center shrink-0">
-                    <Sparkles className="w-4 h-4 text-slate-600" />
+              <motion.div 
+                initial={{ opacity: 0, scale: 0.96, y: 8 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.96, y: 8 }}
+                transition={{ duration: 0.14, ease: "easeOut" }}
+                style={{ willChange: 'transform, opacity' }}
+                className="bg-white rounded-2xl max-w-2xl w-full max-h-[92vh] flex flex-col shadow-2xl border border-slate-200 overflow-hidden"
+                onClick={e => e.stopPropagation()}
+              >
+                {/* Modal Header — Clean Neutral CSS */}
+                <div className="px-5 py-4 bg-slate-50/90 border-b border-slate-200 flex items-center justify-between shrink-0">
+                  <div className="flex items-center gap-2.5">
+                    <div className="w-8 h-8 rounded-xl bg-slate-100 border border-slate-200 text-slate-700 flex items-center justify-center shrink-0">
+                      <Sparkles className="w-4 h-4 text-slate-600" />
+                    </div>
+                    <div>
+                      <h3 className="text-sm sm:text-base font-bold text-slate-900">
+                        {customProjectExplanation ? 'Edit Your Project Explanation' : 'Add Your Project Explanation'}
+                      </h3>
+                      <p className="text-[11px] sm:text-xs text-slate-500">
+                        Personalize your 60–90 second project answer (max 200 words). Tap "Back to Default" anytime.
+                      </p>
+                    </div>
                   </div>
-                  <div>
-                    <h3 className="text-sm sm:text-base font-bold text-slate-900">
-                      {customProjectExplanation ? 'Edit Your Project Explanation' : 'Add Your Project Explanation'}
-                    </h3>
-                    <p className="text-[11px] sm:text-xs text-slate-500">
-                      Personalize your 60–90 second project answer (max 200 words). Tap "Back to Default" anytime.
-                    </p>
-                  </div>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => setShowProjectModal(false)}
-                  className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors cursor-pointer"
-                  aria-label="Close"
-                >
-                  <X className="w-5 h-5" />
-                </button>
-              </div>
-
-              {/* Modal Body */}
-              <div className="p-4 sm:p-6 overflow-y-auto space-y-3.5 flex-1">
-                <div className="flex items-center justify-between text-xs text-slate-600">
-                  <label className="font-semibold text-slate-800">
-                    Your Project Explanation:
-                  </label>
-                  <span className={`text-[11px] font-mono px-2 py-0.5 rounded font-medium border ${
-                    (projectEditText.trim() ? projectEditText.trim().split(/\s+/).filter(Boolean).length : 0) > 200 
-                      ? 'bg-rose-50 text-rose-600 border-rose-200 font-bold' 
-                      : 'bg-slate-100 text-slate-700 border-slate-200'
-                  }`}>
-                    {projectEditText.trim() ? projectEditText.trim().split(/\s+/).filter(Boolean).length : 0} / 200 words max
-                  </span>
-                </div>
-
-                <textarea
-                  value={projectEditText}
-                  onChange={e => setProjectEditText(e.target.value)}
-                  placeholder="Sir, my project name is... Type or paste your project explanation here (max 200 words)..."
-                  rows={10}
-                  className="w-full rounded-xl border border-slate-300 p-3.5 sm:p-4 text-xs sm:text-sm leading-relaxed text-slate-800 placeholder:text-slate-400 focus:outline-hidden focus:border-slate-500 focus:ring-2 focus:ring-slate-200 transition-all font-sans resize-y min-h-[220px]"
-                />
-
-                <div className="bg-slate-50 border border-slate-200 rounded-xl p-3 flex items-start gap-2.5 text-[11px] sm:text-xs text-slate-700 leading-relaxed">
-                  <Lightbulb className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
-                  <div>
-                    <strong>Max 200 Words:</strong> Keep your explanation concise (under 200 words) so you can deliver it smoothly within 60–90 seconds. Separate paragraphs with empty lines.
-                  </div>
-                </div>
-              </div>
-
-              {/* Modal Footer */}
-              <div className="px-5 py-3.5 bg-slate-50 border-t border-slate-200 flex flex-wrap items-center justify-between gap-2 shrink-0">
-                {Boolean(customProjectExplanation) ? (
-                  <button
-                    type="button"
-                    onClick={handleResetProject}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-rose-200 bg-white hover:bg-rose-50 text-rose-600 text-xs font-semibold transition-colors cursor-pointer active:scale-95 shadow-2xs"
-                  >
-                    <RotateCcw className="w-3.5 h-3.5" />
-                    <span>Back to Default</span>
-                  </button>
-                ) : (
-                  <div />
-                )}
-
-                <div className="flex items-center gap-2 ml-auto">
                   <button
                     type="button"
                     onClick={() => setShowProjectModal(false)}
-                    className="px-3.5 py-1.5 rounded-xl border border-slate-200 hover:bg-slate-100 text-slate-600 text-xs font-semibold transition-colors cursor-pointer"
+                    className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors cursor-pointer"
+                    aria-label="Close"
                   >
-                    Cancel
-                  </button>
-                  <button
-                    type="button"
-                    onClick={handleSaveProject}
-                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs sm:text-sm font-semibold transition-all shadow-xs cursor-pointer active:scale-95"
-                  >
-                    <Save className="w-4 h-4" />
-                    <span>Save Explanation</span>
+                    <X className="w-5 h-5" />
                   </button>
                 </div>
-              </div>
+
+                {/* Modal Body */}
+                <div className="p-4 sm:p-6 overflow-y-auto space-y-3.5 flex-1">
+                  <div className="flex items-center justify-between text-xs text-slate-600">
+                    <label className="font-semibold text-slate-800">
+                      Your Project Explanation:
+                    </label>
+                    <span className={`text-[11px] font-mono px-2 py-0.5 rounded font-medium border ${
+                      (projectEditText.trim() ? projectEditText.trim().split(/\s+/).filter(Boolean).length : 0) > 200 
+                        ? 'bg-rose-50 text-rose-600 border-rose-200 font-bold' 
+                        : 'bg-slate-100 text-slate-700 border-slate-200'
+                    }`}>
+                      {projectEditText.trim() ? projectEditText.trim().split(/\s+/).filter(Boolean).length : 0} / 200 words max
+                    </span>
+                  </div>
+
+                  <textarea
+                    value={projectEditText}
+                    onChange={e => setProjectEditText(e.target.value)}
+                    placeholder="Sir, my project name is... Type or paste your project explanation here (max 200 words)..."
+                    rows={10}
+                    className="w-full rounded-xl border border-slate-300 p-3.5 sm:p-4 text-xs sm:text-sm leading-relaxed text-slate-800 placeholder:text-slate-400 focus:outline-hidden focus:border-slate-500 focus:ring-2 focus:ring-slate-200 transition-all font-sans resize-y min-h-[220px]"
+                  />
+
+                  <div className="bg-slate-50 border border-slate-200 rounded-xl p-3 flex items-start gap-2.5 text-[11px] sm:text-xs text-slate-700 leading-relaxed">
+                    <Lightbulb className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
+                    <div>
+                      <strong>Max 200 Words:</strong> Keep your explanation concise (under 200 words) so you can deliver it smoothly within 60–90 seconds. Separate paragraphs with empty lines.
+                    </div>
+                  </div>
+                </div>
+
+                {/* Modal Footer */}
+                <div className="px-5 py-4 bg-slate-50/90 border-t border-slate-200 flex flex-wrap items-center justify-between gap-3 shrink-0">
+                  {Boolean(customProjectExplanation) ? (
+                    <button
+                      type="button"
+                      onClick={handleResetProject}
+                      className="modal-btn-reset"
+                    >
+                      <RotateCcw className="w-3.5 h-3.5 shrink-0" />
+                      <span>Back to Default</span>
+                    </button>
+                  ) : (
+                    <div />
+                  )}
+
+                  <div className="flex items-center gap-2.5 sm:gap-3 ml-auto shrink-0">
+                    <button
+                      type="button"
+                      onClick={() => setShowProjectModal(false)}
+                      className="modal-btn-cancel group whitespace-nowrap shrink-0"
+                    >
+                      <X className="w-3.5 h-3.5 text-slate-400 group-hover:text-slate-600 transition-colors shrink-0" />
+                      <span className="whitespace-nowrap">Cancel</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={handleSaveProject}
+                      className="modal-btn-save group whitespace-nowrap shrink-0"
+                    >
+                      <Save className="w-4 h-4 shrink-0 transition-transform" />
+                      <span className="whitespace-nowrap">Save Explanation</span>
+                    </button>
+                  </div>
+                </div>
+              </motion.div>
             </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
+          )}
+        </AnimatePresence>,
+        document.body
+      )}
 
       {/* Floating Save Toast Notification */}
-      <AnimatePresence>
-        {Boolean(savedToast) && (
-          <motion.div
-            initial={{ opacity: 0, y: 30, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 20, scale: 0.95 }}
-            className="fixed bottom-6 right-6 z-50 bg-slate-900 text-white px-4 py-3 rounded-2xl shadow-2xl border border-slate-700 flex items-center gap-3 text-xs sm:text-sm font-medium"
-          >
-            <div className="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0">
-              <Check className="w-3.5 h-3.5" />
-            </div>
-            <span>{savedToast}</span>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {typeof document !== 'undefined' && createPortal(
+        <AnimatePresence>
+          {Boolean(savedToast) && (
+            <motion.div
+              initial={{ opacity: 0, y: 30, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 20, scale: 0.95 }}
+              className="fixed bottom-6 right-6 z-[100] bg-slate-900 text-white px-4 py-3 rounded-2xl shadow-2xl border border-slate-700 flex items-center gap-3 text-xs sm:text-sm font-medium"
+            >
+              <div className="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0">
+                <Check className="w-3.5 h-3.5" />
+              </div>
+              <span>{savedToast}</span>
+            </motion.div>
+          )}
+        </AnimatePresence>,
+        document.body
+      )}
     </div>
   );
 }
