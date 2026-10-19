@@ -908,6 +908,7 @@ export default function Dashboard() {
                               {concept.codePrograms && concept.codePrograms.length > 0 ? (
                                 <div className="pt-1">
                                   <button
+                                    type="button"
                                     onClick={() => {
                                       const progs = concept.codePrograms!;
                                       const currentProg = progs[0];
@@ -920,28 +921,28 @@ export default function Dashboard() {
                                         activeProgramIndex: 0
                                       });
                                     }}
-                                    className="w-full flex items-center justify-between p-3 sm:p-3.5 rounded-2xl bg-gradient-to-r from-blue-50/80 via-white to-blue-50/40 border border-blue-200/90 hover:border-primary/80 hover:shadow-xs transition-all cursor-pointer group select-none text-left"
+                                    className="w-full flex items-center justify-between gap-3 p-3 sm:p-3.5 rounded-2xl bg-gradient-to-r from-blue-50/80 via-white to-blue-50/40 border border-blue-200/90 hover:border-primary/80 hover:shadow-xs transition-all cursor-pointer group select-none text-left"
                                   >
-                                    <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
-                                      <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-primary text-white flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform shadow-xs">
-                                        <Code className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                                    <div className="flex items-center gap-2.5 sm:gap-3 min-w-0 flex-1">
+                                      <div className="w-8 h-8 rounded-xl bg-primary text-white flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform shadow-xs">
+                                        <Code className="w-4 h-4 shrink-0" />
                                       </div>
-                                      <div className="min-w-0">
-                                        <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
-                                          <span className="text-xs sm:text-sm font-bold text-slate-900 group-hover:text-primary transition-colors">
-                                            View Code Walkthrough
+                                      <div className="min-w-0 flex-1">
+                                        <div className="flex items-center gap-1.5 sm:gap-2">
+                                          <span className="text-xs sm:text-sm font-bold text-slate-900 group-hover:text-primary transition-colors whitespace-nowrap">
+                                            Code Walkthrough
                                           </span>
                                           <span className="text-[9px] sm:text-[10px] font-mono font-semibold px-1.5 py-0.5 rounded bg-blue-100 text-primary border border-blue-200 shrink-0 whitespace-nowrap">
-                                            3 PROGRAMS • INPUT • OUTPUT • CODE
+                                            3 Programs
                                           </span>
                                         </div>
-                                        <p className="text-[11px] text-slate-500 truncate">
-                                          Tap to view HashMap, HashSet & ArrayList code walkthrough
+                                        <p className="text-[11px] text-slate-500 truncate mt-0.5">
+                                          HashMap • HashSet • ArrayList
                                         </p>
                                       </div>
                                     </div>
 
-                                    <div className="px-2.5 sm:px-3 py-1 rounded-xl bg-white border border-slate-200 text-[11px] sm:text-xs font-semibold text-primary group-hover:bg-primary group-hover:text-white transition-all shadow-2xs shrink-0 ml-2">
+                                    <div className="px-2.5 sm:px-3 py-1.5 rounded-xl bg-white border border-slate-200 text-[11px] sm:text-xs font-semibold text-primary group-hover:bg-primary group-hover:text-white transition-all shadow-2xs shrink-0 whitespace-nowrap">
                                       Open Code
                                     </div>
                                   </button>
@@ -949,6 +950,7 @@ export default function Dashboard() {
                               ) : (concept.codeSnippet || concept.codeExample) && (
                                 <div className="pt-1">
                                   <button
+                                    type="button"
                                     onClick={() => {
                                       const snippet = concept.codeSnippet;
                                       setActiveCodeModal({
@@ -958,28 +960,28 @@ export default function Dashboard() {
                                         output: snippet?.output || "Program executed successfully"
                                       });
                                     }}
-                                    className="w-full flex items-center justify-between p-3 sm:p-3.5 rounded-2xl bg-gradient-to-r from-blue-50/80 via-white to-blue-50/40 border border-blue-200/90 hover:border-primary/80 hover:shadow-xs transition-all cursor-pointer group select-none text-left"
+                                    className="w-full flex items-center justify-between gap-3 p-3 sm:p-3.5 rounded-2xl bg-gradient-to-r from-blue-50/80 via-white to-blue-50/40 border border-blue-200/90 hover:border-primary/80 hover:shadow-xs transition-all cursor-pointer group select-none text-left"
                                   >
-                                    <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
-                                      <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-primary text-white flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform shadow-xs">
-                                        <Code className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                                    <div className="flex items-center gap-2.5 sm:gap-3 min-w-0 flex-1">
+                                      <div className="w-8 h-8 rounded-xl bg-primary text-white flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform shadow-xs">
+                                        <Code className="w-4 h-4 shrink-0" />
                                       </div>
-                                      <div className="min-w-0">
-                                        <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
-                                          <span className="text-xs sm:text-sm font-bold text-slate-900 group-hover:text-primary transition-colors">
-                                            View Code Walkthrough
+                                      <div className="min-w-0 flex-1">
+                                        <div className="flex items-center gap-1.5 sm:gap-2">
+                                          <span className="text-xs sm:text-sm font-bold text-slate-900 group-hover:text-primary transition-colors whitespace-nowrap">
+                                            Code Walkthrough
                                           </span>
                                           <span className="text-[9px] sm:text-[10px] font-mono font-semibold px-1.5 py-0.5 rounded bg-blue-100 text-primary border border-blue-200 shrink-0 whitespace-nowrap">
-                                            INPUT • OUTPUT • CODE
+                                            Java Code
                                           </span>
                                         </div>
-                                        <p className="text-[11px] text-slate-500 truncate">
-                                          Tap to view Input, Output & Java code
+                                        <p className="text-[11px] text-slate-500 truncate mt-0.5">
+                                          Tap to view input, output & Java code
                                         </p>
                                       </div>
                                     </div>
 
-                                    <div className="px-2.5 sm:px-3 py-1 rounded-xl bg-white border border-slate-200 text-[11px] sm:text-xs font-semibold text-primary group-hover:bg-primary group-hover:text-white transition-all shadow-2xs shrink-0 ml-2">
+                                    <div className="px-2.5 sm:px-3 py-1.5 rounded-xl bg-white border border-slate-200 text-[11px] sm:text-xs font-semibold text-primary group-hover:bg-primary group-hover:text-white transition-all shadow-2xs shrink-0 whitespace-nowrap">
                                       Open Code
                                     </div>
                                   </button>
