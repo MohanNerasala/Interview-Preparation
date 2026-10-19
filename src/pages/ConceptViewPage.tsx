@@ -218,26 +218,27 @@ export default function ConceptViewPage() {
                   </h3>
                 </div>
 
-                {/* 1, 2, 3 Switcher Buttons */}
-                <div className="flex items-center gap-1.5 p-1 bg-slate-100 rounded-xl self-start sm:self-auto overflow-x-auto max-w-full">
+                {/* 1, 2, 3 Switcher Buttons — HashMap, HashSet, ArrayList */}
+                <div className="grid grid-cols-3 gap-1.5 p-1 bg-slate-200/70 rounded-xl border border-slate-200/80 w-full sm:w-auto self-start sm:self-auto">
                   {concept.codePrograms.map((prog, idx) => {
-                    const cleanLabel = prog.label.replace(/^\d+\.\s*/, '');
+                    const isSelected = activeProgramIndex === idx;
+                    const displayLabel = idx === 0 ? 'HashMap' : idx === 1 ? 'HashSet' : 'ArrayList';
                     return (
                       <button
                         key={prog.id}
                         onClick={() => setActiveProgramIndex(idx)}
-                        className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer flex items-center gap-1.5 whitespace-nowrap shrink-0 ${
-                          activeProgramIndex === idx
-                            ? 'bg-white text-primary shadow-xs font-bold'
-                            : 'text-slate-600 hover:text-slate-900'
+                        className={`px-2.5 sm:px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer flex items-center justify-center gap-1.5 whitespace-nowrap ${
+                          isSelected
+                            ? 'bg-blue-600 text-white shadow-xs font-bold'
+                            : 'text-slate-700 hover:text-slate-950 hover:bg-slate-300/60'
                         }`}
                       >
                         <span className={`w-4 h-4 rounded-full text-[10px] flex items-center justify-center font-mono shrink-0 ${
-                          activeProgramIndex === idx ? 'bg-primary text-white' : 'bg-slate-200 text-slate-700'
+                          isSelected ? 'bg-white text-blue-600 font-bold' : 'bg-slate-300/80 text-slate-700'
                         }`}>
                           {idx + 1}
                         </span>
-                        <span className="whitespace-nowrap">{cleanLabel}</span>
+                        <span className="font-semibold">{displayLabel}</span>
                       </button>
                     );
                   })}

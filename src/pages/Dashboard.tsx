@@ -908,43 +908,43 @@ export default function Dashboard() {
 
                               {/* Interactive Code Section: Multi-Program 1-2-3 Switcher or Single Walkthrough */}
                               {concept.codePrograms && concept.codePrograms.length > 0 ? (
-                                <div className="bg-slate-900/95 rounded-2xl border border-slate-800 p-4 sm:p-5 shadow-sm space-y-4">
+                                <div className="bg-slate-50/90 rounded-2xl border border-slate-200/90 p-4 sm:p-5 shadow-xs space-y-4">
                                   {/* Tab Header with 1, 2, 3 Switcher Buttons */}
-                                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-800/80">
+                                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-200/90">
                                     <div>
                                       <div className="flex items-center gap-2">
-                                        <span className="text-[10px] font-bold uppercase tracking-wider text-blue-400 bg-blue-950/80 px-2 py-0.5 rounded border border-blue-800/60">
+                                        <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-blue-700 bg-blue-50 px-2 py-0.5 rounded border border-blue-200">
                                           3 Java Programs
                                         </span>
-                                        <span className="text-xs text-slate-400 font-medium">Select to shift code program:</span>
+                                        <span className="text-xs text-slate-500 font-medium">Select code program:</span>
                                       </div>
-                                      <h4 className="text-sm font-bold text-slate-100 mt-1">
+                                      <h4 className="text-sm sm:text-base font-bold text-slate-900 mt-1">
                                         {concept.codePrograms[activeCodeTabByConcept[concept.id] || 0]?.title}
                                       </h4>
                                     </div>
 
-                                    {/* 1, 2, 3 Switcher Buttons */}
-                                    <div className="flex items-center gap-1.5 p-1 bg-slate-950/90 rounded-xl border border-slate-800 self-start sm:self-auto overflow-x-auto max-w-full">
+                                    {/* 1, 2, 3 Switcher Buttons — HashMap, HashSet, ArrayList */}
+                                    <div className="grid grid-cols-3 gap-1.5 p-1 bg-slate-200/70 rounded-xl border border-slate-200/80 w-full sm:w-auto self-start sm:self-auto">
                                       {concept.codePrograms.map((prog, idx) => {
                                         const currentIdx = activeCodeTabByConcept[concept.id] || 0;
                                         const isSelected = currentIdx === idx;
-                                        const cleanLabel = prog.label.replace(/^\d+\.\s*/, '');
+                                        const displayLabel = idx === 0 ? 'HashMap' : idx === 1 ? 'HashSet' : 'ArrayList';
                                         return (
                                           <button
                                             key={prog.id}
                                             onClick={() => setActiveCodeTabByConcept(prev => ({ ...prev, [concept.id]: idx }))}
-                                            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer flex items-center gap-1.5 whitespace-nowrap shrink-0 ${
+                                            className={`px-2 sm:px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer flex items-center justify-center gap-1.5 whitespace-nowrap ${
                                               isSelected
-                                                ? 'bg-primary text-white shadow-xs font-bold'
-                                                : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
+                                                ? 'bg-blue-600 text-white shadow-xs font-bold'
+                                                : 'text-slate-700 hover:text-slate-950 hover:bg-slate-300/60'
                                             }`}
                                           >
                                             <span className={`w-4 h-4 rounded-full text-[10px] flex items-center justify-center font-mono shrink-0 ${
-                                              isSelected ? 'bg-white text-primary font-bold' : 'bg-slate-800 text-slate-300'
+                                              isSelected ? 'bg-white text-blue-600 font-bold' : 'bg-slate-300/80 text-slate-700'
                                             }`}>
                                               {idx + 1}
                                             </span>
-                                            <span className="whitespace-nowrap">{cleanLabel}</span>
+                                            <span className="font-semibold">{displayLabel}</span>
                                           </button>
                                         );
                                       })}
@@ -963,7 +963,7 @@ export default function Dashboard() {
                                           badge="Input"
                                           content={currentProg.input}
                                           placeholder="None (Standard JVM execution)"
-                                          variant="dark"
+                                          variant="light"
                                         />
 
                                         <TerminalBox
@@ -971,14 +971,14 @@ export default function Dashboard() {
                                           badge="Output"
                                           content={currentProg.output}
                                           placeholder="Program executed successfully with no errors."
-                                          variant="dark"
+                                          variant="light"
                                         />
 
                                         {/* Code */}
                                         <div className="space-y-1.5 pt-1">
                                           <div className="flex items-center justify-between gap-3 flex-wrap sm:flex-nowrap">
-                                            <span className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-1.5 whitespace-nowrap shrink-0">
-                                              <Code className="w-3.5 h-3.5 text-blue-400 shrink-0" />
+                                            <span className="text-xs font-bold uppercase tracking-wider text-slate-900 flex items-center gap-1.5 whitespace-nowrap shrink-0">
+                                              <Code className="w-3.5 h-3.5 text-blue-600 shrink-0" />
                                               <span>3. Java Source Code</span>
                                             </span>
                                             <button
@@ -992,7 +992,7 @@ export default function Dashboard() {
                                                   activeProgramIndex: currentIdx
                                                 });
                                               }}
-                                              className="text-[11px] sm:text-xs font-semibold text-blue-400 hover:text-blue-300 hover:underline flex items-center gap-1 cursor-pointer whitespace-nowrap shrink-0"
+                                              className="text-xs font-semibold text-blue-600 hover:text-blue-700 hover:underline flex items-center gap-1 cursor-pointer whitespace-nowrap shrink-0"
                                             >
                                               <span>Open Fullscreen</span>
                                               <ExternalLink className="w-3 h-3 shrink-0" />

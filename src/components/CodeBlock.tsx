@@ -607,9 +607,9 @@ export default function CodeBlock({ code, language = 'java', title }: CodeBlockP
               <div className="table min-w-full border-collapse font-mono">
                 {parsedLines.map((lineTokens, lineIdx) => (
                   <div key={lineIdx} className="table-row leading-[1.65]">
-                    {/* Gutter Line Number */}
+                    {/* Gutter Line Number — Sticky Left */}
                     <div 
-                      className={`table-cell select-none text-right pr-4 border-r font-mono shrink-0 w-10 min-w-[2.5rem] align-top ${gutterBg} ${gutterText} ${gutterBorder}`}
+                      className={`table-cell select-none text-right pr-4 border-r font-mono shrink-0 w-10 min-w-[2.5rem] align-top sticky left-0 z-10 ${gutterBg} ${gutterText} ${gutterBorder}`}
                     >
                       {lineIdx + 1}
                     </div>
@@ -723,9 +723,9 @@ export default function CodeBlock({ code, language = 'java', title }: CodeBlockP
           <div className="table min-w-full border-collapse font-mono">
             {parsedLines.map((lineTokens, lineIdx) => (
               <div key={lineIdx} className="table-row leading-[1.65]">
-                {/* Gutter Line Number */}
+                {/* Gutter Line Number — Sticky Left */}
                 <div 
-                  className={`table-cell select-none text-right pr-3 sm:pr-4 border-r font-mono shrink-0 w-8 sm:w-10 min-w-[2rem] sm:min-w-[2.5rem] align-top ${gutterBg} ${gutterText} ${gutterBorder}`}
+                  className={`table-cell select-none text-right pr-3 sm:pr-4 border-r font-mono shrink-0 w-8 sm:w-10 min-w-[2rem] sm:min-w-[2.5rem] align-top sticky left-0 z-10 ${gutterBg} ${gutterText} ${gutterBorder}`}
                 >
                   {lineIdx + 1}
                 </div>
